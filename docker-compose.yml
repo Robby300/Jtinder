@@ -1,0 +1,32 @@
+version: "3.4"
+
+services:
+  app:
+    build: ./Application
+    image: jtinder-image
+    container_name: jtinder
+    networks:
+      - cloud
+    ports:
+      - ${PORT}:8080
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+  db:
+    image: postgres:latest
+    container_name: postgres
+    networks:
+      - cloud
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+networks:
+  cloud:
+    external: true
