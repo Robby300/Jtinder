@@ -18,14 +18,15 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private Anketa ownAnketa;
+    private Sex sex;
+    private String description;
+    private Sex findSex;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "welike")
-    private List<Anketa> weLike;
+    private List<User> weLike;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "uslike")
-    private List<Anketa> usLike;
-
+    private List<User> usLike;
 }
