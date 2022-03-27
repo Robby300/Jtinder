@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "user")
@@ -23,10 +24,15 @@ public class User {
     private Sex findSex;
 
     @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "welike")
+    @JoinTable(
+        name = "user_relationships",
+        joinColumns = { @JoinColumn(name = "user_id") },
+        inverseJoinColumns = { @JoinColumn(name = "like_id")}
+    )
     private List<User> weLike;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "uslike")
-    private List<User> usLike;
+    @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_sex", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Sex> roles;
 }
