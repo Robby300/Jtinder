@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private String name;
-    private Sex sex;
+
     private String description;
     private Sex findSex;
 
@@ -31,8 +31,8 @@ public class User {
     )
     private List<User> weLike;
 
-    @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_sex", joinColumns = @JoinColumn(name = "user_id"))
+/*    @OneToOne(cascade = CascadeType.ALL)
+    @JoinTable(name = "user_sex", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Sex> roles;
+    private Set<Sex> sex;*/
 }
