@@ -1,4 +1,4 @@
-package com.tinder.client;
+package com.jtinder.client;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

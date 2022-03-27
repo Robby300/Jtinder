@@ -1,4 +1,4 @@
-package com.tinder.client;
+package com.jtinder.client;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
