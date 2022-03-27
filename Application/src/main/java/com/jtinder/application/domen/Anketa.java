@@ -1,9 +1,17 @@
 package com.jtinder.application.domen;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Table(name = "anketa")
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter
+@Setter
 public class Anketa {
 
     @Id
