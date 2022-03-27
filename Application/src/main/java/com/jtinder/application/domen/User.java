@@ -22,6 +22,8 @@ public class User {
     private String name;
 
     private String description;
+
+    @Enumerated(EnumType.STRING)
     private Sex findSex;
 
     @ManyToMany(cascade = CascadeType.ALL)
@@ -32,8 +34,7 @@ public class User {
     )
     private List<User> weLike;
 
-/*    @OneToOne(cascade = CascadeType.ALL)
-    @JoinTable(name = "user_sex", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<Sex> sex;*/
+    private Sex sex;
+
 }
