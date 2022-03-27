@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "user")
+@Table(name = "usr")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -17,7 +17,8 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
+    @Column(unique = true)
     private String name;
 
     private String description;
