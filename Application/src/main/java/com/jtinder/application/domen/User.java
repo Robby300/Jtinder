@@ -3,7 +3,6 @@ package com.jtinder.application.domen;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -20,7 +19,8 @@ public class User {
     private Long id;
     @Column(unique = true)
     private String name;
-
+    @Enumerated(EnumType.STRING)
+    private Sex sex;
     private String description;
 
     @Enumerated(EnumType.STRING)
@@ -28,13 +28,20 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-        name = "user_relationships",
-        joinColumns = { @JoinColumn(name = "user_id") },
-        inverseJoinColumns = { @JoinColumn(name = "like_id")}
+            name = "user_relationships",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "like_id")}
     )
-    private List<User> weLike;
+    private Set<User> weLike;
 
-    @Enumerated(EnumType.STRING)
-    private Sex sex;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_relationships",
+            joinColumns = {@JoinColumn(name = "like_id")},
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
+    )
+    private Set<User> usLike;
+
+
 
 }

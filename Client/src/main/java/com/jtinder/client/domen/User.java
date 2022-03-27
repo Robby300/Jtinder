@@ -3,6 +3,7 @@ package com.jtinder.client.domen;
 import lombok.*;
 
 import java.util.List;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -11,12 +12,13 @@ import java.util.List;
 @Setter
 public class User {
 
-    private long id;
     private String name;
-    private Anketa ownAnketa;
 
-    private List<Anketa> weLike;
+    private Sex sex;
+    private String description;
+    private Sex findSex;
 
-    private List<Anketa> usLike;
+    private Set<User> weLike;
 
+    private Set<User> usLike;
 }
