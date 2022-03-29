@@ -1,14 +1,14 @@
 package com.jtinder.application.service;
 
 import com.jtinder.application.domen.User;
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 import java.util.Set;
 
 public interface UserService {
     User save(User user);
-    User findUserByUserChatId(Long id);
+    //User findUserByUserChatId(Long id);
     List<User> findAll();
     void deleteUser(User user);
 

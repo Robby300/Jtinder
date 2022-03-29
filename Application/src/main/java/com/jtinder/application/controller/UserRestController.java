@@ -54,7 +54,7 @@ public class UserRestController {
     }
 
     @PutMapping("/{id}/unlike/{like_id}")
-    public User setUnLike(@PathVariable("id") User currentUser, @PathVariable("like_id") User user) {
+    public User setunLike(@PathVariable("id") User currentUser, @PathVariable("like_id") User user) {
         userService.unlike(currentUser, user);
         return currentUser;
     }

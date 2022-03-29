@@ -2,8 +2,11 @@ package com.jtinder.application.service;
 
 import com.jtinder.application.domen.User;
 import com.jtinder.application.repository.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -16,17 +19,27 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    @Override
+    /*@Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if ("javainuse".equals(username)) {
+            return new org.springframework.security.core.userdetails.User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
+                    new ArrayList<>());
+        } else {
+            throw new UsernameNotFoundException("User not found with username: " + username);
+        }
+    }*/
+
+
     public User save(User user) {
         return userRepository.save(user);
     }
 
-    @Override
+
     public User findUserByUserChatId(Long id) {
         return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
     }
 
-    @Override
+
     public List<User> findAll() {
         return userRepository.findAll();
     }
