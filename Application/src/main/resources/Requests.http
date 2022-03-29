@@ -1,24 +1,33 @@
+### Регистрация, после выведет пользователя с зашифрованным паролем
+POST http://localhost:8080/registration
+Content-Type: application/json
 
+{
+  "userChatId" : 12,
+  "name" : "Alexey",
+  "password" : "Alexey"
+}
 
-###
+### Логин, не забудь скопировать полученный токен
 POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-  "username" : "javainuse",
-  "password" : "password"
+  "username" : "Alexey",
+  "password" : "Alexey"
 }
 
 
-###
+### После лгина вставить токен после слова "Bearer" и получить список пользователей
 GET http://localhost:8080/users
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE2NDg2MDM3MjcsImlhdCI6MTY0ODU4NTcyN30.xinc8ugTh3yUrpTFffsOEueclAe0WsBGzjsZaxqiEnRqJXSHVxdIVxhRaeOtVafBvHy5OSPCwqR1RrPk1CY1JA
-###
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2MDUxMDEsImlhdCI6MTY0ODU4NzEwMX0.hUf02VB6y2OEVYGbwfGCPq03eRpWbXewQsmTgajdsmJfLs_QpDitycrVF-5OruZ-3SbTdlKLJNIS7Z7b96TLsA
 
+
+### После лгина вставить токен после слова "Bearer" и получить привет
 GET http://localhost:8080/hello
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE2NDg2MDM3MjcsImlhdCI6MTY0ODU4NTcyN30.xinc8ugTh3yUrpTFffsOEueclAe0WsBGzjsZaxqiEnRqJXSHVxdIVxhRaeOtVafBvHy5OSPCwqR1RrPk1CY1JA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2MDUxMDEsImlhdCI6MTY0ODU4NzEwMX0.hUf02VB6y2OEVYGbwfGCPq03eRpWbXewQsmTgajdsmJfLs_QpDitycrVF-5OruZ-3SbTdlKLJNIS7Z7b96TLsA
 
 
 
