@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import java.util.List;
 import java.util.Set;
 
-public interface UserService {
+public interface UserService extends  UserDetailsService {
     User save(User user);
     //User findUserByUserChatId(Long id);
     List<User> findAll();

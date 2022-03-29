@@ -30,7 +30,7 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String name;
     private String password;
-
+    @Enumerated(EnumType.STRING)
     private Sex sex;
     private String description;
 

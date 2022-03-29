@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository = userRepository;
     }
 
-    /*@Override
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if ("javainuse".equals(username)) {
             return new org.springframework.security.core.userdetails.User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
@@ -27,7 +27,7 @@ public class UserServiceImpl implements UserService {
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
-    }*/
+    }
 
 
     public User save(User user) {
