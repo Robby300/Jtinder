@@ -30,12 +30,19 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String name;
     private String password;
-
+    @Enumerated(EnumType.STRING)
     private Sex sex;
     private String description;
 
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_chat_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles;
 
-    private Sex findSex;
+    @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_find", joinColumns = @JoinColumn(name = "user_chat_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<Sex> findSex;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(

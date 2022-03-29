@@ -47,25 +47,25 @@ public class UserRestController {
 
     // Временные костыльные методы:
 
-    @PutMapping("/{id}/like/{like_id}")
-    public User setLike(@PathVariable("id") User currentUser, @PathVariable("like_id") User user) {
-        userService.like(currentUser, user);
-        return currentUser;
+    @PutMapping("/like/{user}")
+    public User setLike(@PathVariable User user) {
+        userService.like(user);
+        return user;
     }
 
-    @PutMapping("/{id}/unlike/{like_id}")
-    public User setunLike(@PathVariable("id") User currentUser, @PathVariable("like_id") User user) {
-        userService.unlike(currentUser, user);
-        return currentUser;
+    @PutMapping("/unlike/{user}")
+    public User setUnLike(@PathVariable User user)  {
+        userService.unlike(user);
+        return user;
     }
 
-    @GetMapping("/{id}/welike")
-    public Set<User> findAllWeLike(@PathVariable("id") User currentUser) {
-        return userService.findAllWeLike(currentUser);
+    @GetMapping("/welike")
+    public Set<User> findAllWeLike() {
+        return userService.findAllWeLike();
     }
 
-    @GetMapping("/{id}/uslike")
-    public Set<User> findAllUsLike(@PathVariable("id") User currentUser) {
-        return userService.findAllUsLike(currentUser);
+    @GetMapping("/uslike")
+    public Set<User> findAllUsLike() {
+        return userService.findAllUsLike();
     }
 }
