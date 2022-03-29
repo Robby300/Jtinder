@@ -8,7 +8,7 @@ import java.util.Set;
 
 public interface UserService extends  UserDetailsService {
     User save(User user);
-    //User findUserByUserChatId(Long id);
+    User findUserByUserName(String name);
     List<User> findAll();
     void deleteUser(User user);
 

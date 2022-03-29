@@ -1,0 +1,25 @@
+
+
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+  "username" : "javainuse",
+  "password" : "password"
+}
+
+
+###
+GET http://localhost:8080/users
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE2NDg2MDM3MjcsImlhdCI6MTY0ODU4NTcyN30.xinc8ugTh3yUrpTFffsOEueclAe0WsBGzjsZaxqiEnRqJXSHVxdIVxhRaeOtVafBvHy5OSPCwqR1RrPk1CY1JA
+###
+
+GET http://localhost:8080/hello
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhaW51c2UiLCJleHAiOjE2NDg2MDM3MjcsImlhdCI6MTY0ODU4NTcyN30.xinc8ugTh3yUrpTFffsOEueclAe0WsBGzjsZaxqiEnRqJXSHVxdIVxhRaeOtVafBvHy5OSPCwqR1RrPk1CY1JA
+
+
+
+
