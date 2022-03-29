@@ -1,6 +1,6 @@
 
 
-INSERT INTO usr (id, description, name, sex)
+INSERT INTO usr (user_chat_id, description, name, sex)
 
 VALUES (1, 'Только что кончившая гимназию девица желает выйти замуж за холостого или бездетного'
         ' вдовца с состоянием. Возраста не стесняться',
