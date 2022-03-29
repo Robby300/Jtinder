@@ -2,11 +2,12 @@ package com.jtinder.application.service;
 
 import com.jtinder.application.domen.User;
 import com.jtinder.application.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -21,15 +22,19 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        /*if ("javainuse".equals(username)) {
-            return new org.springframework.security.core.userdetails.User("javainuse", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
-                    new ArrayList<>());
-        } else {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }*/
         return userRepository.findUsersByName(username);
     }
 
+    @Override
+    public String getCurrentUserName() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
+    @Override
+    public User getCurrentUser() {
+        return (User) loadUserByUsername(getCurrentUserName());
+    }
 
     public User save(User user) {
         return userRepository.save(user);
@@ -57,24 +62,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void like(User currentUser, User user) {
+    public void like(User user) {
+        User currentUser = getCurrentUser();
         currentUser.getWeLike().add(user);
         userRepository.save(currentUser);
     }
 
     @Override
-    public void unlike(User currentUser, User user) {
+    public void unlike(User user) {
+        User currentUser = getCurrentUser();
         currentUser.getWeLike().remove(user);
         userRepository.save(currentUser);
     }
 
     @Override
-    public Set<User> findAllWeLike(User currentUser) {
-        return findUserByUserChatId(currentUser.getUserChatId()).getWeLike();
+    public Set<User> findAllWeLike() {
+        return getCurrentUser().getWeLike();
     }
 
     @Override
-    public Set<User> findAllUsLike(User currentUser) {
-        return findUserByUserChatId(currentUser.getUserChatId()).getUsLike();
+    public Set<User> findAllUsLike() {
+        return getCurrentUser().getUsLike();
     }
+
 }

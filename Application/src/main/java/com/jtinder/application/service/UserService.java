@@ -7,15 +7,14 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService extends  UserDetailsService {
+    User getCurrentUser();
     User save(User user);
     User findUserByUserName(String name);
     List<User> findAll();
     void deleteUser(User user);
-
-    void like(User currentUser, User user);
-    void unlike(User currentUser, User user);
-
-    Set<User> findAllWeLike(User currentUser);
-
-    Set<User> findAllUsLike(User currentUser);
+    void like(User user);
+    void unlike(User user);
+    Set<User> findAllWeLike();
+    Set<User> findAllUsLike();
+    String getCurrentUserName();
 }
