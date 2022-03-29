@@ -1,5 +1,6 @@
-package com.jtinder.client.telegram;
+package com.jtinder.client.telegram.controller;
 
+import com.jtinder.client.telegram.LigaTinderBot;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
