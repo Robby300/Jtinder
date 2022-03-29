@@ -1,0 +1,8 @@
+telegram:
+  api-url: "https://api.telegram.org/"
+  webhook-path: "https://bd70-5-149-159-44.ngrok.io"
+  bot-name: "LigaTinderBot"
+  bot-token: "5283237136:AAHtqzNjyNz5VMNadJHWyACQIk004n3MBps"
+
+server:
+  port: "5000"
