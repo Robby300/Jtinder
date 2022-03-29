@@ -26,11 +26,11 @@ public class User {
     private Long userChatId;
     @Column(unique = true)
     private String name;
-    @Enumerated(EnumType.STRING)
+
     private Sex sex;
     private String description;
 
-    @Enumerated(EnumType.STRING)
+
     private Sex findSex;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
