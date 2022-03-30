@@ -109,7 +109,6 @@ public class FillingProfileHandler implements InputMessageHandler {
         if (botState.equals(BotState.PROFILE_FILLED)) {
             user.getProfile().setFindSex(new HashSet<>());
             user.getProfile().getFindSex().add(Sex.valueOf(usersAnswer));
-            userDataCache.setUsersCurrentBotState(userId, BotState.MAIN_MENU);
             replyToUser = new SendMessage(String.valueOf(chatId), String.format("%s %s", "Данные по вашей анкете", user));
             replyToUser.enableMarkdown(true);
             replyToUser.setReplyMarkup(keyboardService.getMainMenuKeyboard());

@@ -30,9 +30,7 @@ public class BotStateContext {
         if (isFillingProfileState(currentState)) {
             return messageHandlers.get(BotState.FILLING_PROFILE);
         }
-        if (isMainMenuState(currentState)) {
-            return messageHandlers.get(BotState.MAIN_MENU);
-        }
+
         return messageHandlers.get(currentState);
     }
 
@@ -50,16 +48,6 @@ public class BotStateContext {
         }
     }
 
-    private boolean isMainMenuState(BotState currentState) {
-        switch (currentState) {
-            case SEARCH:
-            case PROFILE:
-            case LOWERS:
-                return true;
-            default:
-                return false;
-        }
-    }
 
 
     public BotApiMethod<?> processInputCallBack(BotState currentState, CallbackQuery callbackQuery) {

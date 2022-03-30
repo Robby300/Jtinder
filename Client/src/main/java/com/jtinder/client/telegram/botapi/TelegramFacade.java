@@ -52,11 +52,14 @@ public class TelegramFacade {
             case "/start":
                 botState = BotState.ASK_SEX;
                 break;
-            case "Помощь":
-                botState = BotState.SHOW_HELP_MENU;
+            case "Любимцы":
+                botState = BotState.LOWERS;
                 break;
             case "Поиск":
                 botState = BotState.SEARCH;
+                break;
+            case "Анкета":
+                botState = BotState.PROFILE;
                 break;
             default:
                 botState = userDataCache.getUsersCurrentBotState(userId);

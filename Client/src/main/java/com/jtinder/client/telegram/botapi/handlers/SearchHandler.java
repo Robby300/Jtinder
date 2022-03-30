@@ -19,14 +19,14 @@ import java.util.List;
 
 @Component
 @Slf4j
-public class MainMenuHandler implements InputMessageHandler {
+public class SearchHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
     private final ReplyMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
 
-    public MainMenuHandler(UserDataCache userDataCache,
-                           ReplyMessagesService messagesService, KeyboardService keyboardService, ServerService serverService) {
+    public SearchHandler(UserDataCache userDataCache,
+                         ReplyMessagesService messagesService, KeyboardService keyboardService, ServerService serverService) {
         this.userDataCache = userDataCache;
         this.messagesService = messagesService;
         this.keyboardService = keyboardService;
@@ -58,12 +58,11 @@ public class MainMenuHandler implements InputMessageHandler {
 
     @Override
     public BotState getHandlerName() {
-        return BotState.MAIN_MENU;
+        return BotState.SEARCH;
     }
 
     @Override
     public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
-        String usersAnswer = callbackQuery.getData();
         long userId = callbackQuery.getMessage().getChatId();
         long chatId = callbackQuery.getMessage().getChatId();
 
