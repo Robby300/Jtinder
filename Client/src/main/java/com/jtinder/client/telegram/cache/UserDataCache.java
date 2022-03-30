@@ -1,7 +1,7 @@
 package com.jtinder.client.telegram.cache;
 
+import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.botapi.handlers.UserProfileData;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -9,8 +9,8 @@ import java.util.Map;
 
 @Component
 public class UserDataCache implements DataCache {
-    private Map<Long, BotState> usersBotStates = new HashMap<>();
-    private Map<Long, UserProfileData> usersProfileData = new HashMap<>();
+    private final Map<Long, BotState> usersBotStates = new HashMap<>();
+    private final Map<Long, User> usersProfileData = new HashMap<>();
 
     @Override
     public void setUsersCurrentBotState(long userId, BotState botState) {
@@ -28,16 +28,16 @@ public class UserDataCache implements DataCache {
     }
 
     @Override
-    public UserProfileData getUserProfileData(long userId) {
-        UserProfileData userProfileData = usersProfileData.get(userId);
-        if (userProfileData == null) {
-            userProfileData = new UserProfileData();
+    public User getUserProfileData(long userId) {
+        User user = usersProfileData.get(userId);
+        if (user == null) {
+            user = new User();
         }
-        return userProfileData;
+        return user;
     }
 
     @Override
-    public void saveUserProfileData(long userId, UserProfileData userProfileData) {
-        usersProfileData.put(userId, userProfileData);
+    public void saveUserProfileData(long userId, User user) {
+        usersProfileData.put(userId, user);
     }
 }

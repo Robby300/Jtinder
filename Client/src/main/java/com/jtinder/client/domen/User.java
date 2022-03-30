@@ -2,22 +2,19 @@ package com.jtinder.client.domen;
 
 import lombok.*;
 
+import java.util.List;
 import java.util.Set;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+
 @Getter
 @Setter
+@ToString
 public class User {
+    private Profile profile;
+    private List<Profile> profileList;
+    private int Page;
 
-    private String name;
-
-    private Sex sex;
-    private String description;
-    private Sex findSex;
-
-    private Set<User> weLike;
-
-    private Set<User> usLike;
+    public User() {
+        this.profile = new Profile();
+    }
 }

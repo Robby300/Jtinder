@@ -1,6 +1,8 @@
 package com.jtinder.client.telegram.service;
 
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
@@ -66,6 +68,30 @@ public class KeyboardService {
         List<InlineKeyboardButton> keyboardButtonsRow = new ArrayList<>();
         Collections.addAll(keyboardButtonsRow, buttons);
         return keyboardButtonsRow;
+    }
+
+    public InlineKeyboardMarkup getInlineKeyboardSearch() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        InlineKeyboardButton male = makeButton("\u27a1\ufe0f", "Следующий");
+        InlineKeyboardButton female = makeButton("\u2764\ufe0f", "Лайк");
+
+        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(male, female);
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow);
+
+        inlineKeyboardMarkup.setKeyboard(rowList);
+
+        return inlineKeyboardMarkup;
+    }
+
+    public EditMessageText getEditMessageText(Long chatId, CallbackQuery callbackQuery, String newText) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(String.valueOf(chatId));
+        editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
+        editMessageText.setText(newText);
+        return editMessageText;
     }
 
 

@@ -1,15 +1,21 @@
 package com.jtinder.client.telegram.botapi.handlers;
 
+import com.jtinder.client.domen.Profile;
+import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.KeyboardService;
 import com.jtinder.client.telegram.service.ReplyMessagesService;
+import com.jtinder.client.telegram.service.ServerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
+
+import java.util.List;
 
 @Component
 @Slf4j
@@ -17,12 +23,14 @@ public class MainMenuHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
     private final ReplyMessagesService messagesService;
     private final KeyboardService keyboardService;
+    private final ServerService serverService;
 
     public MainMenuHandler(UserDataCache userDataCache,
-                                 ReplyMessagesService messagesService, KeyboardService keyboardService) {
+                           ReplyMessagesService messagesService, KeyboardService keyboardService, ServerService serverService) {
         this.userDataCache = userDataCache;
         this.messagesService = messagesService;
         this.keyboardService = keyboardService;
+        this.serverService = serverService;
     }
 
     @Override
@@ -31,16 +39,20 @@ public class MainMenuHandler implements InputMessageHandler {
     }
 
     private BotApiMethod<?> processUsersInput(Message message) {
-        String usersAnswer = message.getText();
         long userId = message.getChatId();
-        String chatId = message.getChatId().toString();
-
-        UserProfileData profileData = userDataCache.getUserProfileData(userId);
+        long chatId = message.getChatId();
+        User user = userDataCache.getUserProfileData(userId);
         BotState botState = userDataCache.getUsersCurrentBotState(userId);
-
         SendMessage replyToUser = new SendMessage();
-        replyToUser.setChatId(chatId);
-        replyToUser.setText("Заебал");
+
+        if (botState.equals(BotState.SEARCH)) {
+            List<Profile> users = serverService.getUsersProfile();
+            user.setProfileList(users);
+            user.setPage(0);
+            replyToUser.setChatId(String.valueOf(chatId));
+            replyToUser.setText(user.getProfileList().get(user.getPage()).toString());
+            replyToUser.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+        }
         return replyToUser;
     }
 
@@ -51,6 +63,29 @@ public class MainMenuHandler implements InputMessageHandler {
 
     @Override
     public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
-        return null;
+        String usersAnswer = callbackQuery.getData();
+        long userId = callbackQuery.getMessage().getChatId();
+        long chatId = callbackQuery.getMessage().getChatId();
+
+        User user = userDataCache.getUserProfileData(userId);
+        BotState botState = userDataCache.getUsersCurrentBotState(userId);
+        EditMessageText editMessageText = new EditMessageText();
+
+        if (botState.equals(BotState.SEARCH)) {
+            if (callbackQuery.getData().equals("Лайк")) {
+                int page = user.getPage();
+                user.setPage(++page);
+                editMessageText = keyboardService.getEditMessageText(chatId, callbackQuery, user.getProfileList().get(user.getPage()).toString());
+                editMessageText.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+            }
+            if (callbackQuery.getData().equals("Следующий")) {
+                int page = user.getPage();
+                user.setPage(++page);
+                editMessageText = keyboardService.getEditMessageText(chatId, callbackQuery, user.getProfileList().get(user.getPage()).toString());
+                editMessageText.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+            }
+        }
+        return editMessageText;
     }
+
 }
