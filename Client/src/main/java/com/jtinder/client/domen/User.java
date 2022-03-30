@@ -2,7 +2,6 @@ package com.jtinder.client.domen;
 
 import lombok.*;
 
-import java.util.List;
 import java.util.Set;
 
 @NoArgsConstructor

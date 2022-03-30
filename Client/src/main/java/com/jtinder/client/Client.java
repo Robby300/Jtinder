@@ -1,12 +1,7 @@
 package com.jtinder.client;
 
-import com.jtinder.client.domen.Sex;
-import com.jtinder.client.domen.User;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.Set;
 
 @SpringBootApplication
 public class Client {

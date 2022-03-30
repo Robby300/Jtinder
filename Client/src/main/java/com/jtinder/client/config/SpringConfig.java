@@ -1,8 +1,7 @@
 package com.jtinder.client.config;
 
 import com.jtinder.client.telegram.LigaTinderBot;
-import com.jtinder.client.telegram.handlers.CallbackQueryHandler;
-import com.jtinder.client.telegram.handlers.MessageHandler;
+import com.jtinder.client.telegram.botapi.TelegramFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +19,8 @@ public class SpringConfig {
 
     @Bean
     public LigaTinderBot springWebhookBot(SetWebhook setWebhook,
-                                          MessageHandler messageHandler,
-                                          CallbackQueryHandler callbackQueryHandler) {
-        LigaTinderBot bot = new LigaTinderBot(setWebhook, messageHandler, callbackQueryHandler);
+                                          TelegramFacade telegramFacade) {
+        LigaTinderBot bot = new LigaTinderBot(setWebhook, telegramFacade);
 
         bot.setBotPath(telegramConfig.getWebhookPath());
         bot.setBotUsername(telegramConfig.getBotName());
