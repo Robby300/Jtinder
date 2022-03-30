@@ -1,6 +1,7 @@
 package com.jtinder.application.domen;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,12 +27,20 @@ public class User implements UserDetails {
 
     @Id
     @Column(name = "user_chat_id")
+    @JsonView(Views.Anketa.class)
     private Long userChatId;
+
     @Column(unique = true)
+    @JsonView(Views.Anketa.class)
     private String name;
+
     private String password;
+
     @Enumerated(EnumType.STRING)
+    @JsonView(Views.Anketa.class)
     private Sex sex;
+
+    @JsonView(Views.Anketa.class)
     private String description;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)

@@ -1,6 +1,8 @@
 package com.jtinder.application.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.jtinder.application.domen.User;
+import com.jtinder.application.domen.Views;
 import com.jtinder.application.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,7 @@ public class UserRestController {
     }
 
     @GetMapping()
+    @JsonView(Views.Anketa.class)
     public List<User> findAll() {
         return userService.findAll();
     }
