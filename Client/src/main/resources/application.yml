@@ -6,3 +6,5 @@ telegram:
 
 server:
   port: "5000"
+
+localeTag: ru-RU
