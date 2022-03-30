@@ -1,4 +1,4 @@
-package com.jtinder.client.telegram.botapi.handlers.fillingprofile;
+package com.jtinder.client.telegram.botapi.handlers;
 
 import com.jtinder.client.domen.Sex;
 import com.jtinder.client.domen.User;

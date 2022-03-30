@@ -1,7 +1,7 @@
 package com.jtinder.client.telegram.cache;
 
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.botapi.handlers.fillingprofile.UserProfileData;
+import com.jtinder.client.telegram.botapi.handlers.UserProfileData;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;

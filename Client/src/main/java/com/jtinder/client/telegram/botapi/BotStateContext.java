@@ -15,7 +15,7 @@ import java.util.Map;
  */
 @Component
 public class BotStateContext {
-    private Map<BotState, InputMessageHandler> messageHandlers = new HashMap<>();
+    private final Map<BotState, InputMessageHandler> messageHandlers = new HashMap<>();
 
     public BotStateContext(List<InputMessageHandler> messageHandlers) {
         messageHandlers.forEach(handler -> this.messageHandlers.put(handler.getHandlerName(), handler));
@@ -30,7 +30,9 @@ public class BotStateContext {
         if (isFillingProfileState(currentState)) {
             return messageHandlers.get(BotState.FILLING_PROFILE);
         }
-
+        if (isMainMenuState(currentState)) {
+            return messageHandlers.get(BotState.MAIN_MENU);
+        }
         return messageHandlers.get(currentState);
     }
 
@@ -42,6 +44,17 @@ public class BotStateContext {
             case ASK_FIND:
             case FILLING_PROFILE:
             case PROFILE_FILLED:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    private boolean isMainMenuState(BotState currentState) {
+        switch (currentState) {
+            case SEARCH:
+            case PROFILE:
+            case LOWERS:
                 return true;
             default:
                 return false;

@@ -1,16 +1,14 @@
-package com.jtinder.client.telegram.botapi.handlers.fillingprofile;
+package com.jtinder.client.telegram.botapi.handlers;
 
 import com.jtinder.client.domen.Sex;
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.botapi.handlers.InputMessageHandler;
 import com.jtinder.client.telegram.cache.UserDataCache;
-import com.jtinder.client.telegram.service.InlineKeyboardService;
+import com.jtinder.client.telegram.service.KeyboardService;
 import com.jtinder.client.telegram.service.ReplyMessagesService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -24,10 +22,10 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 public class FillingProfileHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
     private final ReplyMessagesService messagesService;
-    private final InlineKeyboardService keyboardService;
+    private final KeyboardService keyboardService;
 
     public FillingProfileHandler(UserDataCache userDataCache,
-                                 ReplyMessagesService messagesService, InlineKeyboardService keyboardService) {
+                                 ReplyMessagesService messagesService, KeyboardService keyboardService) {
         this.userDataCache = userDataCache;
         this.messagesService = messagesService;
         this.keyboardService = keyboardService;
@@ -113,6 +111,9 @@ public class FillingProfileHandler implements InputMessageHandler {
             profileData.setFindSex(Sex.valueOf(usersAnswer));
             userDataCache.setUsersCurrentBotState(userId, BotState.MAIN_MENU);
             replyToUser = new SendMessage(String.valueOf(chatId), String.format("%s %s", "Данные по вашей анкете", profileData));
+            replyToUser.enableMarkdown(true);
+            replyToUser.setReplyMarkup(keyboardService.getMainMenuKeyboard());
+
         }
 
         return replyToUser;
