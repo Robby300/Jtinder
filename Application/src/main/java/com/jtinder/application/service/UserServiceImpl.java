@@ -1,5 +1,6 @@
 package com.jtinder.application.service;
 
+import com.jtinder.application.domen.Sex;
 import com.jtinder.application.domen.User;
 import com.jtinder.application.repository.UserRepository;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,16 @@ public class UserServiceImpl implements UserService {
     public String getCurrentUserName() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
+    }
+
+    @Override
+    public List<User> findAllMale() {
+        return userRepository.findUsersBySexIs(Sex.MALE);
+    }
+
+    @Override
+    public List<User> findAllFemale() {
+        return userRepository.findUsersBySexIs(Sex.FEMALE);
     }
 
     @Override

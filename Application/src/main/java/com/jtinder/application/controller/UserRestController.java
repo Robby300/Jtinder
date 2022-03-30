@@ -68,4 +68,14 @@ public class UserRestController {
     public Set<User> findAllUsLike() {
         return userService.findAllUsLike();
     }
+
+    @GetMapping("/male")
+    public List<User> findAllMale() {
+        return userService.findAllMale();
+    }
+
+    @GetMapping("/female")
+    public List<User> findAllFemale() {
+        return userService.findAllFemale();
+    }
 }

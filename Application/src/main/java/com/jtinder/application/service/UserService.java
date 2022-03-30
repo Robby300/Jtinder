@@ -17,4 +17,7 @@ public interface UserService extends  UserDetailsService {
     Set<User> findAllWeLike();
     Set<User> findAllUsLike();
     String getCurrentUserName();
+
+    List<User> findAllMale();
+    List<User> findAllFemale();
 }

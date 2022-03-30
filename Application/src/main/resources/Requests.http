@@ -25,28 +25,37 @@ Content-Type: application/json
 ### После логина вставить токен после слова "Bearer" и получить список пользователей
 GET http://localhost:8080/users
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2MDg5MDQsImlhdCI6MTY0ODU5MDkwNH0.lcFnt0gIKiXYKPVmhmqksJjXGYWZKm0fxAwvAwLEjfJkxGRH3NpT_vheDv-Znx2Ww7a02fjmxY4-waMMx4rVcQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
 
 
 ### После лгина вставить токен после слова "Bearer" и получить привет с именем текущего пользователя
 GET http://localhost:8080/hello
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2MDg5MDQsImlhdCI6MTY0ODU5MDkwNH0.lcFnt0gIKiXYKPVmhmqksJjXGYWZKm0fxAwvAwLEjfJkxGRH3NpT_vheDv-Znx2Ww7a02fjmxY4-waMMx4rVcQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
 
 ### Текущий подьзователь ставит лайк Арсинье
 PUT http://localhost:8080/users/like/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2MDg5MDQsImlhdCI6MTY0ODU5MDkwNH0.lcFnt0gIKiXYKPVmhmqksJjXGYWZKm0fxAwvAwLEjfJkxGRH3NpT_vheDv-Znx2Ww7a02fjmxY4-waMMx4rVcQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть на себя
 GET http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2MDg5MDQsImlhdCI6MTY0ODU5MDkwNH0.lcFnt0gIKiXYKPVmhmqksJjXGYWZKm0fxAwvAwLEjfJkxGRH3NpT_vheDv-Znx2Ww7a02fjmxY4-waMMx4rVcQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть кого мы лайкнули
 GET http://localhost:8080/users/welike
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2MDg5MDQsImlhdCI6MTY0ODU5MDkwNH0.lcFnt0gIKiXYKPVmhmqksJjXGYWZKm0fxAwvAwLEjfJkxGRH3NpT_vheDv-Znx2Ww7a02fjmxY4-waMMx4rVcQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
 
+### После лгина вставить токен после слова "Bearer" и посмотреть cударынь
+GET http://localhost:8080/users/female
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
+
+### После лгина вставить токен после слова "Bearer" и посмотреть сударей
+GET http://localhost:8080/users/male
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
 
 
