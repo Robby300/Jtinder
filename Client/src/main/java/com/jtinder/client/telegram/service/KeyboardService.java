@@ -73,10 +73,10 @@ public class KeyboardService {
     public InlineKeyboardMarkup getInlineKeyboardSearch() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
-        InlineKeyboardButton male = makeButton("\u27a1\ufe0f", "Следующий");
-        InlineKeyboardButton female = makeButton("\u2764\ufe0f", "Лайк");
+        InlineKeyboardButton next = makeButton("\u27a1\ufe0f", "Следующий");
+        InlineKeyboardButton like = makeButton("\u2764\ufe0f", "Лайк");
 
-        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(male, female);
+        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(next, like);
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow);
