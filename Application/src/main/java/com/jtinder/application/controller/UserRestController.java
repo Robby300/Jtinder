@@ -1,6 +1,8 @@
 package com.jtinder.application.controller;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.jtinder.application.domen.User;
+import com.jtinder.application.domen.Views;
 import com.jtinder.application.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +21,25 @@ public class UserRestController {
     }
 
     @GetMapping()
+    @JsonView(Views.Anketa.class)
     public List<User> findAll() {
         return userService.findAll();
+    }
+
+    @GetMapping("/search")
+    @JsonView(Views.Anketa.class)
+    public List<User> searchUsers() {
+        return userService.searchUsers();
     }
 
     @GetMapping("/{id}")
     public User findById(@PathVariable(value = "id") User user) {
         return user;
+    }
+
+    @GetMapping("/exists/{id}")
+    public boolean isUserExistById(@PathVariable(value = "id") Long userId) {
+        return userService.isExists(userId);
     }
 
     @PutMapping("/{id}")
@@ -59,22 +73,31 @@ public class UserRestController {
         return user;
     }
 
+    @GetMapping("/reciprocity/{id}")
+    public boolean isReciprocity(@PathVariable(value = "id") User user) {
+        return userService.isReciprocity(user);
+    }
+
     @GetMapping("/welike")
+    @JsonView(Views.Anketa.class)
     public Set<User> findAllWeLike() {
         return userService.findAllWeLike();
     }
 
     @GetMapping("/uslike")
+    @JsonView(Views.Anketa.class)
     public Set<User> findAllUsLike() {
         return userService.findAllUsLike();
     }
 
     @GetMapping("/male")
+    @JsonView(Views.Anketa.class)
     public List<User> findAllMale() {
         return userService.findAllMale();
     }
 
     @GetMapping("/female")
+    @JsonView(Views.Anketa.class)
     public List<User> findAllFemale() {
         return userService.findAllFemale();
     }

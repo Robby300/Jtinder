@@ -11,5 +11,5 @@ public interface UserRepository extends CrudRepository<User, Long> {
     List<User> findAll();
     List<User> findUsersBySexIs(Sex sex);
     User findUsersByName(String name);
-    //Set<User> findUsersByWeLikeContaining(User currentUser);
+    List<User> findUsersBySexEqualsAndUserIdIsNotIn(Sex findSex, List<Long> userIds);
 }

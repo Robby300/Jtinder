@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -22,14 +23,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUsersByName(username);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Long id = Long.parseLong(userId);
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Нет такого!"));
     }
 
     @Override
     public String getCurrentUserName() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
+    }
+
+    @Override
+    public boolean isReciprocity(User user) {
+        return getCurrentUser().getWeLike().contains(user)
+                && getCurrentUser().getUsLike().contains(user);
     }
 
     @Override
@@ -43,26 +51,32 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> searchUsers() {
+        User currentUser = getCurrentUser();
+        Set<User> excludedUsers = currentUser.getWeLike();
+        excludedUsers.add(currentUser);
+        List<Long> collect = excludedUsers.stream()
+                .map(User::getUserId)
+                .collect(Collectors.toList());
+        return userRepository.findUsersBySexEqualsAndUserIdIsNotIn(currentUser.getFindSex(), collect);
+    }
+
+    @Override
+    public boolean isExists(Long userId) {
+        return userRepository.findById(userId).isPresent();
+    }
+
+    @Override
     public User getCurrentUser() {
         return (User) loadUserByUsername(getCurrentUserName());
     }
 
+    @Override
     public User save(User user) {
         return userRepository.save(user);
     }
 
-
     @Override
-    public User findUserByUserName(String name) {
-        return userRepository.findUsersByName(name);
-    }
-
-
-    public User findUserByUserChatId(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -95,5 +109,4 @@ public class UserServiceImpl implements UserService {
     public Set<User> findAllUsLike() {
         return getCurrentUser().getUsLike();
     }
-
 }

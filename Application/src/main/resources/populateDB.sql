@@ -1,8 +1,7 @@
-INSERT INTO usr (user_chat_id, name, password)
-
+INSERT INTO usr (user_id, name, password)
 VALUES (11, 'javainuse', '$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6');
 
-INSERT INTO usr (user_chat_id, description, name, sex)
+INSERT INTO usr (user_id, description, name, sex)
 
 VALUES (1, 'Только что кончившая гимназию девица желает выйти замуж за холостого или бездетного'
         ' вдовца с состоянием. Возраста не стесняться',

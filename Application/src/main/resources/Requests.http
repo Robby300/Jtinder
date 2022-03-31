@@ -5,8 +5,8 @@ POST http://localhost:8080/registration
 Content-Type: application/json
 
 {
-  "userChatId" : 12,
-  "name" : "Alexey",
+  "userId"  :  13,
+  "username" : "Lesha",
   "password" : "Alexey"
 }
 
@@ -15,8 +15,8 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-  "username" : "Alexey",
-  "password" : "Alexey"
+  "username" : "11",
+  "password" : "password"
 }
 
 
@@ -57,3 +57,36 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
 
 
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+"username" : "java",
+"password" : "password"
+}
+
+### После лгина вставить токен после слова "Bearer" и посмотреть сударей
+GET http://localhost:8080/users/search
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4NzQ0MzIxLCJpYXQiOjE2NDg3MjYzMjF9.czaoyxhoRNO94mV2_hrNxoiMJxOBxmUgn0NF7X88tPGu5Ru9VRSnHlHWhvWHe073K-V_eyWJUoW32AevfbHpHw
+
+### true
+GET http://localhost:8080/users/reciprocity/2
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4NzQ0MzIxLCJpYXQiOjE2NDg3MjYzMjF9.czaoyxhoRNO94mV2_hrNxoiMJxOBxmUgn0NF7X88tPGu5Ru9VRSnHlHWhvWHe073K-V_eyWJUoW32AevfbHpHw
+
+### false
+GET http://localhost:8080/users/reciprocity/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4NzQ0MzIxLCJpYXQiOjE2NDg3MjYzMjF9.czaoyxhoRNO94mV2_hrNxoiMJxOBxmUgn0NF7X88tPGu5Ru9VRSnHlHWhvWHe073K-V_eyWJUoW32AevfbHpHw
+
+### true
+GET http://localhost:8080/users/exists/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4NzQ0MzIxLCJpYXQiOjE2NDg3MjYzMjF9.czaoyxhoRNO94mV2_hrNxoiMJxOBxmUgn0NF7X88tPGu5Ru9VRSnHlHWhvWHe073K-V_eyWJUoW32AevfbHpHw
+
+### false
+GET http://localhost:8080/users/exists/99
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4NzQ0MzIxLCJpYXQiOjE2NDg3MjYzMjF9.czaoyxhoRNO94mV2_hrNxoiMJxOBxmUgn0NF7X88tPGu5Ru9VRSnHlHWhvWHe073K-V_eyWJUoW32AevfbHpHw

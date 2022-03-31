@@ -9,7 +9,6 @@ import java.util.Set;
 public interface UserService extends  UserDetailsService {
     User getCurrentUser();
     User save(User user);
-    User findUserByUserName(String name);
     List<User> findAll();
     void deleteUser(User user);
     void like(User user);
@@ -17,7 +16,11 @@ public interface UserService extends  UserDetailsService {
     Set<User> findAllWeLike();
     Set<User> findAllUsLike();
     String getCurrentUserName();
-
+    boolean isReciprocity(User user);
     List<User> findAllMale();
     List<User> findAllFemale();
+
+    List<User> searchUsers();
+
+    boolean isExists(Long userId);
 }
