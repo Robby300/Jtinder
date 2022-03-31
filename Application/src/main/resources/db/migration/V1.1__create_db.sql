@@ -25,14 +25,14 @@ create table usr
     primary key (user_id)
 );
 alter table if exists usr
-    drop constraint if exists UK_mkjheedol1oe4evwyjw7ixpot;
+    drop constraint if exists USR_UNIQUE_NAME;
 alter table if exists usr
     add constraint UK_mkjheedol1oe4evwyjw7ixpot unique (name);
 alter table if exists find_sex
     add constraint FKtmarx5m5pava4m1f7594ubht7 foreign key (user_id) references usr;
 alter table if exists user_relationships
-    add constraint FKe1faoi6vindin0uh9oukjikdi foreign key (like_id) references usr;
+    add constraint FK_LIKE_ID_REF_USR foreign key (like_id) references usr;
 alter table if exists user_relationships
-    add constraint FKaiy05gpdwu1pemrw6il5xr1wr foreign key (user_id) references usr;
+    add constraint FK_USER_ID_REF_USR_REL foreign key (user_id) references usr;
 alter table if exists user_role
-    add constraint FKfpm8swft53ulq2hl11yplpr5 foreign key (user_id) references usr;
+    add constraint FK_USER_ID_REF_USER_ROLE  foreign key (user_id) references usr;
