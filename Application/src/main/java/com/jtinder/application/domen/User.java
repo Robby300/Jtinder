@@ -48,8 +48,10 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
+    @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "find_sex", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Sex findSex;
+    private Set<Sex> findSex;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(

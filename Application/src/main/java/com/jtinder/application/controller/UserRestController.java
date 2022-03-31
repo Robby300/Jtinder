@@ -3,6 +3,7 @@ package com.jtinder.application.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.jtinder.application.domen.User;
 import com.jtinder.application.domen.Views;
+import com.jtinder.application.service.ImageService;
 import com.jtinder.application.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +16,11 @@ import java.util.Set;
 @RestController
 public class UserRestController {
     private final UserService userService;
+    private final ImageService imageService;
 
-    public UserRestController(UserService userService) {
+    public UserRestController(UserService userService, ImageService imageService) {
         this.userService = userService;
+        this.imageService = imageService;
     }
 
     @GetMapping()
@@ -100,5 +103,10 @@ public class UserRestController {
     @JsonView(Views.Anketa.class)
     public List<User> findAllFemale() {
         return userService.findAllFemale();
+    }
+
+    @GetMapping("/image/{id}")
+    public void getImage(@PathVariable(value = "id") User user) {
+
     }
 }
