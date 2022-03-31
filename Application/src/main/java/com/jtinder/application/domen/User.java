@@ -21,14 +21,14 @@ import java.util.Set;
 @AllArgsConstructor
 @JsonIdentityInfo(
         generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "userChatId"
+        property = "userId"
 )
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "user_chat_id")
+    @Column(name = "user_id")
     @JsonView(Views.Anketa.class)
-    private Long userChatId;
+    private Long userId;
 
     @Column(unique = true)
     @JsonView(Views.Anketa.class)
@@ -44,19 +44,17 @@ public class User implements UserDetails {
     private String description;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_chat_id"))
+    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-    @ElementCollection(targetClass = Sex.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_find", joinColumns = @JoinColumn(name = "user_chat_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<Sex> findSex;
+
+    private Sex findSex;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_relationships",
-            joinColumns = {@JoinColumn(name = "user_chat_id")},
+            joinColumns = {@JoinColumn(name = "user_id")},
             inverseJoinColumns = {@JoinColumn(name = "like_id")}
     )
     private Set<User> weLike = new HashSet<>();
@@ -65,7 +63,7 @@ public class User implements UserDetails {
     @JoinTable(
             name = "user_relationships",
             joinColumns = {@JoinColumn(name = "like_id")},
-            inverseJoinColumns = {@JoinColumn(name = "user_chat_id")}
+            inverseJoinColumns = {@JoinColumn(name = "user_id")}
     )
     private Set<User> usLike;
 

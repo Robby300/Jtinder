@@ -26,6 +26,12 @@ public class UserRestController {
         return userService.findAll();
     }
 
+    @GetMapping("/search")
+    @JsonView(Views.Anketa.class)
+    public List<User> searchUsers() {
+        return userService.searchUsers();
+    }
+
     @GetMapping("/{id}")
     public User findById(@PathVariable(value = "id") User user) {
         return user;
@@ -63,21 +69,25 @@ public class UserRestController {
     }
 
     @GetMapping("/welike")
+    @JsonView(Views.Anketa.class)
     public Set<User> findAllWeLike() {
         return userService.findAllWeLike();
     }
 
     @GetMapping("/uslike")
+    @JsonView(Views.Anketa.class)
     public Set<User> findAllUsLike() {
         return userService.findAllUsLike();
     }
 
     @GetMapping("/male")
+    @JsonView(Views.Anketa.class)
     public List<User> findAllMale() {
         return userService.findAllMale();
     }
 
     @GetMapping("/female")
+    @JsonView(Views.Anketa.class)
     public List<User> findAllFemale() {
         return userService.findAllFemale();
     }

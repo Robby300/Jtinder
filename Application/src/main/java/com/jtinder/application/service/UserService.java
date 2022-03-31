@@ -20,4 +20,6 @@ public interface UserService extends  UserDetailsService {
 
     List<User> findAllMale();
     List<User> findAllFemale();
+
+    List<User> searchUsers();
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -40,6 +41,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllFemale() {
         return userRepository.findUsersBySexIs(Sex.FEMALE);
+    }
+
+    @Override
+    public List<User> searchUsers() {
+        User currentUser = getCurrentUser();
+        return userRepository.findAll().stream()
+                .filter(user -> !user.equals(currentUser))
+                .filter(user -> user.getFindSex().equals(user.getSex()))
+                .filter(user -> !currentUser.getWeLike().contains(user))
+                .collect(Collectors.toList());
     }
 
     @Override

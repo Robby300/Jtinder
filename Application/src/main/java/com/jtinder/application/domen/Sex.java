@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public enum Sex {
+    BOTH("Все"),
     MALE("Сударь"),
     FEMALE("Сударыня");
 

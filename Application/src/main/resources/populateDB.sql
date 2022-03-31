@@ -1,5 +1,4 @@
 INSERT INTO usr (user_chat_id, name, password)
-
 VALUES (11, 'javainuse', '$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6');
 
 INSERT INTO usr (user_chat_id, description, name, sex)
