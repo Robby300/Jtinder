@@ -57,3 +57,16 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ
 
 
+###
+POST http://localhost:8080/login
+Content-Type: application/json
+
+{
+"username" : "java",
+"password" : "password"
+}
+
+### После лгина вставить токен после слова "Bearer" и посмотреть сударей
+GET http://localhost:8080/users/search
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4NzQ0MzIxLCJpYXQiOjE2NDg3MjYzMjF9.czaoyxhoRNO94mV2_hrNxoiMJxOBxmUgn0NF7X88tPGu5Ru9VRSnHlHWhvWHe073K-V_eyWJUoW32AevfbHpHw

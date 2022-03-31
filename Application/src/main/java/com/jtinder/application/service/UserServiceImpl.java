@@ -34,6 +34,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public boolean isReciprocity(User user) {
+        return getCurrentUser().getWeLike().contains(user)
+                && getCurrentUser().getUsLike().contains(user);
+    }
+
+    @Override
     public List<User> findAllMale() {
         return userRepository.findUsersBySexIs(Sex.MALE);
     }
@@ -46,11 +52,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> searchUsers() {
         User currentUser = getCurrentUser();
-        return userRepository.findAll().stream()
+        Set<User> excludedUsers = currentUser.getWeLike();
+        excludedUsers.add(currentUser);
+        List<Long> collect = excludedUsers.stream()
+                .map(user -> user.getUserId())
+                .collect(Collectors.toList());
+        /*return userRepository.findAll().stream()
                 .filter(user -> !user.equals(currentUser))
                 .filter(user -> user.getFindSex().equals(user.getSex()))
                 .filter(user -> !currentUser.getWeLike().contains(user))
-                .collect(Collectors.toList());
+                .collect(Collectors.toList());*/
+        return userRepository.findUsersBySexEqualsAndUserIdIsNotIn(currentUser.getFindSex(), collect);
     }
 
     @Override
