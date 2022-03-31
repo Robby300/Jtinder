@@ -23,8 +23,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findUsersByName(username);
+    public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
+        Long id = Long.parseLong(userId);
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Нет такого!"));
     }
 
     @Override

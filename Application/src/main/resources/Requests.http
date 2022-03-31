@@ -5,8 +5,8 @@ POST http://localhost:8080/registration
 Content-Type: application/json
 
 {
-  "userChatId" : 12,
-  "name" : "Alexey",
+  "userId"  :  13,
+  "username" : "Lesha",
   "password" : "Alexey"
 }
 
@@ -15,8 +15,8 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-  "username" : "Alexey",
-  "password" : "Alexey"
+  "username" : "11",
+  "password" : "password"
 }
 
 
