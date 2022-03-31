@@ -68,6 +68,11 @@ public class UserRestController {
         return user;
     }
 
+    @GetMapping("/reciprocity/{id}")
+    public boolean isReciprocity(@PathVariable(value = "id") User user) {
+        return userService.isReciprocity(user);
+    }
+
     @GetMapping("/welike")
     @JsonView(Views.Anketa.class)
     public Set<User> findAllWeLike() {
