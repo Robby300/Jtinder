@@ -48,7 +48,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
 
-
+    @Enumerated(EnumType.STRING)
     private Sex findSex;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

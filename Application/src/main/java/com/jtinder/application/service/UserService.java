@@ -17,7 +17,7 @@ public interface UserService extends  UserDetailsService {
     Set<User> findAllWeLike();
     Set<User> findAllUsLike();
     String getCurrentUserName();
-
+    boolean isReciprocity(User user);
     List<User> findAllMale();
     List<User> findAllFemale();
 
