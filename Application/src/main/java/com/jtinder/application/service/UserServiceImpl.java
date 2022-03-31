@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
         List<Long> collect = excludedUsers.stream()
                 .map(User::getUserId)
                 .collect(Collectors.toList());
-        return userRepository.findUsersBySexEqualsAndUserIdIsNotIn(currentUser.getFindSex(), collect);
+        return userRepository.findUsersBySexEqualsAndUserIdIsNotIn(Sex.FEMALE, collect); // заглушка
     }
 
     @Override
