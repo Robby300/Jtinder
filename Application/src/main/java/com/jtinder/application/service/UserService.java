@@ -21,4 +21,6 @@ public interface UserService extends  UserDetailsService {
     List<User> findAllFemale();
 
     List<User> searchUsers();
+
+    boolean isExists(Long userId);
 }

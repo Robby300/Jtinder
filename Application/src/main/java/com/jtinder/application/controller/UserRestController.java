@@ -37,6 +37,11 @@ public class UserRestController {
         return user;
     }
 
+    @GetMapping("/exists/{id}")
+    public boolean isUserExistById(@PathVariable(value = "id") Long userId) {
+        return userService.isExists(userId);
+    }
+
     @PutMapping("/{id}")
     public User update(@PathVariable("id") User userFromDb,
                        @RequestBody User user) {
