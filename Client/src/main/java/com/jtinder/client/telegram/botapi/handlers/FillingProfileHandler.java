@@ -6,6 +6,8 @@ import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.KeyboardService;
 import com.jtinder.client.telegram.service.ReplyMessagesService;
+import com.jtinder.client.telegram.service.ServerService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -14,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.HashSet;
-import java.util.Set;
 
 
 /**
@@ -22,18 +23,13 @@ import java.util.Set;
  */
 
 @Slf4j
+@AllArgsConstructor
 @Component
 public class FillingProfileHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
     private final ReplyMessagesService messagesService;
     private final KeyboardService keyboardService;
-
-    public FillingProfileHandler(UserDataCache userDataCache,
-                                 ReplyMessagesService messagesService, KeyboardService keyboardService) {
-        this.userDataCache = userDataCache;
-        this.messagesService = messagesService;
-        this.keyboardService = keyboardService;
-    }
+    private final ServerService serverService;
 
     @Override
     public BotApiMethod<?> handle(Message message) {
@@ -59,6 +55,7 @@ public class FillingProfileHandler implements InputMessageHandler {
         SendMessage replyToUser = null;
 
         if (botState.equals(BotState.ASK_SEX)) {
+            user.getProfile().setPassword(usersAnswer);
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askSex");
             replyToUser.setReplyMarkup(keyboardService.getInlineKeyboardSex());
             userDataCache.setUsersCurrentBotState(userId, BotState.ASK_NAME);
@@ -92,18 +89,17 @@ public class FillingProfileHandler implements InputMessageHandler {
     @Override
     public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
         String usersAnswer = callbackQuery.getData();
-        long userId = callbackQuery.getMessage().getChatId();
         long chatId = callbackQuery.getMessage().getChatId();
 
-        User user = userDataCache.getUserProfileData(userId);
-        BotState botState = userDataCache.getUsersCurrentBotState(userId);
+        User user = userDataCache.getUserProfileData(chatId);
+        BotState botState = userDataCache.getUsersCurrentBotState(chatId);
 
         SendMessage replyToUser = null;
 
         if (botState.equals(BotState.ASK_NAME)) {
             user.getProfile().setSex(Sex.valueOf(usersAnswer));
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askName");
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_DESCRIPTION);
+            userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_DESCRIPTION);
         }
 
         if (botState.equals(BotState.PROFILE_FILLED)) {
@@ -112,7 +108,7 @@ public class FillingProfileHandler implements InputMessageHandler {
             replyToUser = new SendMessage(String.valueOf(chatId), String.format("%s %s", "Данные по вашей анкете", user));
             replyToUser.enableMarkdown(true);
             replyToUser.setReplyMarkup(keyboardService.getMainMenuKeyboard());
-
+            serverService.registerUser(user.getProfile());
         }
 
         return replyToUser;

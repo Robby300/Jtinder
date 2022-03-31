@@ -94,6 +94,24 @@ public class KeyboardService {
         return editMessageText;
     }
 
+    public ReplyKeyboardMarkup getAuthenticateKeyboard() {
+        ReplyKeyboardMarkup authenticateKeyboard = new ReplyKeyboardMarkup();
+        authenticateKeyboard.setSelective(true);
+        authenticateKeyboard.setResizeKeyboard(true);
+        authenticateKeyboard.setOneTimeKeyboard(true);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton("Регистрація"));
+        row.add(new KeyboardButton("Внити"));
+        keyboard.add(row);
+        authenticateKeyboard.setKeyboard(keyboard);
+
+        return authenticateKeyboard;
+    }
+
+
+
 
 
 }

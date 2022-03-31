@@ -14,13 +14,23 @@ import java.util.List;
 public class ServerService {
     RestTemplate restTemplate = new RestTemplate();
 
-    static final String URL_USERS_JSON = "http://localhost:8080/users";
+    static final String URL_USERS = "http://localhost:8080/users";
+    static final String URL_IS_REGISTERED = "http://localhost:8080/users/exists/%d";
 
     public List<Profile> getUsersProfile() {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
         headers.set("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ");
-        ResponseEntity<Profile[]> usersResponse = restTemplate.exchange(URL_USERS_JSON, HttpMethod.GET, requestEntity, Profile[].class);
+        ResponseEntity<Profile[]> usersResponse = restTemplate.exchange(URL_USERS, HttpMethod.GET, requestEntity, Profile[].class);
         return List.of(usersResponse.getBody());
     }
+
+    public boolean isRegistered(Long userId) {
+        return restTemplate.getForObject(String.format(URL_IS_REGISTERED, userId), Boolean.class);
+    }
+
+    public void registerUser(Profile profile) {
+        restTemplate.postForObject(URL_USERS, profile, Profile.class);
+    }
+
 }

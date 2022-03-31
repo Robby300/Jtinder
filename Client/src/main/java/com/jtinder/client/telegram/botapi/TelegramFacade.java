@@ -44,13 +44,13 @@ public class TelegramFacade {
 
     private BotApiMethod<?> handleInputMessage(Message message) {
         String inputMsg = message.getText();
-        long userId = message.getChatId();
+        long chatId = message.getChatId();
         BotState botState;
         BotApiMethod<?> replyMessage;
 
         switch (inputMsg) {
             case "/start":
-                botState = BotState.ASK_SEX;
+                botState = BotState.AUTHENTICATE;
                 break;
             case "Любимцы":
                 botState = BotState.LOWERS;
@@ -62,11 +62,12 @@ public class TelegramFacade {
                 botState = BotState.PROFILE;
                 break;
             default:
-                botState = userDataCache.getUsersCurrentBotState(userId);
+                botState = userDataCache.getUsersCurrentBotState(chatId);
+
                 break;
         }
 
-        userDataCache.setUsersCurrentBotState(userId, botState);
+        userDataCache.setUsersCurrentBotState(chatId, botState);
 
         replyMessage = botStateContext.processInputMessage(botState, message);
 

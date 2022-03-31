@@ -14,7 +14,8 @@ public class User {
     private List<Profile> profileList;
     private int Page;
 
-    public User() {
+    public User(Long userId) {
         this.profile = new Profile();
+        profile.setUserId(userId);
     }
 }

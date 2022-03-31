@@ -11,5 +11,6 @@ public enum BotState {
     MAIN_MENU,
     FILLING_PROFILE,
     PROFILE,
+    AUTHENTICATE,
     LOWERS
 }
