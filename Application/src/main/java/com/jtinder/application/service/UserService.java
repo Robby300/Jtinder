@@ -9,7 +9,6 @@ import java.util.Set;
 public interface UserService extends  UserDetailsService {
     User getCurrentUser();
     User save(User user);
-    User findUserByUserName(String name);
     List<User> findAll();
     void deleteUser(User user);
     void like(User user);

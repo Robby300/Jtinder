@@ -55,13 +55,8 @@ public class UserServiceImpl implements UserService {
         Set<User> excludedUsers = currentUser.getWeLike();
         excludedUsers.add(currentUser);
         List<Long> collect = excludedUsers.stream()
-                .map(user -> user.getUserId())
+                .map(User::getUserId)
                 .collect(Collectors.toList());
-        /*return userRepository.findAll().stream()
-                .filter(user -> !user.equals(currentUser))
-                .filter(user -> user.getFindSex().equals(user.getSex()))
-                .filter(user -> !currentUser.getWeLike().contains(user))
-                .collect(Collectors.toList());*/
         return userRepository.findUsersBySexEqualsAndUserIdIsNotIn(currentUser.getFindSex(), collect);
     }
 
@@ -70,22 +65,12 @@ public class UserServiceImpl implements UserService {
         return (User) loadUserByUsername(getCurrentUserName());
     }
 
+    @Override
     public User save(User user) {
         return userRepository.save(user);
     }
 
-
     @Override
-    public User findUserByUserName(String name) {
-        return userRepository.findUsersByName(name);
-    }
-
-
-    public User findUserByUserChatId(Long id) {
-        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-
     public List<User> findAll() {
         return userRepository.findAll();
     }
@@ -118,5 +103,4 @@ public class UserServiceImpl implements UserService {
     public Set<User> findAllUsLike() {
         return getCurrentUser().getUsLike();
     }
-
 }

@@ -1,4 +1,4 @@
-package ru.liga.service;
+package com.jtinder.application.service;
 
 import org.springframework.stereotype.Service;
 
