@@ -30,7 +30,6 @@ public class User implements UserDetails {
     @JsonView(Views.Anketa.class)
     private Long userId;
 
-    @Column(unique = true)
     @JsonView(Views.Anketa.class)
     private String name;
 
