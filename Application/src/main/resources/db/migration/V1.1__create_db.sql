@@ -26,8 +26,6 @@ create table usr
 );
 alter table if exists usr
     drop constraint if exists USR_UNIQUE_NAME;
-alter table if exists usr
-    add constraint UK_mkjheedol1oe4evwyjw7ixpot unique (name);
 alter table if exists find_sex
     add constraint FKtmarx5m5pava4m1f7594ubht7 foreign key (user_id) references usr;
 alter table if exists user_relationships
