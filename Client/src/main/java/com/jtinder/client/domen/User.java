@@ -13,6 +13,7 @@ public class User {
     private Profile profile;
     private List<Profile> profileList;
     private int Page;
+    private String token;
 
     public User(Long userId) {
         this.profile = new Profile();

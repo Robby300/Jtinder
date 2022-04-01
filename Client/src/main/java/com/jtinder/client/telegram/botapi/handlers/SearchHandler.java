@@ -46,7 +46,9 @@ public class SearchHandler implements InputMessageHandler {
         SendMessage replyToUser = new SendMessage();
 
         if (botState.equals(BotState.SEARCH)) {
-            List<Profile> users = serverService.getUsersProfile();
+            List<Profile> users = serverService.getValidProfilesToUser(user);
+            log.info("Пришел список подходящих анкет с размером {}", users.size());
+            log.info("Список: {}", users);
             user.setProfileList(users);
             user.setPage(0);
             replyToUser.setChatId(String.valueOf(chatId));

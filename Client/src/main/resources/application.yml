@@ -8,3 +8,6 @@ server:
   port: "5000"
 
 localeTag: ru-RU
+
+upload:
+  path: "E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg"

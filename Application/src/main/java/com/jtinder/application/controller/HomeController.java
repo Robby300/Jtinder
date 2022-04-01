@@ -3,6 +3,7 @@ package com.jtinder.application.controller;
 import com.jtinder.application.domen.User;
 import com.jtinder.application.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -14,7 +15,7 @@ public class HomeController {
 		this.userService = userService;
 	}
 
-	@GetMapping({ "/home" })
+	@PostMapping( "/home" )
 	public User home() {
 		return userService.getCurrentUser();
 	}

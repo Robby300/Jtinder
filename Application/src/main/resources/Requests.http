@@ -15,8 +15,8 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-  "username" : "11",
-  "password" : "password"
+  "username" : "645810530",
+  "password" : "123"
 }
 
 
@@ -39,7 +39,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODgzMjg2N
 ### После лгина вставить токен после слова "Bearer" и посмотреть на себя
 GET http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODgyMzk4MCwiaWF0IjoxNjQ4ODA1OTgwfQ.v6-xUBa7BMqXVXhqryij7gu85GwKgXIUvnZdfQh46sa5ybv0cyPq1ZlsDIEgA_t_AcbE1CfsLrwYaoFKeUzspg
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2NDU4MTA1MzAiLCJleHAiOjE2NDg4NjEwNTMsImlhdCI6MTY0ODg0MzA1M30.bmM9tZkZBWjz-WKs-r9TBKBouGCik6s8-_58apaFxcA23nGU40Sh4XqhV4G-cWI-cHDK0TEhNvyvNkvqUIOGCw
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть кого мы лайкнули
 GET http://localhost:8080/users/welike

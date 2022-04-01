@@ -1,5 +1,6 @@
 package com.jtinder.client.telegram.botapi.handlers;
 
+import com.jtinder.client.domen.AuthenticUser;
 import com.jtinder.client.domen.Sex;
 import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
@@ -109,8 +110,8 @@ public class FillingProfileHandler implements InputMessageHandler {
             replyToUser.enableMarkdown(true);
             replyToUser.setReplyMarkup(keyboardService.getMainMenuKeyboard());
             serverService.registerUser(user.getProfile());
+            user.setToken(serverService.loginUser(new AuthenticUser(user.getProfile().getUserId(), user.getProfile().getPassword())));
         }
-
         return replyToUser;
     }
 }
