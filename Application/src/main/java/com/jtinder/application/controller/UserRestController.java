@@ -8,6 +8,7 @@ import com.jtinder.application.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -107,6 +108,10 @@ public class UserRestController {
 
     @GetMapping("/image/{id}")
     public void getImage(@PathVariable(value = "id") User user) {
-
+        try {
+            imageService.getFile(user);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

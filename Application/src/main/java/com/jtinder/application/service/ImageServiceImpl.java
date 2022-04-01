@@ -26,15 +26,15 @@ public class ImageServiceImpl implements ImageService {
         File file = new File(uploadPath);
         BufferedImage image = ImageIO.read(file);
         Font header = new Font("Old Standard TT", Font.BOLD, 44);
-        Font body = new Font("Old Standard TT", Font.BOLD, 30);
+        Font body = new Font("Old Standard TT", Font.PLAIN, 30);
         Graphics g = image.getGraphics();
         g.setColor(Color.BLACK);
 
         g.setFont(header);
-        g.drawString(translator.translate(user.getName()), 50, 50);
+        g.drawString(translator.translate(user.getName()), 60, 150);
 
         g.setFont(body);
-        g.drawString(translator.translate(user.getName()), 50, 88);
+        g.drawString(translator.translate(user.getDescription()), 60, 183);
 
         ImageIO.write(image, "jpg", new File(file.getParentFile(), "result_image.jpg"));
     }

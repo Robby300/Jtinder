@@ -28,10 +28,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Нет такого!"));
     }
 
-    @Override
+    /*@Override
     public String getCurrentUserName() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
+    }*/
+
+    @Override
+    public User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return (User) loadUserByUsername(auth.getName());
     }
 
     @Override
@@ -53,12 +59,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> searchUsers() {
         User currentUser = getCurrentUser();
-        Set<User> excludedUsers = currentUser.getWeLike();
+        /*Set<User> excludedUsers = currentUser.getWeLike();
         excludedUsers.add(currentUser);
         List<Long> collect = excludedUsers.stream()
                 .map(User::getUserId)
                 .collect(Collectors.toList());
-        return userRepository.findUsersBySexEqualsAndUserIdIsNotIn(Sex.FEMALE, collect); // заглушка
+        return userRepository.findUsersBySexEqualsAndUserIdIsNotIn(Sex.FEMALE, collect); // заглушка*/
+        return userRepository.findAvailableUsersForCurrent(currentUser.getUserId(), currentUser.getSex().toString());
     }
 
     @Override
@@ -66,10 +73,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).isPresent();
     }
 
-    @Override
-    public User getCurrentUser() {
-        return (User) loadUserByUsername(getCurrentUserName());
-    }
 
     @Override
     public User save(User user) {

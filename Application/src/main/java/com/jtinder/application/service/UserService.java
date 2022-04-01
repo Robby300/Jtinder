@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService extends  UserDetailsService {
+
     User getCurrentUser();
     User save(User user);
     List<User> findAll();
@@ -15,7 +16,7 @@ public interface UserService extends  UserDetailsService {
     void unlike(User user);
     Set<User> findAllWeLike();
     Set<User> findAllUsLike();
-    String getCurrentUserName();
+    //String getCurrentUserName();
     boolean isReciprocity(User user);
     List<User> findAllMale();
     List<User> findAllFemale();
