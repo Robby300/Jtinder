@@ -10,7 +10,7 @@ public class PrerevolutionaryTranslator {
 
     private static final Set<Character> VOWELS_LOWER = Set.of('а', 'е', 'ё', 'и', 'й', 'о', 'у', 'э', 'ю', 'я');
 
-    private static final Set<Character> PUNCTUATIONS = Set.of('!', '?', ',', '.', '\"', '\'', ')', '<', '>');
+    private static final String ALPHABET = "АаБбВвГгДдЕеЁёЖжЗзИиЙйКкЛлМмНнОоПпРрСсТтУуФфЦцЧчШшЩщЪъЫыЬьЭэЮюЯя";
 
     private static final Set<String> FITA_WORDS = Set.of("Агафья", "Анфим", "Афанасий", "Афина", "Варфоломей", "Голиаф",
             "Евфимий", "Марфа", "Матфей", "Мефодий", "Нафанаил", "Парфенон", "Пифагор", "Руфь", "Саваоф", "Тимофей",
@@ -83,11 +83,14 @@ public class PrerevolutionaryTranslator {
 
     private String addYer(String word) {
         int lastLetterIndex = word.length() - 1;
-        if (PUNCTUATIONS.contains(word.charAt(lastLetterIndex))) {
+        if (ALPHABET.indexOf(word.charAt(lastLetterIndex)) == -1 && lastLetterIndex != 0) {
             lastLetterIndex--;
         }
-        if (!VOWELS_LOWER.contains(Character.toLowerCase(word.charAt(lastLetterIndex))) && word.charAt(lastLetterIndex) != 'ь') {
+        if (!VOWELS_LOWER.contains(Character.toLowerCase(word.charAt(lastLetterIndex)))
+                && word.charAt(lastLetterIndex) != 'ь'
+                && ALPHABET.indexOf(word.charAt(lastLetterIndex)) != -1) {
             return word.substring(0, lastLetterIndex + 1) + "ъ" + word.substring(lastLetterIndex + 1);
+
         }
         return word;
     }

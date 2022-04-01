@@ -32,9 +32,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
 
 ### Текущий подьзователь ставит лайк Арсинье
-PUT http://localhost:8080/users/like/2
+PUT http://localhost:8080/users/unlike/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODgzMjg2NiwiaWF0IjoxNjQ4ODE0ODY2fQ.T7RtQwckN2kFe7wCvTvOBX4yiZXooH4iHnL9ltQ10iL-Q81TarZ-gYeFSmr6o7TNLClpHhEesmTMMp16Zsc_5A
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть на себя
 GET http://localhost:8080/home
@@ -85,6 +85,6 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
 
 ###
-GET http://localhost:8080/users/image/1
+GET http://localhost:8080/users/image/8
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODgzMTAyOCwiaWF0IjoxNjQ4ODEzMDI4fQ.4eCExswuDGmKfn9yYH4QbqUYdxXgTy1XtQIpSvQmgw7ywQI5we750RhE2XzxUOZLeJG_G1pUhWCCX1xwoM-M0A

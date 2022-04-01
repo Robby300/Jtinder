@@ -12,15 +12,13 @@ import java.io.IOException;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-    @Value("${upload.path}")
+    @Value("${upload.path}")    // todo перепроверить работу на доккере
     private String uploadPath;
-
     private final PrerevolutionaryTranslator translator;
 
     public ImageServiceImpl(PrerevolutionaryTranslator translator) {
         this.translator = translator;
     }
-
 
     public void getFile(User user) throws IOException {
         File file = new File(uploadPath);
@@ -30,12 +28,31 @@ public class ImageServiceImpl implements ImageService {
         Graphics g = image.getGraphics();
         g.setColor(Color.BLACK);
 
+/*        g.setFont(body);
+        g.drawString(translator.translate(userService.findAllWeLike().contains(user) ? "Любо": "Нэ любо"), 60, 50);*/
+
         g.setFont(header);
-        g.drawString(translator.translate(user.getName()), 60, 150);
+        g.drawString(translator.translate(user.getName()), 60, 130);
 
         g.setFont(body);
-        g.drawString(translator.translate(user.getDescription()), 60, 183);
+        FontMetrics fm = g.getFontMetrics(body);
+        int lineHeight = fm.getHeight();
+        String textToDraw = translator.translate(user.getDescription());
+        String[] arr = textToDraw.split(" ");
+        int nIndex = 0;
+        int startX = 60;
+        int startY = 190;
+        while (nIndex < arr.length) {
+            String line = arr[nIndex++];
+            while ((nIndex < arr.length) && (fm.stringWidth(line + " " + arr[nIndex]) < 447)) {
+                line = line + " " + arr[nIndex];
+                nIndex++;
+            }
+            g.drawString(line, startX, startY);
+            startY = startY + lineHeight;
+        }
 
         ImageIO.write(image, "jpg", new File(file.getParentFile(), "result_image.jpg"));
     }
+
 }
