@@ -21,6 +21,7 @@ public class ServerService {
     private final AuthorizationService authorizationService;
 
     static final String URL_USERS = "http://localhost:8080/users/search";
+    static final String URL_LIKE = "http://localhost:8080/users/like/%d";
     static final String URL_REGISTRATION = "http://localhost:8080/registration";
     static final String URL_LOGIN = "http://localhost:8080/login";
     static final String URL_HOME = "http://localhost:8080/home";
@@ -52,5 +53,9 @@ public class ServerService {
 
     public Profile getLoginUserProfile(User user) {
         return restTemplate.postForObject(URL_HOME, authorizationService.getAuthorizationHeader(user), Profile.class);
+    }
+
+    public void likeProfile(Long profileId, User user) {
+        restTemplate.put(String.format(URL_LIKE, profileId),authorizationService.getAuthorizationHeader(user), profileId, Long.class);
     }
 }

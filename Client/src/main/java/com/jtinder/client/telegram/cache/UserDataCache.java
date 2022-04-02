@@ -12,6 +12,7 @@ public class UserDataCache implements DataCache {
     private final Map<Long, BotState> usersBotStates = new HashMap<>();
     private final Map<Long, User> usersProfileData = new HashMap<>();
 
+
     @Override
     public void setUsersCurrentBotState(long userId, BotState botState) {
         usersBotStates.put(userId, botState);

@@ -11,9 +11,8 @@ import java.util.Set;
 @ToString
 public class User {
     private Profile profile;
-    private List<Profile> profileList;
-    private int Page;
     private String token;
+    private ScrollableListWrapper scrollableListWrapper;
 
     public User(Long userId) {
         this.profile = new Profile();

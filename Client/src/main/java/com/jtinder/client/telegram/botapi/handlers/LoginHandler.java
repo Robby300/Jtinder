@@ -43,7 +43,7 @@ public class LoginHandler implements InputMessageHandler {
         replyToUser.setChatId(String.valueOf(chatId));
         user.setToken(serverService.loginUser(new AuthenticUser(userId, message.getText())));
         user.setProfile(serverService.getLoginUserProfile(user));
-        replyToUser.setText("Добро пожаловать, уебок " + user.getProfile().getName());
+        replyToUser.setText("Вы вошли как " + user.getProfile().getName());
         return replyToUser;
     }
 

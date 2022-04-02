@@ -23,8 +23,8 @@ public class TelegramFacade {
         this.userDataCache = userDataCache;
     }
 
-    public BotApiMethod<?> handleUpdate(Update update) {
-        BotApiMethod<?> replyMessage = null;
+    public PartialBotApiMethod<?> handleUpdate(Update update) {
+        PartialBotApiMethod<?> replyMessage = null;
 
         if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
@@ -43,11 +43,11 @@ public class TelegramFacade {
         return replyMessage;
     }
 
-    private BotApiMethod<?> handleInputMessage(Message message) {
+    private PartialBotApiMethod<?> handleInputMessage(Message message) {
         String inputMsg = message.getText();
         long chatId = message.getChatId();
         BotState botState;
-        BotApiMethod<?> replyMessage;
+        PartialBotApiMethod<?> replyMessage;
 
         switch (inputMsg) {
             case "/start":
@@ -75,7 +75,7 @@ public class TelegramFacade {
         return replyMessage;
     }
 
-    private BotApiMethod<?> handleInputCallBackQuery(CallbackQuery callbackQuery) {
+    private PartialBotApiMethod<?> handleInputCallBackQuery(CallbackQuery callbackQuery) {
 
         return botStateContext.processInputCallBack(userDataCache.getUsersCurrentBotState(callbackQuery.getFrom().getId()), callbackQuery);
     }

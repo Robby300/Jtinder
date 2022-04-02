@@ -3,6 +3,7 @@ package com.jtinder.client.telegram.botapi;
 import com.jtinder.client.telegram.botapi.handlers.InputMessageHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -21,7 +22,7 @@ public class BotStateContext {
         messageHandlers.forEach(handler -> this.messageHandlers.put(handler.getHandlerName(), handler));
     }
 
-    public BotApiMethod<?> processInputMessage(BotState currentState, Message message) {
+    public PartialBotApiMethod<?> processInputMessage(BotState currentState, Message message) {
         InputMessageHandler currentMessageHandler = findMessageHandler(currentState);
         return currentMessageHandler.handle(message);
     }
@@ -49,8 +50,7 @@ public class BotStateContext {
     }
 
 
-
-    public BotApiMethod<?> processInputCallBack(BotState currentState, CallbackQuery callbackQuery) {
+    public PartialBotApiMethod<?> processInputCallBack(BotState currentState, CallbackQuery callbackQuery) {
         InputMessageHandler currentMessageHandler = findMessageHandler(currentState);
         return currentMessageHandler.handle(callbackQuery);
     }
