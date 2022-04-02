@@ -1,27 +1,33 @@
 package com.jtinder.client.telegram.service;
 
+import com.jtinder.client.domen.AuthenticUser;
 import com.jtinder.client.domen.Profile;
+import com.jtinder.client.domen.Token;
+import com.jtinder.client.domen.User;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class ServerService {
-    RestTemplate restTemplate = new RestTemplate();
+    private final RestTemplate restTemplate;
+    private final AuthorizationService authorizationService;
 
-    static final String URL_USERS = "http://localhost:8080/users";
+    static final String URL_USERS = "http://localhost:8080/users/search";
+    static final String URL_REGISTRATION = "http://localhost:8080/registration";
+    static final String URL_LOGIN = "http://localhost:8080/login";
+    static final String URL_HOME = "http://localhost:8080/home";
     static final String URL_IS_REGISTERED = "http://localhost:8080/users/exists/%d";
 
-    public List<Profile> getUsersProfile() {
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers);
-        headers.set("Authorization", "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBbGV4ZXkiLCJleHAiOjE2NDg2NTI5MTEsImlhdCI6MTY0ODYzNDkxMX0.2sQ2j6IPpQvQtfB_kf_zTpVCPaKK3tp4UdHudwWeEo7TUMNrU7tDOeuXRHzZhVznwlpL9t4IzdyZaPx9GsgQxQ");
-        ResponseEntity<Profile[]> usersResponse = restTemplate.exchange(URL_USERS, HttpMethod.GET, requestEntity, Profile[].class);
+    public List<Profile> getValidProfilesToUser(User user) {
+        ResponseEntity<Profile[]> usersResponse = restTemplate.exchange(URL_USERS, HttpMethod.GET, authorizationService.getAuthorizationHeader(user), Profile[].class);
         return List.of(usersResponse.getBody());
     }
 
@@ -30,7 +36,21 @@ public class ServerService {
     }
 
     public void registerUser(Profile profile) {
-        restTemplate.postForObject(URL_USERS, profile, Profile.class);
+        restTemplate.postForObject(URL_REGISTRATION, profile, Profile.class);
     }
 
+    public String loginUser(AuthenticUser authenticUser) {
+        HttpEntity<AuthenticUser> entity = new HttpEntity<>(authenticUser);
+        try {
+            Token token = restTemplate.postForObject(URL_LOGIN, entity, Token.class);
+            return token.getToken();
+        } catch (HttpClientErrorException e) {
+            return "";
+        }
+
+    }
+
+    public Profile getLoginUserProfile(User user) {
+        return restTemplate.postForObject(URL_HOME, authorizationService.getAuthorizationHeader(user), Profile.class);
+    }
 }

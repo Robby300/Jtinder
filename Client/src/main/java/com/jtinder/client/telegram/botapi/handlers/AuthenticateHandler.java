@@ -60,6 +60,12 @@ public class AuthenticateHandler implements InputMessageHandler {
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askPassword");
         }
 
+        if (message.getText().equals("Внити")) {
+            userDataCache.setUsersCurrentBotState(chatId, BotState.LOGIN);
+            replyToUser = messagesService.getReplyMessage(chatId, "reply.askPassword");
+        }
+
+
         return replyToUser;
     }
 

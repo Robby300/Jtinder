@@ -5,6 +5,7 @@ import com.jtinder.client.telegram.botapi.TelegramFacade;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 
 @Configuration
@@ -27,5 +28,10 @@ public class SpringConfig {
         bot.setBotToken(telegramConfig.getBotToken());
 
         return bot;
+    }
+
+    @Bean
+    public RestTemplate createRestTemplate() {
+        return new RestTemplate();
     }
 }

@@ -4,6 +4,7 @@ import com.jtinder.client.domen.Profile;
 import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.service.ImageService;
 import com.jtinder.client.telegram.service.KeyboardService;
 import com.jtinder.client.telegram.service.ReplyMessagesService;
 import com.jtinder.client.telegram.service.ServerService;
@@ -11,10 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.io.IOException;
 import java.util.List;
 
 @Component
@@ -24,13 +29,15 @@ public class SearchHandler implements InputMessageHandler {
     private final ReplyMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
+    private final ImageService imageService;
 
     public SearchHandler(UserDataCache userDataCache,
-                         ReplyMessagesService messagesService, KeyboardService keyboardService, ServerService serverService) {
+                         ReplyMessagesService messagesService, KeyboardService keyboardService, ServerService serverService, ImageService imageService) {
         this.userDataCache = userDataCache;
         this.messagesService = messagesService;
         this.keyboardService = keyboardService;
         this.serverService = serverService;
+        this.imageService = imageService;
     }
 
     @Override
@@ -44,13 +51,20 @@ public class SearchHandler implements InputMessageHandler {
         User user = userDataCache.getUserProfileData(userId);
         BotState botState = userDataCache.getUsersCurrentBotState(userId);
         SendMessage replyToUser = new SendMessage();
+        SendPhoto sendPhoto = new SendPhoto();
 
         if (botState.equals(BotState.SEARCH)) {
-            List<Profile> users = serverService.getUsersProfile();
+            List<Profile> users = serverService.getValidProfilesToUser(user);
+            log.info("Пришел список подходящих анкет с размером {}", users.size());
+            log.info("Список: {}", users);
             user.setProfileList(users);
             user.setPage(0);
             replyToUser.setChatId(String.valueOf(chatId));
-            replyToUser.setText(user.getProfileList().get(user.getPage()).toString());
+            try {
+                sendPhoto.setPhoto(new InputFile(imageService.getFile(user.getProfileList().get(user.getPage()))));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             replyToUser.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
         }
         return replyToUser;
