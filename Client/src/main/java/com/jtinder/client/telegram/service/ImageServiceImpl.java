@@ -32,12 +32,12 @@ public class ImageServiceImpl implements ImageService {
 //        g.drawString(translator.translate(userService.findAllWeLike().contains(profile) ? "Любо": "Нэ любо"), 60, 50);
 
         g.setFont(header);
-        g.drawString(translator.translate(profile.getDescription()), 60, 130);
+        g.drawString(translator.translate(getHeader(profile)), 60, 130);
 
         g.setFont(body);
         FontMetrics fm = g.getFontMetrics(body);
         int lineHeight = fm.getHeight();
-        String textToDraw = translator.translate(profile.getDescription());
+        String textToDraw = translator.translate(getBody(profile));
         String[] arr = textToDraw.split(" ");
         int nIndex = 0;
         int startX = 60;
@@ -54,6 +54,15 @@ public class ImageServiceImpl implements ImageService {
         File file1 = new File(file.getParentFile(), "result_image.jpg");
         ImageIO.write(image, "jpg", file1);
         return file1;
+    }
+
+    private String getHeader(Profile profile) {
+        return profile.getDescription().split("\\s")[0];
+    }
+
+    private String getBody(Profile profile) {
+        int headerLength = profile.getDescription().split("\\s")[0].length();
+        return profile.getDescription().substring(headerLength + 1);
     }
 
 }
