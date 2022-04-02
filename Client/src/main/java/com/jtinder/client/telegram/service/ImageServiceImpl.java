@@ -32,7 +32,7 @@ public class ImageServiceImpl implements ImageService {
 //        g.drawString(translator.translate(userService.findAllWeLike().contains(profile) ? "Любо": "Нэ любо"), 60, 50);
 
         g.setFont(header);
-        g.drawString(translator.translate(profile.getName()), 60, 130);
+        g.drawString(translator.translate(profile.getDescription()), 60, 130);
 
         g.setFont(body);
         FontMetrics fm = g.getFontMetrics(body);

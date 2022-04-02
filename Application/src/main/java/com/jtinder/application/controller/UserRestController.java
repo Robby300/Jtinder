@@ -7,6 +7,7 @@ import com.jtinder.application.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.Set;
 @RequestMapping("users")
 @RestController
 public class UserRestController {
+
     private final UserService userService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserRestController.class);

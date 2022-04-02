@@ -4,13 +4,13 @@ import com.jtinder.application.domen.User;
 import com.jtinder.application.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -66,7 +66,9 @@ public class UserServiceImpl implements UserService {
     public List<User> searchUsers() {
         User currentUser = getCurrentUser();
         logger.info("Достыпные пользователи для текущего пользователя {}", currentUser.getName());
-        return userRepository.findAvailableUsersForCurrent(currentUser.getUserId(), currentUser.getSex().toString());
+        Long userId = currentUser.getUserId();
+        String sex = currentUser.getSex().toString();
+        return userRepository.findAvailableUsersForCurrent(userId, sex);
     }
 
     @Override

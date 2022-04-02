@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.jtinder.application.domen.User;
 import com.jtinder.application.domen.Views;
 import com.jtinder.application.service.UserService;
-import com.jtinder.application.service.UserServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.PostMapping;
