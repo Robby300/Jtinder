@@ -7,13 +7,14 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
     List<User> findAll();
     List<User> findUsersBySexIs(Sex sex);
     User findUsersByName(String name);
-    List<User> findUsersBySexEqualsAndUserIdIsNotIn(Sex findSex, List<Long> userIds);
+    //List<User> findUsersBySexEqualsAndUserIdIsNotIn(Sex findSex, List<Long> userIds);
 
     @Query(value = "select * from usr\n" +
             "where sex in (select find_sex from find_sex where user_id = :userId)\n" +

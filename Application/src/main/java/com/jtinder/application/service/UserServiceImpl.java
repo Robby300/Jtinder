@@ -1,21 +1,25 @@
 package com.jtinder.application.service;
 
-import com.jtinder.application.domen.Sex;
 import com.jtinder.application.domen.User;
 import com.jtinder.application.repository.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 
 @Service
 public class UserServiceImpl implements UserService {
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+
     private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
@@ -37,16 +41,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("Вызов текущего пользователя.");
         return (User) loadUserByUsername(auth.getName());
     }
 
     @Override
     public boolean isReciprocity(User user) {
+        logger.info("Проверка взаимности.");
         return getCurrentUser().getWeLike().contains(user)
                 && getCurrentUser().getUsLike().contains(user);
     }
 
-    @Override
+    /*@Override
     public List<User> findAllMale() {
         return userRepository.findUsersBySexIs(Sex.MALE);
     }
@@ -54,22 +60,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllFemale() {
         return userRepository.findUsersBySexIs(Sex.FEMALE);
-    }
+    }*/
 
     @Override
     public List<User> searchUsers() {
         User currentUser = getCurrentUser();
-        /*Set<User> excludedUsers = currentUser.getWeLike();
-        excludedUsers.add(currentUser);
-        List<Long> collect = excludedUsers.stream()
-                .map(User::getUserId)
-                .collect(Collectors.toList());
-        return userRepository.findUsersBySexEqualsAndUserIdIsNotIn(Sex.FEMALE, collect); // заглушка*/
+        logger.info("Достыпные пользователи для текущего пользователя {}", currentUser.getName());
         return userRepository.findAvailableUsersForCurrent(currentUser.getUserId(), currentUser.getSex().toString());
     }
 
     @Override
     public boolean isExists(Long userId) {
+        logger.info("Проверка, есть ли пользоваетль {}", userId);
         return userRepository.findById(userId).isPresent();
     }
 
@@ -79,10 +81,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    @Override
+/*    @Override
     public List<User> findAll() {
         return userRepository.findAll();
-    }
+    }*/
 
     @Override
     public void deleteUser(User user) {
@@ -93,6 +95,7 @@ public class UserServiceImpl implements UserService {
     public void like(User user) {
         User currentUser = getCurrentUser();
         currentUser.getWeLike().add(user);
+        logger.info("Пользователь {} ставит лайк пользователю {}", currentUser.getName(), user.getName());
         userRepository.save(currentUser);
     }
 
@@ -100,16 +103,28 @@ public class UserServiceImpl implements UserService {
     public void unlike(User user) {
         User currentUser = getCurrentUser();
         currentUser.getWeLike().remove(user);
+        logger.info("Пользователь {} отбирает лайк у пользователю {}", currentUser.getName(), user.getName());
         userRepository.save(currentUser);
     }
 
     @Override
     public Set<User> findAllWeLike() {
+        logger.info("Список кому текущий пользователь поставил лайк.");
         return getCurrentUser().getWeLike();
     }
 
     @Override
     public Set<User> findAllUsLike() {
+        logger.info("Кто постаил лайк текущему пользователю.");
         return getCurrentUser().getUsLike();
+    }
+
+    public Set<User> findAllReciprocity() {
+        logger.info("список взаимных лайков");
+        User currentUser = getCurrentUser();
+        Set<User> reciprocity = new HashSet<>(currentUser.getWeLike());
+        Set<User> usLike = currentUser.getUsLike();
+        reciprocity.retainAll(usLike);
+        return reciprocity;
     }
 }

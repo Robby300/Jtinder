@@ -55,5 +55,4 @@ public class LigaTinderBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
 
-    }
 }

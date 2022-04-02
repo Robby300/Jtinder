@@ -10,7 +10,7 @@ public interface UserService extends  UserDetailsService {
 
     User getCurrentUser();
     User save(User user);
-    List<User> findAll();
+    //List<User> findAll();
     void deleteUser(User user);
     void like(User user);
     void unlike(User user);
@@ -18,10 +18,12 @@ public interface UserService extends  UserDetailsService {
     Set<User> findAllUsLike();
     //String getCurrentUserName();
     boolean isReciprocity(User user);
-    List<User> findAllMale();
-    List<User> findAllFemale();
+    //List<User> findAllMale();
+    //List<User> findAllFemale();
 
     List<User> searchUsers();
 
     boolean isExists(Long userId);
+
+    Set<User> findAllReciprocity();
 }

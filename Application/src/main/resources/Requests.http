@@ -15,26 +15,26 @@ POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-  "username" : "645810530",
-  "password" : "123"
+  "username" : "11",
+  "password" : "password"
 }
 
 
 ### После логина вставить токен после слова "Bearer" и получить список пользователей
 GET http://localhost:8080/users
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkwNTg2MiwiaWF0IjoxNjQ4ODg3ODYyfQ.P6fco2sqpN--koZiZw5Di3Ok83YMITrPlywwEB9ThmsBm4MxpMVN1zJYZGBDKxTgQnpZtOB6KOx8o5pJwkdbVA
 
 
 ### После лгина вставить токен после слова "Bearer" и получить привет с именем текущего пользователя
-GET http://localhost:8080/hello
+POST http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkwNTg2MiwiaWF0IjoxNjQ4ODg3ODYyfQ.P6fco2sqpN--koZiZw5Di3Ok83YMITrPlywwEB9ThmsBm4MxpMVN1zJYZGBDKxTgQnpZtOB6KOx8o5pJwkdbVA
 
 ### Текущий подьзователь ставит лайк Арсинье
-PUT http://localhost:8080/users/unlike/2
+PUT http://localhost:8080/users/unlike/10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODgzMjg2NiwiaWF0IjoxNjQ4ODE0ODY2fQ.T7RtQwckN2kFe7wCvTvOBX4yiZXooH4iHnL9ltQ10iL-Q81TarZ-gYeFSmr6o7TNLClpHhEesmTMMp16Zsc_5A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkwNTg2MiwiaWF0IjoxNjQ4ODg3ODYyfQ.P6fco2sqpN--koZiZw5Di3Ok83YMITrPlywwEB9ThmsBm4MxpMVN1zJYZGBDKxTgQnpZtOB6KOx8o5pJwkdbVA
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть на себя
 GET http://localhost:8080/home
@@ -55,8 +55,6 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxN
 GET http://localhost:8080/users/male
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
-
-
 
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть сударей

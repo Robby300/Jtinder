@@ -15,6 +15,9 @@ import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
+
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -50,12 +53,15 @@ public class SearchHandler implements InputMessageHandler {
         long chatId = message.getChatId();
         User user = userDataCache.getUserProfileData(userId);
         BotState botState = userDataCache.getUsersCurrentBotState(userId);
+
         SendMessage replyToUser;
         SendPhoto sendPhoto = new SendPhoto();
+
         if (botState.equals(BotState.SEARCH)) {
             List<Profile> users = serverService.getValidProfilesToUser(user);
             log.info("Пришел список подходящих анкет с размером {}", users.size());
             log.info("Список: {}", users);
+
             if (users.size() == 0) {
                 replyToUser = messagesService.getReplyMessage(chatId, "reply.noProfile");
                 return replyToUser;
@@ -69,6 +75,7 @@ public class SearchHandler implements InputMessageHandler {
                 e.printStackTrace();
             }
             sendPhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+          
         }
         return sendPhoto;
     }
