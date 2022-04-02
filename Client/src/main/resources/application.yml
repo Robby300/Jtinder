@@ -10,4 +10,4 @@ server:
 localeTag: ru-RU
 
 upload:
-  path: "E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg"
+  path: E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg

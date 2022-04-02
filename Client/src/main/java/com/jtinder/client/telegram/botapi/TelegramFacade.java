@@ -4,6 +4,7 @@ import com.jtinder.client.telegram.cache.UserDataCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -22,8 +23,8 @@ public class TelegramFacade {
         this.userDataCache = userDataCache;
     }
 
-    public BotApiMethod<?> handleUpdate(Update update) {
-        BotApiMethod<?> replyMessage = null;
+    public PartialBotApiMethod<?> handleUpdate(Update update) {
+        PartialBotApiMethod<?> replyMessage = null;
 
         if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
@@ -42,11 +43,11 @@ public class TelegramFacade {
         return replyMessage;
     }
 
-    private BotApiMethod<?> handleInputMessage(Message message) {
+    private PartialBotApiMethod<?> handleInputMessage(Message message) {
         String inputMsg = message.getText();
         long chatId = message.getChatId();
         BotState botState;
-        BotApiMethod<?> replyMessage;
+        PartialBotApiMethod<?> replyMessage;
 
         switch (inputMsg) {
             case "/start":
@@ -74,7 +75,7 @@ public class TelegramFacade {
         return replyMessage;
     }
 
-    private BotApiMethod<?> handleInputCallBackQuery(CallbackQuery callbackQuery) {
+    private PartialBotApiMethod<?> handleInputCallBackQuery(CallbackQuery callbackQuery) {
 
         return botStateContext.processInputCallBack(userDataCache.getUsersCurrentBotState(callbackQuery.getFrom().getId()), callbackQuery);
     }
