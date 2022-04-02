@@ -54,8 +54,23 @@ public class UserRestController {
     }
 
     @PostMapping()
+    @JsonView(Views.Anketa.class)
     public User saveUser(@RequestBody User user) {
         return userService.save(user);
+    }
+
+    @PutMapping("/unlike/{user}")
+    @JsonView(Views.Anketa.class)
+    public User setUnLike(@PathVariable User user)  {
+        userService.unlike(user);
+        return user;
+    }
+
+    @PutMapping("/like/{user}")
+    @JsonView(Views.Anketa.class)
+    public User setLike(@PathVariable User user) {
+        userService.like(user);
+        return user;
     }
 
     @DeleteMapping("/{id}")
@@ -63,19 +78,7 @@ public class UserRestController {
         userService.deleteUser(user);
     }
 
-    // Временные костыльные методы:
-
-    @PutMapping("/like/{user}")
-    public User setLike(@PathVariable User user) {
-        userService.like(user);
-        return user;
-    }
-
-    @PutMapping("/unlike/{user}")
-    public User setUnLike(@PathVariable User user)  {
-        userService.unlike(user);
-        return user;
-    }
+    // Временные методы:
 
     @GetMapping("/reciprocity/{id}")
     public boolean isReciprocity(@PathVariable(value = "id") User user) {

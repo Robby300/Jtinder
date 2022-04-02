@@ -1,3 +1,7 @@
+create schema if not exists jtinder_db;
+
+create sequence if not exists hibernate_sequence;
+
 create table find_sex
 (
     user_id  int8 not null,
