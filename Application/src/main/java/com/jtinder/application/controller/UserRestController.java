@@ -114,6 +114,20 @@ public class UserRestController {
     }
 
     // Временные методы
+    @GetMapping("/imgdescr/{id}")
+    public String getImageDescription(@PathVariable(value = "id") User user) {
+        String resultString = user.getSex().getName() + ", " + user.getName();
+        User currentUser = userService.getCurrentUser();
+        if (userService.isReciprocity(user)) {
+            return resultString + ", Взаимность";
+        } else if (currentUser.getWeLike().contains(user)) {
+            return resultString + ", Любим вами";
+        }  else if (currentUser.getUsLike().contains(user)) {
+            return resultString + ", Вы любимы";
+        }
+        return resultString + ".";
+    }
+
     /*@DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") User user) {
         logger.info("Обработка DELETE запроса /{} - удалить пользователя.", user.getUserId());
