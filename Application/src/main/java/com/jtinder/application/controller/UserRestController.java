@@ -7,7 +7,6 @@ import com.jtinder.application.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
@@ -28,6 +27,7 @@ public class UserRestController {
     }
 
     @GetMapping("/{id}")
+    @JsonView(Views.Anketa.class)
     public User findById(@PathVariable(value = "id") User user) {
         logger.info("Обработка запроса /{} и получение пользователя по id.", user.getUserId());
         return user;
@@ -92,7 +92,7 @@ public class UserRestController {
 
     @PutMapping("/unlike/{user}")
     @JsonView(Views.Anketa.class)
-    public User setUnLike(@PathVariable User user)  {
+    public User setUnLike(@PathVariable User user) {
         userService.unlike(user);
         logger.info("Обработка PUT запроса /unlike/{} - убрать лайк у пользователю.", user.getUserId());
         return user;
@@ -113,13 +113,13 @@ public class UserRestController {
         return userService.save(user);
     }
 
-    @DeleteMapping("/{id}")
+    // Временные методы
+    /*@DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") User user) {
         logger.info("Обработка DELETE запроса /{} - удалить пользователя.", user.getUserId());
         userService.deleteUser(user);
     }
-    // Временные методы:
-    /*@GetMapping()
+    @GetMapping()
     @JsonView(Views.Anketa.class)
     public List<User> findAll() {
         return userService.findAll();

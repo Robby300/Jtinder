@@ -36,23 +36,22 @@ public class LigaTinderBot extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         PartialBotApiMethod<?> botApiMethod = telegramFacade.handleUpdate(update);
-        if(botApiMethod instanceof BotApiMethod<?>) {
+        if (botApiMethod instanceof BotApiMethod<?>) {
             try {
                 execute((BotApiMethod<?>) botApiMethod);
-            }catch (TelegramApiException e) {
+            } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
-        }
-        else if (botApiMethod instanceof SendPhoto) {
+        } else if (botApiMethod instanceof SendPhoto) {
             try {
                 execute((SendPhoto) botApiMethod);
-            }catch (TelegramApiException e) {
+            } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
-        }else try {
+        } else try {
             execute((EditMessageMedia) botApiMethod);
-        }catch (TelegramApiException e) {
+        } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-
+    }
 }

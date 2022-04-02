@@ -1,6 +1,5 @@
 
 ### Регистрация, после выведет пользователя с зашифрованным паролем,
-### потом уберу демонстрацию тк показывать зашифрованный пароль не гоже
 POST http://localhost:8080/registration
 Content-Type: application/json
 
@@ -19,63 +18,40 @@ Content-Type: application/json
   "password" : "password"
 }
 
-
-### После логина вставить токен после слова "Bearer" и получить список пользователей
-GET http://localhost:8080/users
-Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkwNTg2MiwiaWF0IjoxNjQ4ODg3ODYyfQ.P6fco2sqpN--koZiZw5Di3Ok83YMITrPlywwEB9ThmsBm4MxpMVN1zJYZGBDKxTgQnpZtOB6KOx8o5pJwkdbVA
-
-
 ### После лгина вставить токен после слова "Bearer" и получить привет с именем текущего пользователя
 POST http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyMTY0OSwiaWF0IjoxNjQ4OTAzNjQ5fQ.iFUlWoGSRqHIdCDUuKoii2XvZ6Rvnd7Zt_bDd1bV5mxZkMapvnG2cEMw9IQYzQEKB-pDTQlzDdIWnvwnhRSHfA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
 
 ### Текущий подьзователь ставит лайк Арсинье
-PUT http://localhost:8080/users/unlike/10
+PUT http://localhost:8080/users/like/10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkwNTg2MiwiaWF0IjoxNjQ4ODg3ODYyfQ.P6fco2sqpN--koZiZw5Di3Ok83YMITrPlywwEB9ThmsBm4MxpMVN1zJYZGBDKxTgQnpZtOB6KOx8o5pJwkdbVA
-
-### После лгина вставить токен после слова "Bearer" и посмотреть на себя
-GET http://localhost:8080/home
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI2NDU4MTA1MzAiLCJleHAiOjE2NDg4NjEwNTMsImlhdCI6MTY0ODg0MzA1M30.bmM9tZkZBWjz-WKs-r9TBKBouGCik6s8-_58apaFxcA23nGU40Sh4XqhV4G-cWI-cHDK0TEhNvyvNkvqUIOGCw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть кого мы лайкнули
 GET http://localhost:8080/users/welike
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyMTY0OSwiaWF0IjoxNjQ4OTAzNjQ5fQ.iFUlWoGSRqHIdCDUuKoii2XvZ6Rvnd7Zt_bDd1bV5mxZkMapvnG2cEMw9IQYzQEKB-pDTQlzDdIWnvwnhRSHfA
-
-### После лгина вставить токен после слова "Bearer" и посмотреть cударынь
-GET http://localhost:8080/users/female
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
-
-### После лгина вставить токен после слова "Bearer" и посмотреть сударей
-GET http://localhost:8080/users/male
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
-
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть сударей
 GET http://localhost:8080/users/search
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyMjI5OCwiaWF0IjoxNjQ4OTA0Mjk4fQ.fSEGcSWWcyvDn3XCzG-TYxj6Lj5nuL1q-pvIrJdXtzsaqcWC8DLI_8ODDFhMbkRFBdA5Dfwg_pC8wZCj40_tYg
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
 
 ### true
 GET http://localhost:8080/users/reciprocity/2
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
 
 ### false
 GET http://localhost:8080/users/reciprocity/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
 
 ### true
 GET http://localhost:8080/users/exists/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
 
 ### false
 GET http://localhost:8080/users/exists/99
@@ -83,17 +59,11 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYXZhIiwiZXhwIjoxNjQ4ODIxNDYzLCJpYXQiOjE2NDg4MDM0NjN9.NoPWB9XZ9bQ5Bn5sLp6AL7XdpRLXsY6r2L8GBItVX4bDxU32rW1uLJ3umfsLWfsdB93B0NNOU69mWpoSMCUZ1A
 
 ###
-GET http://localhost:8080/users/image/8
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODgzMTAyOCwiaWF0IjoxNjQ4ODEzMDI4fQ.4eCExswuDGmKfn9yYH4QbqUYdxXgTy1XtQIpSvQmgw7ywQI5we750RhE2XzxUOZLeJG_G1pUhWCCX1xwoM-M0A
-
-
-###eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkxNjY4NywiaWF0IjoxNjQ4ODk4Njg3fQ.C6_YSvTRt_zjcZhU2TcYL72qXPOVu5RRWBQ3ozr-L7sPOmlaQuBQG7ALTUj4FRUU8VTSpMQaUCeVAPQ3PoZsOA
 GET http://localhost:8080/users/reciprocity
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkxNjY4NywiaWF0IjoxNjQ4ODk4Njg3fQ.C6_YSvTRt_zjcZhU2TcYL72qXPOVu5RRWBQ3ozr-L7sPOmlaQuBQG7ALTUj4FRUU8VTSpMQaUCeVAPQ3PoZsOA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
 
 ###
 GET http://localhost:8080/users/likers
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyMzMwNywiaWF0IjoxNjQ4OTA1MzA3fQ.ZOyJzOWVkXXdhVhRawktcMyuwY3Bmx5vIFGrPUaPU8m64BDpDQXCOhuGar4J2ETTvBjx9LnpMicdzSvoJybIbQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyNzU4MSwiaWF0IjoxNjQ4OTA5NTgxfQ.O9sjEsqYqLlpMFRFGuxoVi5AQ9rDnia8MStyD2Y5YD7n6-sQRTxV6sKwbCMXEakoZ3FpUglKjakpuV63RZLOiw
