@@ -3,12 +3,12 @@ package com.jtinder.application.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.jtinder.application.domen.User;
 import com.jtinder.application.domen.Views;
-import com.jtinder.application.service.ImageService;
 import com.jtinder.application.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -17,32 +17,35 @@ import java.util.Set;
 @RestController
 public class UserRestController {
     private final UserService userService;
-    private final ImageService imageService;
 
-    public UserRestController(UserService userService, ImageService imageService) {
+    private static final Logger logger = LoggerFactory.getLogger(UserRestController.class);
+
+    public UserRestController(UserService userService) {
         this.userService = userService;
-        this.imageService = imageService;
     }
 
-    @GetMapping()
+    /*@GetMapping()
     @JsonView(Views.Anketa.class)
     public List<User> findAll() {
         return userService.findAll();
-    }
+    }*/
 
     @GetMapping("/search")
     @JsonView(Views.Anketa.class)
     public List<User> searchUsers() {
+        logger.info("Обработка запроса /search и получение всех доступных анкет.");
         return userService.searchUsers();
     }
 
     @GetMapping("/{id}")
     public User findById(@PathVariable(value = "id") User user) {
+        logger.info("Обработка запроса /{} и получение пользователя по id.", user.getUserId());
         return user;
     }
 
     @GetMapping("/exists/{id}")
     public boolean isUserExistById(@PathVariable(value = "id") Long userId) {
+        logger.info("Обработка запроса /exists/{} и получение пользователя по id.", userId);
         return userService.isExists(userId);
     }
 
@@ -50,12 +53,14 @@ public class UserRestController {
     public User update(@PathVariable("id") User userFromDb,
                        @RequestBody User user) {
         BeanUtils.copyProperties(user, userFromDb, "id");
+        logger.info("Обработка запроса /{} - обновление данных.", user.getUserId());
         return userService.save(userFromDb);
     }
 
     @PostMapping()
     @JsonView(Views.Anketa.class)
     public User saveUser(@RequestBody User user) {
+        logger.info("Обработка POST запроса {} - обновление данных.", user.getUserId());
         return userService.save(user);
     }
 
@@ -63,6 +68,7 @@ public class UserRestController {
     @JsonView(Views.Anketa.class)
     public User setUnLike(@PathVariable User user)  {
         userService.unlike(user);
+        logger.info("Обработка PUT запроса /unlike/{} - убрать лайк у пользователю.", user.getUserId());
         return user;
     }
 
@@ -70,11 +76,13 @@ public class UserRestController {
     @JsonView(Views.Anketa.class)
     public User setLike(@PathVariable User user) {
         userService.like(user);
+        logger.info("Обработка PUT запроса /unlike/{} - постваить лайк пользователю.", user.getUserId());
         return user;
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") User user) {
+        logger.info("Обработка DELETE запроса /{} - удалить пользователя.", user.getUserId());
         userService.deleteUser(user);
     }
 
@@ -82,22 +90,25 @@ public class UserRestController {
 
     @GetMapping("/reciprocity/{id}")
     public boolean isReciprocity(@PathVariable(value = "id") User user) {
+        logger.info("Обработка GET запроса /reciprocity/{} - достигнута ли взаимность.", user.getUserId());
         return userService.isReciprocity(user);
     }
 
     @GetMapping("/welike")
     @JsonView(Views.Anketa.class)
     public Set<User> findAllWeLike() {
+        logger.info("Обработка GET запроса /welike - список кому мы поставили лайк.");
         return userService.findAllWeLike();
     }
 
     @GetMapping("/uslike")
     @JsonView(Views.Anketa.class)
     public Set<User> findAllUsLike() {
+        logger.info("Обработка GET запроса /uslike - список кто нам поставил лайк.");
         return userService.findAllUsLike();
     }
 
-    @GetMapping("/male")
+/*    @GetMapping("/male")
     @JsonView(Views.Anketa.class)
     public List<User> findAllMale() {
         return userService.findAllMale();
@@ -116,5 +127,5 @@ public class UserRestController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

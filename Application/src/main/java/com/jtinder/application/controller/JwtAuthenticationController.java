@@ -4,6 +4,8 @@ import com.jtinder.application.config.JwtTokenUtil;
 import com.jtinder.application.model.JwtRequest;
 import com.jtinder.application.model.JwtResponse;
 import com.jtinder.application.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -20,6 +22,7 @@ import java.util.Objects;
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationController.class);
 
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
@@ -41,7 +44,7 @@ public class JwtAuthenticationController {
                 .loadUserByUsername(authenticationRequest.getUsername());
 
         final String token = jwtTokenUtil.generateToken(userDetails);
-
+        logger.info("Обработка POST Запроса /login");
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
