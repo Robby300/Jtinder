@@ -24,19 +24,6 @@ public class UserRestController {
         this.userService = userService;
     }
 
-    /*@GetMapping()
-    @JsonView(Views.Anketa.class)
-    public List<User> findAll() {
-        return userService.findAll();
-    }*/
-
-    @GetMapping("/search")
-    @JsonView(Views.Anketa.class)
-    public List<User> searchUsers() {
-        logger.info("Обработка запроса /search и получение всех доступных анкет.");
-        return userService.searchUsers();
-    }
-
     @GetMapping("/{id}")
     public User findById(@PathVariable(value = "id") User user) {
         logger.info("Обработка запроса /{} и получение пользователя по id.", user.getUserId());
@@ -49,19 +36,46 @@ public class UserRestController {
         return userService.isExists(userId);
     }
 
+    @GetMapping("/reciprocity/{id}")
+    public boolean isReciprocity(@PathVariable(value = "id") User user) {
+        logger.info("Обработка GET запроса /reciprocity/{} - достигнута ли взаимность.", user.getUserId());
+        return userService.isReciprocity(user);
+    }
+
+    @GetMapping("/search")
+    @JsonView(Views.Anketa.class)
+    public List<User> searchUsers() {
+        logger.info("Обработка запроса /search и получение всех доступных анкет.");
+        return userService.searchUsers();
+    }
+
+    @GetMapping("/welike")
+    @JsonView(Views.Anketa.class)
+    public Set<User> findAllWeLike() {
+        logger.info("Обработка GET запроса /welike - список кому мы поставили лайк.");
+        return userService.findAllWeLike();
+    }
+
+    @GetMapping("/uslike")
+    @JsonView(Views.Anketa.class)
+    public Set<User> findAllUsLike() {
+        logger.info("Обработка GET запроса /uslike - список кто нам поставил лайк.");
+        return userService.findAllUsLike();
+    }
+
+    @GetMapping("/reciprocity")
+    @JsonView(Views.Anketa.class)
+    public Set<User> findAllReciprocity() {
+        logger.info("Обработка GET запроса /reciprocity - список взаимных лаков.");
+        return userService.findAllReciprocity();
+    }
+
     @PutMapping("/{id}")
     public User update(@PathVariable("id") User userFromDb,
                        @RequestBody User user) {
         BeanUtils.copyProperties(user, userFromDb, "id");
         logger.info("Обработка запроса /{} - обновление данных.", user.getUserId());
         return userService.save(userFromDb);
-    }
-
-    @PostMapping()
-    @JsonView(Views.Anketa.class)
-    public User saveUser(@RequestBody User user) {
-        logger.info("Обработка POST запроса {} - обновление данных.", user.getUserId());
-        return userService.save(user);
     }
 
     @PutMapping("/unlike/{user}")
@@ -80,33 +94,24 @@ public class UserRestController {
         return user;
     }
 
+    @PostMapping()
+    @JsonView(Views.Anketa.class)
+    public User saveUser(@RequestBody User user) {
+        logger.info("Обработка POST запроса {} - обновление данных.", user.getUserId());
+        return userService.save(user);
+    }
+
     @DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") User user) {
         logger.info("Обработка DELETE запроса /{} - удалить пользователя.", user.getUserId());
         userService.deleteUser(user);
     }
-
     // Временные методы:
-
-    @GetMapping("/reciprocity/{id}")
-    public boolean isReciprocity(@PathVariable(value = "id") User user) {
-        logger.info("Обработка GET запроса /reciprocity/{} - достигнута ли взаимность.", user.getUserId());
-        return userService.isReciprocity(user);
-    }
-
-    @GetMapping("/welike")
+    /*@GetMapping()
     @JsonView(Views.Anketa.class)
-    public Set<User> findAllWeLike() {
-        logger.info("Обработка GET запроса /welike - список кому мы поставили лайк.");
-        return userService.findAllWeLike();
-    }
-
-    @GetMapping("/uslike")
-    @JsonView(Views.Anketa.class)
-    public Set<User> findAllUsLike() {
-        logger.info("Обработка GET запроса /uslike - список кто нам поставил лайк.");
-        return userService.findAllUsLike();
-    }
+    public List<User> findAll() {
+        return userService.findAll();
+    }*/
 
 /*    @GetMapping("/male")
     @JsonView(Views.Anketa.class)

@@ -24,4 +24,6 @@ public interface UserService extends  UserDetailsService {
     List<User> searchUsers();
 
     boolean isExists(Long userId);
+
+    Set<User> findAllReciprocity();
 }

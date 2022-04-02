@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -115,5 +117,14 @@ public class UserServiceImpl implements UserService {
     public Set<User> findAllUsLike() {
         logger.info("Кто постаил лайк текущему пользователю.");
         return getCurrentUser().getUsLike();
+    }
+
+    public Set<User> findAllReciprocity() {
+        logger.info("список взаимных лайков");
+        User currentUser = getCurrentUser();
+        Set<User> reciprocity = new HashSet<>(currentUser.getWeLike());
+        Set<User> usLike = currentUser.getUsLike();
+        reciprocity.retainAll(usLike);
+        return reciprocity;
     }
 }
