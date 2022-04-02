@@ -93,3 +93,7 @@ GET http://localhost:8080/users/reciprocity
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkxNjY4NywiaWF0IjoxNjQ4ODk4Njg3fQ.C6_YSvTRt_zjcZhU2TcYL72qXPOVu5RRWBQ3ozr-L7sPOmlaQuBQG7ALTUj4FRUU8VTSpMQaUCeVAPQ3PoZsOA
 
+###
+GET http://localhost:8080/users/likers
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkyMzMwNywiaWF0IjoxNjQ4OTA1MzA3fQ.ZOyJzOWVkXXdhVhRawktcMyuwY3Bmx5vIFGrPUaPU8m64BDpDQXCOhuGar4J2ETTvBjx9LnpMicdzSvoJybIbQ

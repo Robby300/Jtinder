@@ -10,6 +10,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -63,6 +64,15 @@ public class UserRestController {
     public Set<User> findAllUsLike() {
         logger.info("Обработка GET запроса /uslike - список кто нам поставил лайк.");
         return userService.findAllUsLike();
+    }
+
+    @GetMapping("/likers")
+    @JsonView(Views.Anketa.class)
+    public Set<User> findAllLikers() {
+        Set<User> likers = new HashSet<>(userService.findAllWeLike());
+        likers.addAll(userService.findAllUsLike());
+        logger.info("Обработка GET запроса /likers - список лайкеров из {} элементов", likers.size());
+        return likers;
     }
 
     @GetMapping("/reciprocity")
