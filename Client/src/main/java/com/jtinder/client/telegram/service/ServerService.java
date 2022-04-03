@@ -27,6 +27,7 @@ public class ServerService {
     static final String URL_HOME = "http://localhost:8080/home";
     static final String URL_IS_REGISTERED = "http://localhost:8080/users/exists/%d";
     static final String URL_LOWERS = "http://localhost:8080/users/likers";
+    static final String URL_CAPTION = "http://localhost:8080/users/imgdescr/%d";
 
     public List<Profile> getValidProfilesToUser(User user) {
         ResponseEntity<Profile[]> usersResponse = restTemplate.exchange(URL_USERS, HttpMethod.GET, authorizationService.getAuthorizationHeader(user), Profile[].class);
@@ -63,5 +64,10 @@ public class ServerService {
     public List<Profile> getLowersProfilesToUser(User user) {
         ResponseEntity<Profile[]> usersResponse = restTemplate.exchange(URL_LOWERS, HttpMethod.GET, authorizationService.getAuthorizationHeader(user), Profile[].class);
         return List.of(usersResponse.getBody());
+    }
+
+    public String getCaption(Long userId, User user) {
+        ResponseEntity<String> caption = restTemplate.exchange(String.format(URL_CAPTION, userId), HttpMethod.GET, authorizationService.getAuthorizationHeader(user), String.class);
+        return caption.getBody();
     }
 }

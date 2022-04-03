@@ -50,7 +50,6 @@ public class LowersHandler implements InputMessageHandler {
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
         List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
 
-        long userId = callbackQuery.getMessage().getFrom().getId();
         long chatId = callbackQuery.getMessage().getChatId();
         User user = userDataCache.getUserProfileData(chatId);
         answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
@@ -67,6 +66,8 @@ public class LowersHandler implements InputMessageHandler {
             if (users.size() == 0) {
                 replyToUser = messagesService.getReplyMessage(chatId, "reply.noProfile");
                 answerList.add(replyToUser);
+                replyToUser.setReplyMarkup(keyboardService.getInlineMainMenu());
+                userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
                 return answerList;
             }
 
@@ -74,7 +75,7 @@ public class LowersHandler implements InputMessageHandler {
             profilePhoto.setChatId(String.valueOf(chatId));
             try {
                 profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
-                profilePhoto.setCaption(user.getScrollableListWrapper().getCurrentProfile().getName());
+                profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -90,7 +91,7 @@ public class LowersHandler implements InputMessageHandler {
                 try {
                     profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
                     profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
-                    profilePhoto.setCaption(user.getScrollableListWrapper().getCurrentProfile().getName());
+                    profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -100,7 +101,7 @@ public class LowersHandler implements InputMessageHandler {
 
             try {
                 profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getNextProfile())));
-                profilePhoto.setCaption(user.getScrollableListWrapper().getCurrentProfile().getName());
+                profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -117,7 +118,7 @@ public class LowersHandler implements InputMessageHandler {
                     profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
                     profilePhoto.setChatId(String.valueOf(chatId));
                     profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
-                    profilePhoto.setCaption(user.getScrollableListWrapper().getCurrentProfile().getName());
+                    profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -127,7 +128,7 @@ public class LowersHandler implements InputMessageHandler {
 
             try {
                 profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getPreviousProfile())));
-                profilePhoto.setCaption(user.getScrollableListWrapper().getCurrentProfile().getName());
+                profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
             } catch (IOException e) {
                 e.printStackTrace();

@@ -68,7 +68,7 @@ public class SearchHandler implements InputMessageHandler {
             profilePhoto.setChatId(String.valueOf(chatId));
             try {
                 profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
-                profilePhoto.setCaption(user.getScrollableListWrapper().getCurrentProfile().getName());
+                profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -93,7 +93,7 @@ public class SearchHandler implements InputMessageHandler {
                     profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
                     profilePhoto.setChatId(String.valueOf(chatId));
                     profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
-                    profilePhoto.setCaption(user.getScrollableListWrapper().getCurrentProfile().getName());
+                    profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -107,7 +107,7 @@ public class SearchHandler implements InputMessageHandler {
                 profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getNextProfile())));
                 profilePhoto.setChatId(String.valueOf(chatId));
                 profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
-                profilePhoto.setCaption(user.getScrollableListWrapper().getCurrentProfile().getName());
+                profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
             } catch (IOException e) {
                 e.printStackTrace();
             }
