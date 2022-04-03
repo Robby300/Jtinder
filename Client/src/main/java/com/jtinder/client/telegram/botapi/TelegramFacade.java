@@ -3,15 +3,15 @@ package com.jtinder.client.telegram.botapi;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-/**
- * @author Sergei Viacheslaev
- */
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @Slf4j
 public class TelegramFacade {
@@ -23,14 +23,15 @@ public class TelegramFacade {
         this.userDataCache = userDataCache;
     }
 
-    public PartialBotApiMethod<?> handleUpdate(Update update) {
-        PartialBotApiMethod<?> replyMessage = null;
+    public List<PartialBotApiMethod<?>> handleUpdate(Update update) {
+        List<PartialBotApiMethod<?>> replyMessage = new ArrayList<>();
 
         if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             log.info("New callbackQuery from User: {}, userId: {}, with data: {}", update.getCallbackQuery().getFrom().getUserName(),
                     callbackQuery.getFrom().getId(), update.getCallbackQuery().getData());
-            return handleInputCallBackQuery(callbackQuery);
+
+            replyMessage = handleInputCallBackQuery(callbackQuery);
         }
 
         Message message = update.getMessage();
@@ -43,29 +44,16 @@ public class TelegramFacade {
         return replyMessage;
     }
 
-    private PartialBotApiMethod<?> handleInputMessage(Message message) {
+    private List<PartialBotApiMethod<?>> handleInputMessage(Message message) {
         String inputMsg = message.getText();
         long chatId = message.getChatId();
         BotState botState;
-        PartialBotApiMethod<?> replyMessage;
+        List<PartialBotApiMethod<?>> replyMessage;
 
-        switch (inputMsg) {
-            case "/start":
-                botState = BotState.AUTHENTICATE;
-                break;
-            case "Любимцы":
-                botState = BotState.LOWERS;
-                break;
-            case "Поиск":
-                botState = BotState.SEARCH;
-                break;
-            case "Анкета":
-                botState = BotState.PROFILE;
-                break;
-            default:
-                botState = userDataCache.getUsersCurrentBotState(chatId);
-
-                break;
+        if (inputMsg.equals("/start")) {
+            botState = BotState.AUTHENTICATE;
+        } else {
+            botState = userDataCache.getUsersCurrentBotState(chatId);
         }
 
         userDataCache.setUsersCurrentBotState(chatId, botState);
@@ -75,8 +63,7 @@ public class TelegramFacade {
         return replyMessage;
     }
 
-    private PartialBotApiMethod<?> handleInputCallBackQuery(CallbackQuery callbackQuery) {
-
+    private List<PartialBotApiMethod<?>> handleInputCallBackQuery(CallbackQuery callbackQuery) {
         return botStateContext.processInputCallBack(userDataCache.getUsersCurrentBotState(callbackQuery.getFrom().getId()), callbackQuery);
     }
 

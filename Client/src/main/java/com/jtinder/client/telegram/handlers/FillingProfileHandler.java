@@ -1,4 +1,4 @@
-package com.jtinder.client.telegram.botapi.handlers;
+package com.jtinder.client.telegram.handlers;
 
 import com.jtinder.client.domen.AuthenticUser;
 import com.jtinder.client.domen.Sex;
@@ -12,16 +12,18 @@ import com.jtinder.client.telegram.service.ServerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 
 /**
@@ -39,7 +41,7 @@ public class FillingProfileHandler implements InputMessageHandler {
     private final ImageService imageService;
 
     @Override
-    public BotApiMethod<?> handle(Message message) {
+    public List<PartialBotApiMethod<?>> handle(Message message) {
         if (userDataCache.getUsersCurrentBotState(message.getFrom().getId()).equals(BotState.FILLING_PROFILE)) {
             userDataCache.setUsersCurrentBotState(message.getFrom().getId(), BotState.ASK_NAME);
         }
@@ -51,7 +53,8 @@ public class FillingProfileHandler implements InputMessageHandler {
         return BotState.FILLING_PROFILE;
     }
 
-    private BotApiMethod<?> processUsersInput(Message inputMsg) {
+    private List<PartialBotApiMethod<?>> processUsersInput(Message inputMsg) {
+        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
         String usersAnswer = inputMsg.getText();
         long userId = inputMsg.getChatId();
         long chatId = inputMsg.getChatId();
@@ -87,14 +90,16 @@ public class FillingProfileHandler implements InputMessageHandler {
             userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
         }
 
-
         userDataCache.saveUserProfileData(userId, user);
+        answerList.add(replyToUser);
+        answerList.add(new DeleteMessage(String.valueOf(chatId), inputMsg.getMessageId()));
 
-        return replyToUser;
+        return answerList;
     }
 
     @Override
-    public PartialBotApiMethod<?> handle(CallbackQuery callbackQuery) {
+    public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
+        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
         String usersAnswer = callbackQuery.getData();
         long chatId = callbackQuery.getMessage().getChatId();
 
@@ -114,7 +119,7 @@ public class FillingProfileHandler implements InputMessageHandler {
             user.getProfile().setFindSex(new HashSet<>());
             user.getProfile().getFindSex().add(Sex.valueOf(usersAnswer));
 
-            profilePhoto.setReplyMarkup(keyboardService.getMainMenuKeyboard());
+            profilePhoto.setReplyMarkup(keyboardService.getInlineMainMenu());
             serverService.registerUser(user.getProfile());
             user.setToken(serverService.loginUser(new AuthenticUser(user.getProfile().getUserId(), user.getProfile().getPassword())));
             profilePhoto.setChatId(String.valueOf(chatId));
@@ -124,8 +129,14 @@ public class FillingProfileHandler implements InputMessageHandler {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return profilePhoto;
+            answerList.add(profilePhoto);
+            answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
+            userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
+            return answerList;
         }
-        return replyToUser;
+
+        answerList.add(replyToUser);
+        answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
+        return answerList;
     }
 }

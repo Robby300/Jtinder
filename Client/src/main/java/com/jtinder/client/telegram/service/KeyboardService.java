@@ -1,6 +1,9 @@
 package com.jtinder.client.telegram.service;
 
+import com.jtinder.client.telegram.botapi.BotState;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -78,9 +81,10 @@ public class KeyboardService {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
         InlineKeyboardButton next = makeButton("\u27a1\ufe0f", "Следующий");
+        InlineKeyboardButton menu = makeButton("MENU", "MENU");
         InlineKeyboardButton like = makeButton("\u2764\ufe0f", "Лайк");
 
-        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(next, like);
+        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(next, menu, like);
 
         List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
         rowList.add(keyboardButtonsRow);
@@ -90,13 +94,23 @@ public class KeyboardService {
         return inlineKeyboardMarkup;
     }
 
-    public EditMessageText getEditMessageText(Long chatId, CallbackQuery callbackQuery, String newText) {
-        EditMessageText editMessageText = new EditMessageText();
-        editMessageText.setChatId(String.valueOf(chatId));
-        editMessageText.setMessageId(callbackQuery.getMessage().getMessageId());
-        editMessageText.setText(newText);
-        return editMessageText;
+    public InlineKeyboardMarkup getInlineKeyboardLowers() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        InlineKeyboardButton next = makeButton("\u2b05\ufe0f", "Предыдущий");
+        InlineKeyboardButton menu = makeButton("MENU", "MENUL");
+        InlineKeyboardButton like = makeButton("\u27a1\ufe0f", "Следующий");
+
+        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(next, menu, like);
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow);
+
+        inlineKeyboardMarkup.setKeyboard(rowList);
+
+        return inlineKeyboardMarkup;
     }
+
 
     public ReplyKeyboardMarkup getAuthenticateKeyboard() {
         ReplyKeyboardMarkup authenticateKeyboard = new ReplyKeyboardMarkup();
@@ -124,6 +138,22 @@ public class KeyboardService {
         return editMessageMedia;
     }
 
+    public InlineKeyboardMarkup getInlineMainMenu() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        InlineKeyboardButton next = makeButton("ПОИСК", "ПОИСК");
+        InlineKeyboardButton menu = makeButton("АНКЕТА", "АНКЕТА");
+        InlineKeyboardButton like = makeButton("ЛЮБИМЦЫ", "ЛЮБИМЦЫ");
+
+        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(next, menu, like);
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow);
+
+        inlineKeyboardMarkup.setKeyboard(rowList);
+
+        return inlineKeyboardMarkup;
+    }
 
 
 

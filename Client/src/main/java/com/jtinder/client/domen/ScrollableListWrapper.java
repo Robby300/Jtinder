@@ -43,4 +43,17 @@ public class ScrollableListWrapper {
     public boolean isEmpty() {
         return listToScroll.isEmpty();
     }
+
+    public Profile getPreviousProfile() {
+        return listToScroll.get(--currentIndex);
+    }
+    public boolean isFirst() {
+        return currentIndex == 0;
+    }
+    public void resetCurrentIndex() {
+        currentIndex = 0;
+    }
+    public void resetCurrentIndexFromLast() {
+        currentIndex = listToScroll.size()-1;
+    }
 }
