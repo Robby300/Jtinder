@@ -43,7 +43,7 @@ public class ImageServiceImpl implements ImageService {
             List<String> linesToWrite = getLinesToWrite(profile.getDescription(), g, maxLineWidth, header, body);
             writeLinesToImage(body, leftOffset, topOffset, g, linesToWrite);
             result = new File(backgroundImage.getParentFile(), "result_image.jpg");
-            //ImageIO.write(image, "jpg", result);
+            ImageIO.write(image, "jpg", result);
         } catch (IOException e) {
             e.printStackTrace();
         }
