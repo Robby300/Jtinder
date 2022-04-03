@@ -1,6 +1,8 @@
 package com.jtinder.client.telegram.botapi;
 
 import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.service.BotMethodService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
@@ -10,18 +12,18 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Component
 @Slf4j
 public class TelegramFacade {
     private final BotStateContext botStateContext;
     private final UserDataCache userDataCache;
+    private final BotMethodService botMethodService;
 
-    public TelegramFacade(BotStateContext botStateContext, UserDataCache userDataCache) {
-        this.botStateContext = botStateContext;
-        this.userDataCache = userDataCache;
-    }
 
     public List<PartialBotApiMethod<?>> handleUpdate(Update update) {
         List<PartialBotApiMethod<?>> replyMessage = new ArrayList<>();
@@ -47,20 +49,24 @@ public class TelegramFacade {
     private List<PartialBotApiMethod<?>> handleInputMessage(Message message) {
         String inputMsg = message.getText();
         long chatId = message.getChatId();
-        BotState botState;
-        List<PartialBotApiMethod<?>> replyMessage;
+        BotState botState = userDataCache.getUsersCurrentBotState(chatId);
 
         if (inputMsg.equals("/start")) {
             botState = BotState.AUTHENTICATE;
-        } else {
-            botState = userDataCache.getUsersCurrentBotState(chatId);
+            userDataCache.setUsersCurrentBotState(chatId, botState);
+            List<PartialBotApiMethod<?>> method = userDataCache.getMessagesToDelete(chatId).stream()
+                    .map(integer -> botMethodService.getDeleteMessage(chatId, integer))
+                    .collect(Collectors.toList());
+            method.add(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
+            method.addAll(botStateContext.processInputMessage(botState, message));
+            return method;
         }
 
-        userDataCache.setUsersCurrentBotState(chatId, botState);
-
-        replyMessage = botStateContext.processInputMessage(botState, message);
-
-        return replyMessage;
+        List<PartialBotApiMethod<?>> answerList = botStateContext.processInputMessage(botState, message);
+        if(answerList.isEmpty()) {
+            return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
+        }
+        return answerList;
     }
 
     private List<PartialBotApiMethod<?>> handleInputCallBackQuery(CallbackQuery callbackQuery) {

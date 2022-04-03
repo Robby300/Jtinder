@@ -5,7 +5,7 @@ import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.ImageService;
 import com.jtinder.client.telegram.service.KeyboardService;
-import com.jtinder.client.telegram.service.ReplyMessagesService;
+import com.jtinder.client.telegram.service.TextMessagesService;
 import com.jtinder.client.telegram.service.ServerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +26,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProfileHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
-    private final ReplyMessagesService messagesService;
+    private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
     private final ImageService imageService;

@@ -12,9 +12,6 @@ public interface DataCache {
 
     User getUserProfileData(long userId);
 
-    void saveUserProfileData(long userId, User user);
 
-    void saveDeleteMessage(long userId, Integer messageId);
 
-    DeleteMessage getDeleteMessage(long userId);
 }

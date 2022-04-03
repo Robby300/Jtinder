@@ -114,7 +114,6 @@ public class KeyboardService {
 
     public ReplyKeyboardMarkup getAuthenticateKeyboard() {
         ReplyKeyboardMarkup authenticateKeyboard = new ReplyKeyboardMarkup();
-        authenticateKeyboard.setSelective(true);
         authenticateKeyboard.setResizeKeyboard(true);
         authenticateKeyboard.setOneTimeKeyboard(true);
 
@@ -126,16 +125,6 @@ public class KeyboardService {
         authenticateKeyboard.setKeyboard(keyboard);
 
         return authenticateKeyboard;
-    }
-
-    public EditMessageMedia getEditMessageImage(Long chatId, CallbackQuery callbackQuery, File image) {
-        EditMessageMedia editMessageMedia = new EditMessageMedia();
-        editMessageMedia.setChatId(chatId.toString());
-        editMessageMedia.setMessageId(callbackQuery.getMessage().getMessageId());
-        InputMediaPhoto inputMediaPhoto = new InputMediaPhoto();
-        inputMediaPhoto.setMedia(image, "Photo");
-        editMessageMedia.setMedia(inputMediaPhoto);
-        return editMessageMedia;
     }
 
     public InlineKeyboardMarkup getInlineMainMenu() {

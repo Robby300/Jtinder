@@ -1,66 +1,73 @@
 package com.jtinder.client.telegram;
 
+import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.botapi.TelegramFacade;
 import com.jtinder.client.telegram.cache.UserDataCache;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.updates.SetWebhook;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.starter.SpringWebhookBot;
 
-import java.util.List;
+import java.util.Set;
 
 @Component
 @Getter
 @Setter
-@FieldDefaults(level = AccessLevel.PRIVATE)
+@Slf4j
 @RequiredArgsConstructor
 public class LigaTinderBot extends TelegramLongPollingBot {
     @Value("${telegram.bot-name}")
-    String botUsername;
+    private String botUsername;
     @Value("${telegram.bot-token}")
-    String botToken;
+    private String botToken;
 
-    final TelegramFacade telegramFacade;
+    private final TelegramFacade telegramFacade;
     private final UserDataCache userDataCache;
 
 
     @Override
     public void onUpdateReceived(Update update) {
+        for (PartialBotApiMethod<?> method : telegramFacade.handleUpdate(update)) {
+            addMessageToDelete(executeAnyMethod(method));
+        }
+    }
 
-        List<PartialBotApiMethod<?>> answerList = telegramFacade.handleUpdate(update);
-        for (PartialBotApiMethod<?> answer : answerList) {
-            if (answer instanceof BotApiMethod<?>) {
-                BotApiMethod<Message> message = (BotApiMethod<Message>) answer;
-                try {
-                    execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-            } else if (answer instanceof SendPhoto) {
-                try {
-                    execute((SendPhoto) answer);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-            } else try {
-                execute((EditMessageMedia) answer);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+    private Message executeAnyMethod(PartialBotApiMethod<?> method) {
+        try {
+            if (method == null) return null;
+            else if (method instanceof SendPhoto) return execute((SendPhoto) method);
+            else if (method instanceof SendMessage) return execute((SendMessage) method);
+            else if (method instanceof DeleteMessage) execute((DeleteMessage) method);
+            else if (method instanceof AnswerCallbackQuery) execute((AnswerCallbackQuery) method);
+        } catch (TelegramApiException e) {
+            log.info(e.getMessage());
+        }
+        return null;
+    }
+
+    private void addMessageToDelete(Message message) {
+        if (message != null) {
+            BotState usersCurrentBotState = userDataCache.getUsersCurrentBotState(message.getChatId());
+            switch (usersCurrentBotState) {
+                case PROFILE:
+                case SEARCH:
+                case LOWERS:
+                case MAIN_MENU:
+                    userDataCache.setMessagesToDelete(message.getChatId(), Set.of(message.getMessageId()));
+                    break;
+                default:
+                    userDataCache.addMessage(message.getChatId(), message.getMessageId());
             }
         }
     }

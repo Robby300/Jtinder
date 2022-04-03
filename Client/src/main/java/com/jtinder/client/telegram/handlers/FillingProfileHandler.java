@@ -5,10 +5,7 @@ import com.jtinder.client.domen.Sex;
 import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
-import com.jtinder.client.telegram.service.ImageService;
-import com.jtinder.client.telegram.service.KeyboardService;
-import com.jtinder.client.telegram.service.ReplyMessagesService;
-import com.jtinder.client.telegram.service.ServerService;
+import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -22,6 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -35,10 +33,11 @@ import java.util.List;
 @Component
 public class FillingProfileHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
-    private final ReplyMessagesService messagesService;
+    private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
     private final ImageService imageService;
+    private final BotMethodService botMethodService;
 
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
@@ -54,47 +53,48 @@ public class FillingProfileHandler implements InputMessageHandler {
     }
 
     private List<PartialBotApiMethod<?>> processUsersInput(Message inputMsg) {
-        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
         String usersAnswer = inputMsg.getText();
-        long userId = inputMsg.getChatId();
         long chatId = inputMsg.getChatId();
+        DeleteMessage deleteMessage = botMethodService.getDeleteMessage(chatId, inputMsg.getMessageId());
 
-        User user = userDataCache.getUserProfileData(userId);
-        BotState botState = userDataCache.getUsersCurrentBotState(userId);
-
-        SendMessage replyToUser = null;
+        User user = userDataCache.getUserProfileData(chatId);
+        BotState botState = userDataCache.getUsersCurrentBotState(chatId);
 
         if (botState.equals(BotState.ASK_SEX)) {
+            userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_NAME);
             user.getProfile().setPassword(usersAnswer);
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askSex");
-            replyToUser.setReplyMarkup(keyboardService.getInlineKeyboardSex());
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_NAME);
+            return List.of(deleteMessage, botMethodService.getSendMessage(
+                    chatId,
+                    messagesService.getText("reply.askSex"),
+                    keyboardService.getInlineKeyboardSex()));
         }
 
         if (botState.equals(BotState.ASK_NAME)) {
             user.getProfile().setSex(Sex.valueOf(usersAnswer));
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askName");
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_DESCRIPTION);
+            userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_DESCRIPTION);
+            return List.of(deleteMessage, botMethodService.getSendMessage(
+                    chatId,
+                    messagesService.getText("reply.askName")));
         }
 
         if (botState.equals(BotState.ASK_DESCRIPTION)) {
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askDescription");
             user.getProfile().setName(usersAnswer);
-            userDataCache.setUsersCurrentBotState(userId, BotState.ASK_FIND);
+            userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_FIND);
+            return List.of(deleteMessage, botMethodService.getSendMessage(
+                    chatId,
+                    messagesService.getText("reply.askDescription")));
         }
 
         if (botState.equals(BotState.ASK_FIND)) {
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askFindSex");
-            replyToUser.setReplyMarkup(keyboardService.getInlineKeyboardFindSex());
             user.getProfile().setDescription(usersAnswer);
-            userDataCache.setUsersCurrentBotState(userId, BotState.PROFILE_FILLED);
+            userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE_FILLED);
+            return List.of(deleteMessage, botMethodService.getSendMessage(
+                    chatId,
+                    messagesService.getText("reply.askFindSex"),
+                    keyboardService.getInlineKeyboardFindSex()));
         }
 
-        userDataCache.saveUserProfileData(userId, user);
-        answerList.add(replyToUser);
-        answerList.add(new DeleteMessage(String.valueOf(chatId), inputMsg.getMessageId()));
-
-        return answerList;
+        return Collections.singletonList(deleteMessage);
     }
 
     @Override

@@ -5,7 +5,7 @@ import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.KeyboardService;
-import com.jtinder.client.telegram.service.ReplyMessagesService;
+import com.jtinder.client.telegram.service.TextMessagesService;
 import com.jtinder.client.telegram.service.ServerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +24,7 @@ import java.util.List;
 @Slf4j
 public class LoginHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
-    private final ReplyMessagesService messagesService;
+    private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
 
@@ -45,7 +45,6 @@ public class LoginHandler implements InputMessageHandler {
         replyToUser.setText("МЕНЮ");
         answerList.add(new DeleteMessage(String.valueOf(chatId), message.getMessageId()));
         answerList.add(replyToUser);
-        userDataCache.saveUserProfileData(chatId, user);
         userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
         return answerList;
     }
