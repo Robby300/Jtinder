@@ -21,7 +21,7 @@ Content-Type: application/json
 ### После лгина вставить токен после слова "Bearer" и получить привет с именем текущего пользователя
 POST http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkzNDQwNSwiaWF0IjoxNjQ4OTE2NDA1fQ.NvVKG9_92iROWlEOP81en8zi9KM95DQUlzQdj3cqWaPuOxtzZ3B8Un_JRCBrMk3s36KyAIaYrqVdGiYYS5MYOw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg
 
 ### Текущий подьзователь ставит лайк Арсинье
 PUT http://localhost:8080/users/like/10
@@ -31,12 +31,12 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkzNDQwN
 ### После лгина вставить токен после слова "Bearer" и посмотреть кого мы лайкнули
 GET http://localhost:8080/users/welike
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkzNDQwNSwiaWF0IjoxNjQ4OTE2NDA1fQ.NvVKG9_92iROWlEOP81en8zi9KM95DQUlzQdj3cqWaPuOxtzZ3B8Un_JRCBrMk3s36KyAIaYrqVdGiYYS5MYOw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg
 
 ### После лгина вставить токен после слова "Bearer" и посмотреть сударей
 GET http://localhost:8080/users/search
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkzNDQwNSwiaWF0IjoxNjQ4OTE2NDA1fQ.NvVKG9_92iROWlEOP81en8zi9KM95DQUlzQdj3cqWaPuOxtzZ3B8Un_JRCBrMk3s36KyAIaYrqVdGiYYS5MYOw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg
 
 ### true
 GET http://localhost:8080/users/reciprocity/2
@@ -66,9 +66,9 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkzNDQwN
 ###
 GET http://localhost:8080/users/likers
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkzNDQwNSwiaWF0IjoxNjQ4OTE2NDA1fQ.NvVKG9_92iROWlEOP81en8zi9KM95DQUlzQdj3cqWaPuOxtzZ3B8Un_JRCBrMk3s36KyAIaYrqVdGiYYS5MYOw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg
 
 ###
 GET http://localhost:8080/users/imgdescr/10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODkzNDQwNSwiaWF0IjoxNjQ4OTE2NDA1fQ.NvVKG9_92iROWlEOP81en8zi9KM95DQUlzQdj3cqWaPuOxtzZ3B8Un_JRCBrMk3s36KyAIaYrqVdGiYYS5MYOw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg

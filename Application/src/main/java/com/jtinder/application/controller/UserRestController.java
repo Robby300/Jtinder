@@ -1,6 +1,7 @@
 package com.jtinder.application.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
+import com.jtinder.application.domen.Sex;
 import com.jtinder.application.domen.User;
 import com.jtinder.application.domen.Views;
 import com.jtinder.application.service.UserService;
@@ -121,7 +122,7 @@ public class UserRestController {
         if (userService.isReciprocity(user)) {
             return resultString + ", Взаимность";
         } else if (currentUser.getWeLike().contains(user)) {
-            return resultString + ", Любим вами";
+            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE)?"a":"") + " вами.";
         }  else if (currentUser.getUsLike().contains(user)) {
             return resultString + ", Вы любимы";
         }
