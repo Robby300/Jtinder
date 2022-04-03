@@ -1,19 +1,19 @@
 package com.jtinder.application.repository;
 
-import com.jtinder.application.domen.Sex;
 import com.jtinder.application.domen.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 public interface UserRepository extends CrudRepository<User, Long> {
 
+
     List<User> findAll();
-    List<User> findUsersBySexIs(Sex sex);
-    User findUsersByName(String name);
+
+    //List<User> findUsersBySexIs(Sex sex);
+
+    //User findUsersByName(String name);
     //List<User> findUsersBySexEqualsAndUserIdIsNotIn(Sex findSex, List<Long> userIds);
 
     @Query(value = "select * from jtinder_db.usr\n" +
