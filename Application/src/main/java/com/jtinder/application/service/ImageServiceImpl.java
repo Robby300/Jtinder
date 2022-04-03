@@ -1,6 +1,6 @@
-package com.jtinder.client.telegram.service;
+package com.jtinder.application.service;
 
-import com.jtinder.client.domen.Profile;
+import com.jtinder.application.domen.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +20,7 @@ public class ImageServiceImpl implements ImageService {
         this.translator = translator;
     }
 
-    public File getFile(Profile profile) throws IOException {
+    public File getFile(User user) throws IOException {
         File file = new File(uploadPath);
         BufferedImage image = ImageIO.read(file);
         Font header = new Font("Old Standard TT", Font.BOLD, 44);
@@ -33,7 +33,7 @@ public class ImageServiceImpl implements ImageService {
 
         FontMetrics fm = g.getFontMetrics(body);
         int lineHeight = fm.getHeight();
-        String textToDraw = translator.translate(profile.getDescription());
+        String textToDraw = translator.translate(user.getDescription());
 
         String[] arr = textToDraw.split(" ");
         int nIndex = 0;
@@ -57,6 +57,7 @@ public class ImageServiceImpl implements ImageService {
             }
             startY = startY + lineHeight;
             i++;
+
         }
         File file1 = new File(file.getParentFile(), "result_image.jpg");
         ImageIO.write(image, "jpg", file1);

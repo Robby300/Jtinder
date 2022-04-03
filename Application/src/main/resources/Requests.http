@@ -21,7 +21,7 @@ Content-Type: application/json
 ### После лгина вставить токен после слова "Bearer" и получить привет с именем текущего пользователя
 POST http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTAyMTQwMiwiaWF0IjoxNjQ5MDAzNDAyfQ.oNvSsAoXRO9LR8Ipq5t1nxiWWyAthDjhoYTDKINlx965upWWLiy9kFPN13dNqt-yP0cf8_R1Ver4S_CrF7qzUw
 
 ### Текущий подьзователь ставит лайк Арсинье
 PUT http://localhost:8080/users/like/10
@@ -36,7 +36,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4M
 ### После лгина вставить токен после слова "Bearer" и посмотреть сударей
 GET http://localhost:8080/users/search
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTAxOTMzNCwiaWF0IjoxNjQ5MDAxMzM0fQ.W49gHuHhB7fEgOcyArntw8ZDt_BjRdnzBJWnUNJOGf7hiLMlD5GNltSjtIGf6oHRuJQIqpGhWW_kRzHZ4B7qaw
 
 ### true
 GET http://localhost:8080/users/reciprocity/2
@@ -71,4 +71,9 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4M
 ###
 GET http://localhost:8080/users/imgdescr/10
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTAxOTA3NCwiaWF0IjoxNjQ5MDAxMDc0fQ.XgDskJgJpe3a4CJPyMV3AxdrMNuBno8sTE45vb9Rovf8bHsHhBILXUb_Zm_0vMn6qD09wH7K3_zKmPP6kEpQqQ
+
+###
+POST http://localhost:8080/users/image/10
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTAyMTk1NSwiaWF0IjoxNjQ5MDAzOTU1fQ.-GnV5Ocsad6Nh0lXBSUNOrSlP3ncjAPdaoFe9MjNJNZKn4M81P_bntkngqXNW6RH8HI48uVdk_QPsiuyIWSjwA

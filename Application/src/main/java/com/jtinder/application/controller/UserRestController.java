@@ -4,12 +4,14 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.jtinder.application.domen.Sex;
 import com.jtinder.application.domen.User;
 import com.jtinder.application.domen.Views;
+import com.jtinder.application.service.ImageService;
 import com.jtinder.application.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -20,11 +22,13 @@ import java.util.Set;
 public class UserRestController {
 
     private final UserService userService;
+    private final ImageService service;
 
     private static final Logger logger = LoggerFactory.getLogger(UserRestController.class);
 
-    public UserRestController(UserService userService) {
+    public UserRestController(UserService userService, ImageService service) {
         this.userService = userService;
+        this.service = service;
     }
 
     @GetMapping("/{id}")
@@ -140,24 +144,26 @@ public class UserRestController {
         return userService.findAll();
     }*/
 
-/*    @GetMapping("/male")
-    @JsonView(Views.Anketa.class)
-    public List<User> findAllMale() {
-        return userService.findAllMale();
-    }
+/*
+    @GetMapping("/male")
+ @JsonView(Views.Anketa.class)
+ public List<User> findAllMale() {
+     return userService.findAllMale();
+ }
 
-    @GetMapping("/female")
-    @JsonView(Views.Anketa.class)
-    public List<User> findAllFemale() {
-        return userService.findAllFemale();
-    }
+ @GetMapping("/female")
+ @JsonView(Views.Anketa.class)
+ public List<User> findAllFemale() {
+     return userService.findAllFemale();
+ }
+*/
 
-    @GetMapping("/image/{id}")
+    @PostMapping("/image/{id}")
     public void getImage(@PathVariable(value = "id") User user) {
         try {
-            imageService.getFile(user);
+            service.getFile(user);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }
