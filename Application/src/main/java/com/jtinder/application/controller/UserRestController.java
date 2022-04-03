@@ -133,6 +133,7 @@ public class UserRestController {
         return resultString + ".";
     }
 
+
     /*@DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") User user) {
         logger.info("Обработка DELETE запроса /{} - удалить пользователя.", user.getUserId());
