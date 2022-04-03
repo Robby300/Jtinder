@@ -31,19 +31,20 @@ public class ImageServiceImpl implements ImageService {
 //        g.setFont(body);
 //        g.drawString(translator.translate(userService.findAllWeLike().contains(profile) ? "Любо": "Нэ любо"), 60, 50);
 
-        g.setFont(header);
-        g.drawString(translator.translate(getHeader(profile)), 60, 130);
-
-        g.setFont(body);
         FontMetrics fm = g.getFontMetrics(body);
         int lineHeight = fm.getHeight();
-        String textToDraw = translator.translate(getBody(profile));
+        String textToDraw = translator.translate(profile.getDescription());
         String[] arr = textToDraw.split(" ");
         int nIndex = 0;
         int startX = 60;
         int startY = 190;
-        while (nIndex < arr.length) {
-            String line = arr[nIndex++];
+
+        g.setFont(header);
+        g.drawString(translator.translate(arr[0]), 60, 130);
+
+        g.setFont(body);
+        while (nIndex < arr.length - 1) {
+            String line = arr[++nIndex];
             while ((nIndex < arr.length) && (fm.stringWidth(line + " " + arr[nIndex]) < 447)) {
                 line = line + " " + arr[nIndex];
                 nIndex++;
@@ -55,14 +56,4 @@ public class ImageServiceImpl implements ImageService {
         ImageIO.write(image, "jpg", file1);
         return file1;
     }
-
-    private String getHeader(Profile profile) {
-        return profile.getDescription().split("\\s")[0];
-    }
-
-    private String getBody(Profile profile) {
-        int headerLength = profile.getDescription().split("\\s")[0].length();
-        return profile.getDescription().substring(headerLength + 1);
-    }
-
 }
