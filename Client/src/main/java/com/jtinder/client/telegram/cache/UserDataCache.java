@@ -3,6 +3,7 @@ package com.jtinder.client.telegram.cache;
 import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Map;
 public class UserDataCache implements DataCache {
     private final Map<Long, BotState> usersBotStates = new HashMap<>();
     private final Map<Long, User> usersProfileData = new HashMap<>();
+    private final Map<Long, DeleteMessage> deleteBotMessageMap = new HashMap<>();
 
 
     @Override
@@ -36,5 +38,16 @@ public class UserDataCache implements DataCache {
     @Override
     public void saveUserProfileData(long userId, User user) {
         usersProfileData.put(userId, user);
+    }
+
+    @Override
+    public void saveDeleteMessage(long userId, Integer messageId) {
+        DeleteMessage deleteMessage = new DeleteMessage(String.valueOf(userId), messageId);
+        deleteBotMessageMap.put(userId, deleteMessage);
+    }
+
+    @Override
+    public DeleteMessage getDeleteMessage(long userId) {
+        return deleteBotMessageMap.get(userId);
     }
 }

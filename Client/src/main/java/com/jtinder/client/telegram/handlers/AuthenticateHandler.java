@@ -1,19 +1,24 @@
-package com.jtinder.client.telegram.botapi.handlers;
+package com.jtinder.client.telegram.handlers;
 
-import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.KeyboardService;
 import com.jtinder.client.telegram.service.ReplyMessagesService;
 import com.jtinder.client.telegram.service.ServerService;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
+@AllArgsConstructor
 @Component
 public class AuthenticateHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
@@ -21,22 +26,13 @@ public class AuthenticateHandler implements InputMessageHandler {
     private final KeyboardService keyboardService;
     private final ServerService serverService;
 
-    public AuthenticateHandler(UserDataCache userDataCache,
-                               ReplyMessagesService messagesService, KeyboardService keyboardService, ServerService serverService) {
-        this.userDataCache = userDataCache;
-        this.messagesService = messagesService;
-        this.keyboardService = keyboardService;
-        this.serverService = serverService;
-    }
 
     @Override
-    public BotApiMethod<?> handle(Message message) {
+    public List<PartialBotApiMethod<?>> handle(Message message) {
+        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
         String usersAnswer = message.getText();
         long userId = message.getFrom().getId();
         long chatId = message.getChatId();
-
-        User user = userDataCache.getUserProfileData(userId);
-        BotState botState = userDataCache.getUsersCurrentBotState(userId);
 
         SendMessage replyToUser = new SendMessage();
         if (usersAnswer.equals("/start")) {
@@ -64,9 +60,9 @@ public class AuthenticateHandler implements InputMessageHandler {
             userDataCache.setUsersCurrentBotState(chatId, BotState.LOGIN);
             replyToUser = messagesService.getReplyMessage(chatId, "reply.askPassword");
         }
-
-
-        return replyToUser;
+        answerList.add(new DeleteMessage(String.valueOf(chatId), message.getMessageId()));
+        answerList.add(replyToUser);
+        return answerList;
     }
 
     @Override
@@ -75,7 +71,7 @@ public class AuthenticateHandler implements InputMessageHandler {
     }
 
     @Override
-    public BotApiMethod<?> handle(CallbackQuery callbackQuery) {
+    public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
         return null;
     }
 }
