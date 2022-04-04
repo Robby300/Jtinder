@@ -7,8 +7,8 @@ import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.ImageService;
 import com.jtinder.client.telegram.service.KeyboardService;
-import com.jtinder.client.telegram.service.TextMessagesService;
 import com.jtinder.client.telegram.service.ServerService;
+import com.jtinder.client.telegram.service.TextMessagesService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -100,7 +100,6 @@ public class SearchHandler implements InputMessageHandler {
                 answerList.add(profilePhoto);
                 return answerList;
             }
-
 
 
             try {

@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
 import javax.imageio.ImageIO;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -40,7 +39,7 @@ public class ImageServiceImpl implements ImageService {
             Graphics g = image.getGraphics();
             g.setColor(Color.BLACK);
             g.setFont(header);
-            List<String> linesToWrite = getLinesToWrite(profile.getDescription(), g, maxLineWidth, header, body);
+            List<String> linesToWrite = getLinesToWrite(translator.translate(profile.getDescription()), g, maxLineWidth, header, body);
             writeLinesToImage(body, leftOffset, topOffset, g, linesToWrite);
             result = new File(backgroundImage.getParentFile(), "result_image.jpg");
             ImageIO.write(image, "jpg", result);
@@ -79,7 +78,7 @@ public class ImageServiceImpl implements ImageService {
         List<String> linesToWrite = new ArrayList<>();
         FontMetrics fontMetrics = graphics.getFontMetrics(header);
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < words.length;) {
+        for (int i = 0; i < words.length; ) {
             sb.append(words[i++]);
             while ((i < words.length) && (fontMetrics.stringWidth(sb + " " + words[i]) < maxLineWidth)) {
                 sb.append(" ");

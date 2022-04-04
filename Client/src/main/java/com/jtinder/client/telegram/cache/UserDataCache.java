@@ -3,7 +3,6 @@ package com.jtinder.client.telegram.cache;
 import com.jtinder.client.domen.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 
 import java.util.HashMap;
 import java.util.HashSet;
