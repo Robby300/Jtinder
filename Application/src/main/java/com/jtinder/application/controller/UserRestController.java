@@ -133,12 +133,10 @@ public class UserRestController {
     }
 
     @GetMapping("/islove/{id}")
-    public String islove(@PathVariable(value = "id") User user) {
+    public boolean islove(@PathVariable(value = "id") User user) {
         User currentUser = userService.getCurrentUser();
-        if (currentUser.getWeLike().contains(user) && currentUser.getUsLike().contains(user)) {
-            return "Вы любимы";
-        }
-        return "";
+        return currentUser.getWeLike().contains(user) && currentUser.getUsLike().contains(user);
+    }
 
     /*@DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") User user) {
@@ -164,5 +162,5 @@ public class UserRestController {
      return userService.findAllFemale();
  }
 */
-    }
+
 }
