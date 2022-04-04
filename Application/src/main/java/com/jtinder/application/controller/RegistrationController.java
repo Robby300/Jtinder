@@ -1,6 +1,6 @@
 package com.jtinder.application.controller;
 
-import com.jtinder.application.domen.User;
+import com.jtinder.application.domain.User;
 import com.jtinder.application.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -1,6 +1,6 @@
 package com.jtinder.application.service;
 
-import com.jtinder.application.domen.User;
+import com.jtinder.application.domain.User;
 import com.jtinder.application.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

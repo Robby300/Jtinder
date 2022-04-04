@@ -1,4 +1,4 @@
-package com.jtinder.application.domen;
+package com.jtinder.application.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 

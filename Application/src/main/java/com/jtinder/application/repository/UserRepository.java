@@ -1,6 +1,6 @@
 package com.jtinder.application.repository;
 
-import com.jtinder.application.domen.User;
+import com.jtinder.application.domain.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 

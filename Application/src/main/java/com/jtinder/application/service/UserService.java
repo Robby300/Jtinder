@@ -1,6 +1,6 @@
 package com.jtinder.application.service;
 
-import com.jtinder.application.domen.User;
+import com.jtinder.application.domain.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;

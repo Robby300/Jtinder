@@ -1,8 +1,8 @@
 package com.jtinder.application.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.jtinder.application.domen.User;
-import com.jtinder.application.domen.Views;
+import com.jtinder.application.domain.User;
+import com.jtinder.application.domain.Views;
 import com.jtinder.application.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
