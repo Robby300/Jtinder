@@ -63,12 +63,8 @@ public class TelegramFacade {
             method.addAll(botStateContext.processInputMessage(botState, message));
             return method;
         }
-
-        List<PartialBotApiMethod<?>> answerList = botStateContext.processInputMessage(botState, message);
-        if(answerList.isEmpty()) {
-            return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
-        }
-        return answerList;
+        
+        return botStateContext.processInputMessage(botState, message);
     }
 
     private List<PartialBotApiMethod<?>> handleInputCallBackQuery(CallbackQuery callbackQuery) {

@@ -9,17 +9,14 @@ import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -96,20 +93,19 @@ public class FillingProfileHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
         String usersAnswer = callbackQuery.getData();
         long chatId = callbackQuery.getMessage().getChatId();
+        DeleteMessage deleteMessage = botMethodService.getDeleteMessage(chatId, callbackQuery.getMessage().getMessageId());
 
         User user = userDataCache.getUserProfileData(chatId);
         BotState botState = userDataCache.getUsersCurrentBotState(chatId);
 
-        SendMessage replyToUser = null;
-        SendPhoto profilePhoto = new SendPhoto();
-
         if (botState.equals(BotState.ASK_NAME)) {
             user.getProfile().setSex(Sex.valueOf(usersAnswer));
-            replyToUser = messagesService.getReplyMessage(chatId, "reply.askName");
             userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_DESCRIPTION);
+            return List.of(deleteMessage, botMethodService.getSendMessage(
+                    chatId,
+                    messagesService.getText("reply.askName")));
         }
 
         if (botState.equals(BotState.PROFILE_FILLED)) {
@@ -121,22 +117,21 @@ public class FillingProfileHandler implements InputMessageHandler {
                 user.getProfile().getFindSex().add(Sex.valueOf(usersAnswer));
             }
 
-            profilePhoto.setReplyMarkup(keyboardService.getInlineMainMenu());
             serverService.registerUser(user.getProfile());
             user.setToken(serverService.loginUser(new AuthenticUser(user.getProfile().getUserId(), user.getProfile().getPassword())));
-            profilePhoto.setChatId(String.valueOf(chatId));
-            profilePhoto.setCaption(user.getProfile().getName());
-
-            profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getProfile())));
-
-            answerList.add(profilePhoto);
-            answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
             userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
-            return answerList;
+
+            List<PartialBotApiMethod<?>> method = userDataCache.getMessagesToDelete(chatId).stream()
+                    .map(integer -> botMethodService.getDeleteMessage(chatId, integer))
+                    .collect(Collectors.toList());
+            method.add(deleteMessage);
+            method.add(botMethodService.getSendPhoto(chatId,
+                    imageService.getFile(user.getProfile()),
+                    keyboardService.getInlineMainMenu(),
+                    user.getProfile().getName()));
+            return method;
         }
 
-        answerList.add(replyToUser);
-        answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
-        return answerList;
+        return Collections.singletonList(deleteMessage);
     }
 }

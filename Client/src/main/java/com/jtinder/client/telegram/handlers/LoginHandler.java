@@ -18,6 +18,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -38,7 +39,7 @@ public class LoginHandler implements InputMessageHandler {
         User user = userDataCache.getUserProfileData(chatId);
         user.setToken(serverService.loginUser(new AuthenticUser(chatId, message.getText())));
 
-        if(user.getToken().isEmpty()) {
+        if (user.getToken().isEmpty()) {
             return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
                     messagesService.getText("reply.wrongPassword"),
                     keyboardService.getAuthenticateKeyboard()));
@@ -46,11 +47,15 @@ public class LoginHandler implements InputMessageHandler {
 
         user.setProfile(serverService.getLoginUserProfile(user));
         userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
-        return List.of(botMethodService.getDeleteMessage(chatId, message.getMessageId()),
-                botMethodService.getSendMessage(
-                        chatId,
-                        messagesService.getText("reply.menu"),
-                        keyboardService.getInlineMainMenu()));
+        List<PartialBotApiMethod<?>> method = userDataCache.getMessagesToDelete(chatId).stream()
+                .map(integer -> botMethodService.getDeleteMessage(chatId, integer))
+                .collect(Collectors.toList());
+        method.add(deleteMessage);
+        method.add(botMethodService.getSendMessage(
+                chatId,
+                messagesService.getText("reply.menu"),
+                keyboardService.getInlineMainMenu()));
+        return method;
     }
 
     @Override

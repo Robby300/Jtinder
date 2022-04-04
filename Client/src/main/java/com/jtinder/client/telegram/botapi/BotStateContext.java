@@ -36,6 +36,9 @@ public class BotStateContext {
     }
 
     public List<PartialBotApiMethod<?>> processInputCallBack(BotState currentState, CallbackQuery callbackQuery) {
+        if(currentState == null) {
+            return Collections.singletonList(new DeleteMessage(callbackQuery.getMessage().getChatId().toString(), callbackQuery.getMessage().getMessageId()));
+        }
         InputMessageHandler currentMessageHandler = findMessageHandlerForCallBack(currentState, callbackQuery);
         return currentMessageHandler.handle(callbackQuery);
     }

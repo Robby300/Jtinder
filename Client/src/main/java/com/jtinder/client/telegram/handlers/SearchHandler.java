@@ -76,8 +76,8 @@ public class SearchHandler implements InputMessageHandler {
         if (callbackQuery.getData().equals("Лайк") || callbackQuery.getData().equals("Следующий")) {
             if (callbackQuery.getData().equals("Лайк")) {
                 serverService.likeProfile(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user);
-                String weLove = serverService.weLowe(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user);
-                if (weLove.equals("Вы любимы")) {
+
+                if(serverService.weLowe(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)) {
                     AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
                     answerCallbackQuery.setCallbackQueryId(callbackQuery.getId());
                     answerCallbackQuery.setShowAlert(true);

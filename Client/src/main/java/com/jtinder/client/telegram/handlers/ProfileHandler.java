@@ -52,9 +52,7 @@ public class ProfileHandler implements InputMessageHandler {
         profilePhoto.setReplyMarkup(keyboardService.getInlineMainMenu());
         profilePhoto.setCaption(user.getProfile().getName());
 
-
         profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getProfile())));
-
 
         answerList.add(profilePhoto);
         return answerList;
