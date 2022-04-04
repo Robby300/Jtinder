@@ -7,7 +7,6 @@ import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -28,7 +27,6 @@ import java.util.List;
  * Формирует анкету пользователя.
  */
 
-@Slf4j
 @AllArgsConstructor
 @Component
 public class FillingProfileHandler implements InputMessageHandler {

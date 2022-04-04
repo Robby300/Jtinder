@@ -2,8 +2,11 @@ package com.jtinder.client.telegram.botapi;
 
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.BotMethodService;
+import com.jtinder.client.telegram.service.ServerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
@@ -17,8 +20,8 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component
-@Slf4j
 public class TelegramFacade {
+    private static final Logger log = LoggerFactory.getLogger(TelegramFacade.class);
     private final BotStateContext botStateContext;
     private final UserDataCache userDataCache;
     private final BotMethodService botMethodService;

@@ -5,7 +5,8 @@ import com.jtinder.client.domen.Profile;
 import com.jtinder.client.domen.Token;
 import com.jtinder.client.domen.User;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Slf4j
+
 @Service
 @AllArgsConstructor
 public class ServerService {
+    private static final Logger log = LoggerFactory.getLogger(ServerService.class);
+
     private final RestTemplate restTemplate;
     private final AuthorizationService authorizationService;
 
@@ -65,7 +68,7 @@ public class ServerService {
     }
 
     public void likeProfile(Long profileId, User user) {
-        restTemplate.put(String.format(URL_LIKE, profileId),authorizationService.getAuthorizationHeader(user), profileId, Long.class);
+        restTemplate.put(String.format(URL_LIKE, profileId), authorizationService.getAuthorizationHeader(user), profileId, Long.class);
         log.info("Текущий пользователь id = {} ставит лайк пользоваетлю id ={}", user.getProfile().getUserId(), profileId);
     }
 

@@ -7,10 +7,11 @@ import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.ImageService;
 import com.jtinder.client.telegram.service.KeyboardService;
-import com.jtinder.client.telegram.service.TextMessagesService;
 import com.jtinder.client.telegram.service.ServerService;
+import com.jtinder.client.telegram.service.TextMessagesService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -26,8 +27,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-@Slf4j
 public class LowersHandler implements InputMessageHandler {
+    private static final Logger log = LoggerFactory.getLogger(LowersHandler.class);
     private final UserDataCache userDataCache;
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
@@ -70,7 +71,7 @@ public class LowersHandler implements InputMessageHandler {
                 profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
                 profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.warn(e.getMessage());
             }
             profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
             answerList.add(profilePhoto);
@@ -86,7 +87,7 @@ public class LowersHandler implements InputMessageHandler {
                     profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
                     profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.warn(e.getMessage());
                 }
                 answerList.add(profilePhoto);
                 return answerList;
@@ -97,7 +98,7 @@ public class LowersHandler implements InputMessageHandler {
                 profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
             } catch (IOException e) {
-                e.printStackTrace();
+                log.warn(e.getMessage());
             }
 
             answerList.add(profilePhoto);
@@ -113,7 +114,7 @@ public class LowersHandler implements InputMessageHandler {
                     profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
                     profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    log.warn(e.getMessage());
                 }
                 answerList.add(profilePhoto);
                 return answerList;
@@ -124,7 +125,7 @@ public class LowersHandler implements InputMessageHandler {
                 profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
                 profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardLowers());
             } catch (IOException e) {
-                e.printStackTrace();
+                log.warn(e.getMessage());
             }
 
             answerList.add(profilePhoto);

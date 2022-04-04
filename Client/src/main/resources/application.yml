@@ -10,5 +10,5 @@ server:
 localeTag: ru-RU
 
 upload:
-  #path: /home/robert/IdeaProjects/Jtinder/Client/src/main/resources/prerev-background.jpg
-  path: E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg
+  path: /home/robert/IdeaProjects/Jtinder/Client/src/main/resources/prerev-background.jpg
+  #path: E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg
