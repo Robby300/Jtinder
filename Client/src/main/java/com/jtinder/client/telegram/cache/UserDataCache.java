@@ -1,6 +1,6 @@
 package com.jtinder.client.telegram.cache;
 
-import com.jtinder.client.domen.User;
+import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import org.springframework.stereotype.Component;
 

@@ -73,6 +73,7 @@ public class AuthenticateHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        return null;
+        long chatId = callbackQuery.getMessage().getChatId();
+        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, callbackQuery.getMessage().getMessageId()));
     }
 }

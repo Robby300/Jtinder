@@ -1,6 +1,6 @@
 package com.jtinder.client.telegram.service;
 
-import com.jtinder.client.domen.Profile;
+import com.jtinder.client.domain.Profile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;

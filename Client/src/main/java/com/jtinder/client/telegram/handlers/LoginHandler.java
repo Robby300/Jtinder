@@ -1,9 +1,10 @@
 package com.jtinder.client.telegram.handlers;
 
-import com.jtinder.client.domen.AuthenticUser;
-import com.jtinder.client.domen.User;
+import com.jtinder.client.domain.AuthenticUser;
+import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.service.BotMethodService;
 import com.jtinder.client.telegram.service.KeyboardService;
 import com.jtinder.client.telegram.service.ServerService;
 import com.jtinder.client.telegram.service.TextMessagesService;
@@ -11,12 +12,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -27,26 +27,30 @@ public class LoginHandler implements InputMessageHandler {
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
+    private final BotMethodService botMethodService;
 
 
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
-        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
         long chatId = message.getChatId();
+        DeleteMessage deleteMessage = botMethodService.getDeleteMessage(chatId, message.getMessageId());
 
         User user = userDataCache.getUserProfileData(chatId);
-
-        SendMessage replyToUser = new SendMessage();
-        replyToUser.enableMarkdown(true);
-        replyToUser.setReplyMarkup(keyboardService.getInlineMainMenu());
-        replyToUser.setChatId(String.valueOf(chatId));
         user.setToken(serverService.loginUser(new AuthenticUser(chatId, message.getText())));
+
+        if(user.getToken().isEmpty()) {
+            return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
+                    messagesService.getText("reply.wrongPassword"),
+                    keyboardService.getAuthenticateKeyboard()));
+        }
+
         user.setProfile(serverService.getLoginUserProfile(user));
-        replyToUser.setText("МЕНЮ");
-        answerList.add(new DeleteMessage(String.valueOf(chatId), message.getMessageId()));
-        answerList.add(replyToUser);
         userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
-        return answerList;
+        return List.of(botMethodService.getDeleteMessage(chatId, message.getMessageId()),
+                botMethodService.getSendMessage(
+                        chatId,
+                        messagesService.getText("reply.menu"),
+                        keyboardService.getInlineMainMenu()));
     }
 
     @Override
@@ -56,6 +60,7 @@ public class LoginHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        return null;
+        long chatId = callbackQuery.getMessage().getChatId();
+        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, callbackQuery.getMessage().getMessageId()));
     }
 }
