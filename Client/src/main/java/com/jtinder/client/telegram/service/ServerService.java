@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-
 @Service
 @AllArgsConstructor
 public class ServerService {
@@ -24,6 +23,7 @@ public class ServerService {
 
     private final RestTemplate restTemplate;
     private final AuthorizationService authorizationService;
+    private final PrerevolutionaryTranslator translator;
 
     static final String URL_USERS = "http://localhost:8080/users/search";
     static final String URL_LIKE = "http://localhost:8080/users/like/%d";
@@ -81,6 +81,6 @@ public class ServerService {
     public String getCaption(Long userId, User user) {
         ResponseEntity<String> caption = restTemplate.exchange(String.format(URL_CAPTION, userId), HttpMethod.GET, authorizationService.getAuthorizationHeader(user), String.class);
         log.info("Получение описания к картинке профиля для пользователя id = {}", userId);
-        return caption.getBody();
+        return translator.translate(caption.getBody());
     }
 }

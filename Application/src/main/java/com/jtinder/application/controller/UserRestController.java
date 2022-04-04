@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -126,13 +125,20 @@ public class UserRestController {
         if (userService.isReciprocity(user)) {
             return resultString + ", Взаимность";
         } else if (currentUser.getWeLike().contains(user)) {
-            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE)?"a":"") + " вами.";
-        }  else if (currentUser.getUsLike().contains(user)) {
+            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE) ? "a" : "") + " вами.";
+        } else if (currentUser.getUsLike().contains(user)) {
             return resultString + ", Вы любимы";
         }
         return resultString + ".";
     }
 
+    @GetMapping("/islove/{id}")
+    public String islove(@PathVariable(value = "id") User user) {
+        User currentUser = userService.getCurrentUser();
+        if (currentUser.getWeLike().contains(user) && currentUser.getUsLike().contains(user)) {
+            return "Вы любимы";
+        }
+        return "";
 
     /*@DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") User user) {
@@ -158,13 +164,5 @@ public class UserRestController {
      return userService.findAllFemale();
  }
 */
-
-    @PostMapping("/image/{id}")
-    public void getImage(@PathVariable(value = "id") User user) {
-        try {
-            service.getFile(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }
