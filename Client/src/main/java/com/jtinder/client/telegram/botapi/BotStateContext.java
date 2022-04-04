@@ -3,9 +3,11 @@ package com.jtinder.client.telegram.botapi;
 import com.jtinder.client.telegram.handlers.InputMessageHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,12 +19,19 @@ import java.util.Map;
 public class BotStateContext {
     private final Map<BotState, InputMessageHandler> messageHandlers = new HashMap<>();
 
+
     public BotStateContext(List<InputMessageHandler> messageHandlers) {
         messageHandlers.forEach(handler -> this.messageHandlers.put(handler.getHandlerName(), handler));
     }
 
     public List<PartialBotApiMethod<?>> processInputMessage(BotState currentState, Message message) {
+        if(currentState == null) {
+            return Collections.singletonList(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
+        }
         InputMessageHandler currentMessageHandler = findMessageHandler(currentState);
+        if(currentMessageHandler == null) {
+            return Collections.singletonList(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
+        }
         return currentMessageHandler.handle(message);
     }
 

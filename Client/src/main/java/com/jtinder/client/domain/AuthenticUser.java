@@ -1,4 +1,4 @@
-package com.jtinder.client.domen;
+package com.jtinder.client.domain;
 
 import lombok.Data;
 

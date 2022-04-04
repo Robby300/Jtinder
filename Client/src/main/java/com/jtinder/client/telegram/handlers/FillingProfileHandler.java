@@ -1,8 +1,8 @@
 package com.jtinder.client.telegram.handlers;
 
-import com.jtinder.client.domen.AuthenticUser;
-import com.jtinder.client.domen.Sex;
-import com.jtinder.client.domen.User;
+import com.jtinder.client.domain.AuthenticUser;
+import com.jtinder.client.domain.Sex;
+import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.*;
@@ -16,7 +16,6 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -115,18 +114,21 @@ public class FillingProfileHandler implements InputMessageHandler {
 
         if (botState.equals(BotState.PROFILE_FILLED)) {
             user.getProfile().setFindSex(new HashSet<>());
-            user.getProfile().getFindSex().add(Sex.valueOf(usersAnswer));
+            if (usersAnswer.equals("ВСЕХ")) {
+                user.getProfile().getFindSex().add(Sex.MALE);
+                user.getProfile().getFindSex().add(Sex.FEMALE);
+            } else {
+                user.getProfile().getFindSex().add(Sex.valueOf(usersAnswer));
+            }
 
             profilePhoto.setReplyMarkup(keyboardService.getInlineMainMenu());
             serverService.registerUser(user.getProfile());
             user.setToken(serverService.loginUser(new AuthenticUser(user.getProfile().getUserId(), user.getProfile().getPassword())));
             profilePhoto.setChatId(String.valueOf(chatId));
             profilePhoto.setCaption(user.getProfile().getName());
-            try {
-                profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getProfile())));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getProfile())));
+
             answerList.add(profilePhoto);
             answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
             userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);

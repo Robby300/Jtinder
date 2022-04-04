@@ -1,6 +1,7 @@
 package com.jtinder.client.telegram.service;
 
-import com.jtinder.client.domen.Profile;
+
+import com.jtinder.client.domain.Profile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;

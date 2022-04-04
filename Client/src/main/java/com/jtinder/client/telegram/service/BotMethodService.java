@@ -28,9 +28,10 @@ public class BotMethodService {
         return new SendMessage(String.valueOf(chatId), text);
     }
 
-    public SendPhoto getSendPhoto(Long chatId, File file, InlineKeyboardMarkup keyboardMarkup) {
+    public SendPhoto getSendPhoto(Long chatId, File file, InlineKeyboardMarkup keyboardMarkup, String caption) {
         SendPhoto sendPhoto = new SendPhoto(String.valueOf(chatId), new InputFile(file));
         sendPhoto.setReplyMarkup(keyboardMarkup);
+        sendPhoto.setCaption(caption);
         return sendPhoto;
     }
 

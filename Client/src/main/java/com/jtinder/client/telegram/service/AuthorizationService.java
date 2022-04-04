@@ -1,6 +1,6 @@
 package com.jtinder.client.telegram.service;
 
-import com.jtinder.client.domen.User;
+import com.jtinder.client.domain.User;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

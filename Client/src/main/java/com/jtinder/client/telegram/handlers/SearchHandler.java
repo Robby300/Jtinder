@@ -1,17 +1,15 @@
 package com.jtinder.client.telegram.handlers;
 
-import com.jtinder.client.domen.Profile;
-import com.jtinder.client.domen.ScrollableListWrapper;
-import com.jtinder.client.domen.User;
+import com.jtinder.client.domain.Profile;
+import com.jtinder.client.domain.ScrollableListWrapper;
+import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
-import com.jtinder.client.telegram.service.ImageService;
-import com.jtinder.client.telegram.service.KeyboardService;
-import com.jtinder.client.telegram.service.ServerService;
-import com.jtinder.client.telegram.service.TextMessagesService;
+import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -20,8 +18,8 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Component
@@ -33,6 +31,7 @@ public class SearchHandler implements InputMessageHandler {
     private final KeyboardService keyboardService;
     private final ServerService serverService;
     private final ImageService imageService;
+    private final BotMethodService botMethodService;
 
     @Override
     public BotState getHandlerName() {
@@ -43,7 +42,6 @@ public class SearchHandler implements InputMessageHandler {
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
         List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
 
-        long userId = callbackQuery.getMessage().getFrom().getId();
         long chatId = callbackQuery.getMessage().getChatId();
         User user = userDataCache.getUserProfileData(chatId);
         answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
@@ -66,12 +64,10 @@ public class SearchHandler implements InputMessageHandler {
 
             user.setScrollableListWrapper(new ScrollableListWrapper(users));
             profilePhoto.setChatId(String.valueOf(chatId));
-            try {
-                profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
-                profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+            profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
+            profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
+
             profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
             answerList.add(profilePhoto);
             answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
@@ -80,6 +76,14 @@ public class SearchHandler implements InputMessageHandler {
         if (callbackQuery.getData().equals("Лайк") || callbackQuery.getData().equals("Следующий")) {
             if (callbackQuery.getData().equals("Лайк")) {
                 serverService.likeProfile(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user);
+                String weLove = serverService.weLowe(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user);
+                if (weLove.equals("Вы любимы")) {
+                    AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
+                    answerCallbackQuery.setCallbackQueryId(callbackQuery.getId());
+                    answerCallbackQuery.setShowAlert(true);
+                    answerCallbackQuery.setText("Вы любимы");
+                    answerList.add(answerCallbackQuery);
+                }
             }
             if (user.getScrollableListWrapper().isLast()) {
                 user.setScrollableListWrapper(new ScrollableListWrapper(serverService.getValidProfilesToUser(user)));
@@ -89,27 +93,20 @@ public class SearchHandler implements InputMessageHandler {
                     answerList.add(replyToUser);
                     return answerList;
                 }
-                try {
-                    profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
-                    profilePhoto.setChatId(String.valueOf(chatId));
-                    profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
-                    profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
+                profilePhoto.setChatId(String.valueOf(chatId));
+                profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+                profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
+
                 answerList.add(profilePhoto);
                 return answerList;
             }
 
+            profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getNextProfile())));
+            profilePhoto.setChatId(String.valueOf(chatId));
+            profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+            profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
 
-            try {
-                profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getNextProfile())));
-                profilePhoto.setChatId(String.valueOf(chatId));
-                profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
-                profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
             answerList.add(profilePhoto);
         }
@@ -127,7 +124,8 @@ public class SearchHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
-        return null;
+        long chatId = message.getChatId();
+        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
     }
 
 

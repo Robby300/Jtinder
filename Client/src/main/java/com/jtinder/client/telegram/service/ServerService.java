@@ -1,9 +1,9 @@
 package com.jtinder.client.telegram.service;
 
-import com.jtinder.client.domen.AuthenticUser;
-import com.jtinder.client.domen.Profile;
-import com.jtinder.client.domen.Token;
-import com.jtinder.client.domen.User;
+import com.jtinder.client.domain.AuthenticUser;
+import com.jtinder.client.domain.Profile;
+import com.jtinder.client.domain.Token;
+import com.jtinder.client.domain.User;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +33,7 @@ public class ServerService {
     static final String URL_IS_REGISTERED = "http://localhost:8080/users/exists/%d";
     static final String URL_LOWERS = "http://localhost:8080/users/likers";
     static final String URL_CAPTION = "http://localhost:8080/users/imgdescr/%d";
+    static final String URL_LOVE = "http://localhost:8080/users/islove/%d";
 
     public List<Profile> getValidProfilesToUser(User user) {
         ResponseEntity<Profile[]> usersResponse = restTemplate.exchange(URL_USERS, HttpMethod.GET, authorizationService.getAuthorizationHeader(user), Profile[].class);
@@ -82,5 +83,11 @@ public class ServerService {
         ResponseEntity<String> caption = restTemplate.exchange(String.format(URL_CAPTION, userId), HttpMethod.GET, authorizationService.getAuthorizationHeader(user), String.class);
         log.info("Получение описания к картинке профиля для пользователя id = {}", userId);
         return translator.translate(caption.getBody());
+    }
+
+    public String weLowe(Long userId, User user) {
+        ResponseEntity<String> love = restTemplate.exchange(String.format(URL_LOVE, userId), HttpMethod.GET, authorizationService.getAuthorizationHeader(user), String.class);
+        log.info("Получение popUp сообщения для пользователя id = {}", userId);
+        return love.getBody();
     }
 }
