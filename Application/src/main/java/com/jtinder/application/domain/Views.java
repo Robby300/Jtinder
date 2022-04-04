@@ -1,4 +1,4 @@
-package com.jtinder.application.domen;
+package com.jtinder.application.domain;
 
 public final class Views {
 

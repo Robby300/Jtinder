@@ -1,6 +1,6 @@
 package com.jtinder.application.service;
 
-import com.jtinder.application.domen.User;
+import com.jtinder.application.domain.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;

@@ -1,12 +1,9 @@
 package com.jtinder.client.domain;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-@Slf4j
 public class ScrollableListWrapper {
 
     private final List<Profile> listToScroll;
@@ -47,13 +44,16 @@ public class ScrollableListWrapper {
     public Profile getPreviousProfile() {
         return listToScroll.get(--currentIndex);
     }
+
     public boolean isFirst() {
         return currentIndex == 0;
     }
+
     public void resetCurrentIndex() {
         currentIndex = 0;
     }
+
     public void resetCurrentIndexFromLast() {
-        currentIndex = listToScroll.size()-1;
+        currentIndex = listToScroll.size() - 1;
     }
 }

@@ -1,4 +1,4 @@
-package com.jtinder.application.domen;
+package com.jtinder.application.domain;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonView;

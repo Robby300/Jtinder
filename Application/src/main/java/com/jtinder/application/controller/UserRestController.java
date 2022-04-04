@@ -1,9 +1,9 @@
 package com.jtinder.application.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.jtinder.application.domen.Sex;
-import com.jtinder.application.domen.User;
-import com.jtinder.application.domen.Views;
+import com.jtinder.application.domain.Sex;
+import com.jtinder.application.domain.User;
+import com.jtinder.application.domain.Views;
 import com.jtinder.application.service.ImageService;
 import com.jtinder.application.service.UserService;
 import org.slf4j.Logger;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -126,13 +125,18 @@ public class UserRestController {
         if (userService.isReciprocity(user)) {
             return resultString + ", Взаимность";
         } else if (currentUser.getWeLike().contains(user)) {
-            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE)?"a":"") + " вами.";
-        }  else if (currentUser.getUsLike().contains(user)) {
+            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE) ? "a" : "") + " вами.";
+        } else if (currentUser.getUsLike().contains(user)) {
             return resultString + ", Вы любимы";
         }
         return resultString + ".";
     }
 
+    @GetMapping("/islove/{id}")
+    public boolean islove(@PathVariable(value = "id") User user) {
+        User currentUser = userService.getCurrentUser();
+        return currentUser.getWeLike().contains(user) && currentUser.getUsLike().contains(user);
+    }
 
     /*@DeleteMapping("/{id}")
     public void delete(@PathVariable(value = "id") User user) {
@@ -159,12 +163,4 @@ public class UserRestController {
  }
 */
 
-    @PostMapping("/image/{id}")
-    public void getImage(@PathVariable(value = "id") User user) {
-        try {
-            service.getFile(user);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }

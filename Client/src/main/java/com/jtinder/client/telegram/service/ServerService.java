@@ -5,7 +5,8 @@ import com.jtinder.client.domain.Profile;
 import com.jtinder.client.domain.Token;
 import com.jtinder.client.domain.User;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,14 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Slf4j
 @Service
 @AllArgsConstructor
 public class ServerService {
+    private static final Logger log = LoggerFactory.getLogger(ServerService.class);
+
     private final RestTemplate restTemplate;
     private final AuthorizationService authorizationService;
+    private final PrerevolutionaryTranslator translator;
 
     static final String URL_USERS = "http://localhost:8080/users/search";
     static final String URL_LIKE = "http://localhost:8080/users/like/%d";
@@ -66,7 +69,7 @@ public class ServerService {
     }
 
     public void likeProfile(Long profileId, User user) {
-        restTemplate.put(String.format(URL_LIKE, profileId),authorizationService.getAuthorizationHeader(user), profileId, Long.class);
+        restTemplate.put(String.format(URL_LIKE, profileId), authorizationService.getAuthorizationHeader(user), profileId, Long.class);
         log.info("Текущий пользователь id = {} ставит лайк пользоваетлю id ={}", user.getProfile().getUserId(), profileId);
     }
 
@@ -79,7 +82,7 @@ public class ServerService {
     public String getCaption(Long userId, User user) {
         ResponseEntity<String> caption = restTemplate.exchange(String.format(URL_CAPTION, userId), HttpMethod.GET, authorizationService.getAuthorizationHeader(user), String.class);
         log.info("Получение описания к картинке профиля для пользователя id = {}", userId);
-        return caption.getBody();
+        return translator.translate(caption.getBody());
     }
 
     public String weLowe(Long userId, User user) {
