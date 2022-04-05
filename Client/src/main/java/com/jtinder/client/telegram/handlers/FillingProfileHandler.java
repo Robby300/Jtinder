@@ -127,7 +127,7 @@ public class FillingProfileHandler implements InputMessageHandler {
             method.add(deleteMessage);
             method.add(botMethodService.getSendPhoto(chatId,
                     imageService.getFile(user.getProfile()),
-                    keyboardService.getInlineMainMenu(),
+                    keyboardService.getInlineMainMenu(),user.getProfile().getSex().getName() + ", " +
                     user.getProfile().getName()));
             return method;
         }
