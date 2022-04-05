@@ -31,12 +31,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Нет такого!"));
     }
 
-    /*@Override
-    public String getCurrentUserName() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
-    }*/
-
     @Override
     public User getCurrentUser() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -50,16 +44,6 @@ public class UserServiceImpl implements UserService {
         return getCurrentUser().getWeLike().contains(user)
                 && getCurrentUser().getUsLike().contains(user);
     }
-
-    /*@Override
-    public List<User> findAllMale() {
-        return userRepository.findUsersBySexIs(Sex.MALE);
-    }
-
-    @Override
-    public List<User> findAllFemale() {
-        return userRepository.findUsersBySexIs(Sex.FEMALE);
-    }*/
 
     @Override
     public List<User> searchUsers() {
@@ -76,16 +60,10 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).isPresent();
     }
 
-
     @Override
     public User save(User user) {
         return userRepository.save(user);
     }
-
-/*    @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }*/
 
     @Override
     public void deleteUser(User user) {
