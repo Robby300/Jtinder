@@ -50,7 +50,8 @@ public class ProfileHandler implements InputMessageHandler {
         SendPhoto profilePhoto = new SendPhoto();
         profilePhoto.setChatId(String.valueOf(chatId));
         profilePhoto.setReplyMarkup(keyboardService.getInlineMainMenu());
-        profilePhoto.setCaption(user.getProfile().getName());
+        profilePhoto.setCaption(user.getProfile().getSex().getName() + ", " +
+                user.getProfile().getName());
 
         profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getProfile())));
 
