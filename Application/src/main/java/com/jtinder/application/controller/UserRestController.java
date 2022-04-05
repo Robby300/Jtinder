@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.jtinder.application.domain.Sex;
 import com.jtinder.application.domain.User;
 import com.jtinder.application.domain.Views;
-import com.jtinder.application.service.ImageService;
 import com.jtinder.application.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,13 +20,11 @@ import java.util.Set;
 public class UserRestController {
 
     private final UserService userService;
-    private final ImageService service;
 
     private static final Logger logger = LoggerFactory.getLogger(UserRestController.class);
 
-    public UserRestController(UserService userService, ImageService service) {
+    public UserRestController(UserService userService) {
         this.userService = userService;
-        this.service = service;
     }
 
     @GetMapping("/{id}")
@@ -117,7 +114,6 @@ public class UserRestController {
         return userService.save(user);
     }
 
-    // Временные методы
     @GetMapping("/imgdescr/{id}")
     public String getImageDescription(@PathVariable(value = "id") User user) {
         String resultString = user.getSex().getName() + ", " + user.getName();
@@ -137,30 +133,4 @@ public class UserRestController {
         User currentUser = userService.getCurrentUser();
         return currentUser.getWeLike().contains(user) && currentUser.getUsLike().contains(user);
     }
-
-    /*@DeleteMapping("/{id}")
-    public void delete(@PathVariable(value = "id") User user) {
-        logger.info("Обработка DELETE запроса /{} - удалить пользователя.", user.getUserId());
-        userService.deleteUser(user);
-    }
-    @GetMapping()
-    @JsonView(Views.Anketa.class)
-    public List<User> findAll() {
-        return userService.findAll();
-    }*/
-
-/*
-    @GetMapping("/male")
- @JsonView(Views.Anketa.class)
- public List<User> findAllMale() {
-     return userService.findAllMale();
- }
-
- @GetMapping("/female")
- @JsonView(Views.Anketa.class)
- public List<User> findAllFemale() {
-     return userService.findAllFemale();
- }
-*/
-
 }

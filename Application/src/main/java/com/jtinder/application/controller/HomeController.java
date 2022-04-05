@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-//@CrossOrigin()
 public class HomeController {
 
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
