@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Component
-@Slf4j
 @AllArgsConstructor
 public class ProfileHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
