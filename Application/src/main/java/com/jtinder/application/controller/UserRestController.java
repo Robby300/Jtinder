@@ -114,6 +114,18 @@ public class UserRestController {
         return userService.save(user);
     }
 
+    @PostMapping("/update_current")
+    @JsonView(Views.Anketa.class)
+    public void saveCurrentUser(@RequestBody User user) {
+        logger.info("Обработка POST запроса {} - обновление данных текущего пользователя.", user.getUserId());
+        User currentUser = userService.getCurrentUser();
+        currentUser.setName(user.getName());
+        currentUser.setDescription(user.getDescription());
+        currentUser.setSex(user.getSex());
+        currentUser.setFindSex(user.getFindSex());
+        userService.save(currentUser);
+    }
+
     @GetMapping("/imgdescr/{id}")
     public String getImageDescription(@PathVariable(value = "id") User user) {
         String resultString = user.getSex().getName() + ", " + user.getName();
