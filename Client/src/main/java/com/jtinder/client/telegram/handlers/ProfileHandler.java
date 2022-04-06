@@ -29,8 +29,9 @@ public class ProfileHandler implements InputMessageHandler {
     public List<PartialBotApiMethod<?>> handle(Message message) {
         long chatId = message.getChatId();
         User user = userDataCache.getUserProfileData(chatId);
+        userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE);
 
-        if (message.getText().equals(messagesService.getText("button.search"))) {
+        if (message.getText().equals(messagesService.getText("button.profile"))) {
             return getProfile(message, chatId, user);
         }
 
@@ -38,8 +39,8 @@ public class ProfileHandler implements InputMessageHandler {
             userDataCache.setUsersCurrentBotState(chatId, BotState.EDIT);
             return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
-                    messagesService.getText("reply.menu"),
-                    keyboardService.getProfileMenu()));
+                    messagesService.getText("reply.edit"),
+                    keyboardService.getProfileEditMenu()));
         }
 
         if (message.getText().equals(messagesService.getText("button.menu"))) {
@@ -69,7 +70,7 @@ public class ProfileHandler implements InputMessageHandler {
         return Collections.singletonList(botMethodService.getSendPhoto(
                 chatId,
                 imageService.getFile(user.getProfile()),
-                keyboardService.getMainMenu(), user.getProfile().getSex().getName() + ", " +
+                keyboardService.getProfileMenu(), user.getProfile().getSex().getName() + ", " +
                         user.getProfile().getName()));
     }
 }

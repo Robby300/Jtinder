@@ -122,7 +122,7 @@ public class KeyboardService {
         return mainMenuKeyboard;
     }
 
-    public ReplyKeyboardMarkup getProfileMenu() {
+    public ReplyKeyboardMarkup getProfileEditMenu() {
         ReplyKeyboardMarkup mainMenuKeyboard = new ReplyKeyboardMarkup();
         mainMenuKeyboard.setSelective(true);
         mainMenuKeyboard.setResizeKeyboard(true);
@@ -151,6 +151,21 @@ public class KeyboardService {
         mainMenuKeyboard.setKeyboard(keyboard);
 
         return mainMenuKeyboard;
+    }
+
+    public ReplyKeyboardMarkup getProfileMenu() {
+        ReplyKeyboardMarkup searchKeyboard = new ReplyKeyboardMarkup();
+        searchKeyboard.setSelective(true);
+        searchKeyboard.setResizeKeyboard(true);
+        searchKeyboard.setOneTimeKeyboard(true);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton(messagesService.getText("button.edit")));
+        row.add(new KeyboardButton(messagesService.getText("button.menu")));
+        keyboard.add(row);
+        searchKeyboard.setKeyboard(keyboard);
+        return searchKeyboard;
     }
 
 

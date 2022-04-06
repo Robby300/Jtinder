@@ -43,7 +43,7 @@ public class EditProfileHandler implements InputMessageHandler {
 
     @Override
     public BotState getHandlerName() {
-        return null;
+        return BotState.EDIT;
     }
 
     @Override
@@ -54,14 +54,12 @@ public class EditProfileHandler implements InputMessageHandler {
 
         User user = userDataCache.getUserProfileData(chatId);
         user.getProfile().setSex(Sex.valueOf(usersAnswer));
-        // изменить на сервере
+        serverService.changeSex(user.getProfile().getSex(), user);
         userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE);
-        return List.of(deleteMessage, botMethodService.getSendMessage(
-                        chatId,
-                        messagesService.getText("reply.editSex")),
-                botMethodService.getSendMessage(
-                        chatId,
-                        messagesService.getText("button.profile")));
+        return List.of(deleteMessage, (botMethodService.getSendPhoto(chatId,
+                imageService.getFile(user.getProfile()),
+                keyboardService.getProfileMenu(),user.getProfile().getSex().getName() + ", " +
+                        user.getProfile().getName())));
     }
 
 }

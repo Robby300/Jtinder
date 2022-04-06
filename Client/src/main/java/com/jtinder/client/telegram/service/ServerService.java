@@ -57,7 +57,7 @@ public class ServerService {
     }
 
     public void changeSex(Sex sex, User user) {
-        restTemplate.put(URL_CHANGE_SEX, authorizationService.getAuthorizationHeader(user), sex, Sex.class);
+        restTemplate.put(URL_CHANGE_SEX, sex, authorizationService.getAuthorizationHeader(user), Sex.class);
         log.info("Текущий пользователь id = {} меняет пол на = {}", user.getProfile().getUserId(), sex.getName());
     }
 
