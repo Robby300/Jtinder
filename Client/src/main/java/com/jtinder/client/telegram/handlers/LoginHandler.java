@@ -54,7 +54,7 @@ public class LoginHandler implements InputMessageHandler {
         method.add(botMethodService.getSendMessage(
                 chatId,
                 messagesService.getText("reply.menu"),
-                keyboardService.getInlineMainMenu()));
+                keyboardService.getMainMenu()));
         return method;
     }
 

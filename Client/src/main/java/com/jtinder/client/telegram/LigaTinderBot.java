@@ -6,7 +6,6 @@ import com.jtinder.client.telegram.cache.UserDataCache;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -65,7 +64,7 @@ public class LigaTinderBot extends TelegramLongPollingBot {
             switch (usersCurrentBotState) {
                 case PROFILE:
                 case SEARCH:
-                case LOWERS:
+                case LOVERS:
                 case MAIN_MENU:
                     userDataCache.setMessagesToDelete(message.getChatId(), Set.of(message.getMessageId()));
                     break;

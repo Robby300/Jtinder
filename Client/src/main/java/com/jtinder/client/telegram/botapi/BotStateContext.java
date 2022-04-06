@@ -1,6 +1,8 @@
 package com.jtinder.client.telegram.botapi;
 
 import com.jtinder.client.telegram.handlers.InputMessageHandler;
+import com.jtinder.client.telegram.service.TextMessagesService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
@@ -15,12 +17,14 @@ import java.util.Map;
 /**
  * Defines message handlers for each state.
  */
+@Slf4j
 @Component
 public class BotStateContext {
     private final Map<BotState, InputMessageHandler> messageHandlers = new HashMap<>();
+    private final TextMessagesService messagesService;
 
-
-    public BotStateContext(List<InputMessageHandler> messageHandlers) {
+    public BotStateContext(List<InputMessageHandler> messageHandlers, TextMessagesService messagesService) {
+        this.messagesService = messagesService;
         messageHandlers.forEach(handler -> this.messageHandlers.put(handler.getHandlerName(), handler));
     }
 
@@ -28,10 +32,11 @@ public class BotStateContext {
         if(currentState == null) {
             return Collections.singletonList(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
         }
-        InputMessageHandler currentMessageHandler = findMessageHandler(currentState);
+        InputMessageHandler currentMessageHandler = findMessageHandler(currentState, message);
         if(currentMessageHandler == null) {
             return Collections.singletonList(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
         }
+        log.info("User state {}, handler {}", currentState, currentMessageHandler);
         return currentMessageHandler.handle(message);
     }
 
@@ -58,9 +63,19 @@ public class BotStateContext {
     }
 
 
-    private InputMessageHandler findMessageHandler(BotState currentState) {
+    private InputMessageHandler findMessageHandler(BotState currentState, Message message) {
         if (isFillingProfileState(currentState)) {
             return messageHandlers.get(BotState.FILLING_PROFILE);
+        }
+        if(currentState.equals(BotState.MAIN_MENU)) {
+            String text = message.getText();
+            if (messagesService.getText("button.search").equals(text)) {
+                currentState = BotState.SEARCH;
+            } else if (messagesService.getText("button.profile").equals(text)) {
+                currentState = BotState.PROFILE;
+            } else if (messagesService.getText("button.lovers").equals(text)) {
+                currentState = BotState.LOVERS;
+            }
         }
         return messageHandlers.get(currentState);
     }
@@ -74,7 +89,7 @@ public class BotStateContext {
                 currentState = BotState.PROFILE;
                 break;
             case "ЛЮБИМЦЫ":
-                currentState = BotState.LOWERS;
+                currentState = BotState.LOVERS;
                 break;
         }
 

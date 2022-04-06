@@ -63,13 +63,6 @@ public class FillingProfileHandler implements InputMessageHandler {
                     keyboardService.getInlineKeyboardSex()));
         }
 
-        if (botState.equals(BotState.ASK_NAME)) {
-            user.getProfile().setSex(Sex.valueOf(usersAnswer));
-            userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_DESCRIPTION);
-            return List.of(deleteMessage, botMethodService.getSendMessage(
-                    chatId,
-                    messagesService.getText("reply.askName")));
-        }
 
         if (botState.equals(BotState.ASK_DESCRIPTION)) {
             user.getProfile().setName(usersAnswer);
@@ -110,7 +103,7 @@ public class FillingProfileHandler implements InputMessageHandler {
 
         if (botState.equals(BotState.PROFILE_FILLED)) {
             user.getProfile().setFindSex(new HashSet<>());
-            if (usersAnswer.equals("ВСЕХ")) {
+            if (usersAnswer.equals(messagesService.getText("button.allSex"))) {
                 user.getProfile().getFindSex().add(Sex.MALE);
                 user.getProfile().getFindSex().add(Sex.FEMALE);
             } else {
@@ -127,7 +120,7 @@ public class FillingProfileHandler implements InputMessageHandler {
             method.add(deleteMessage);
             method.add(botMethodService.getSendPhoto(chatId,
                     imageService.getFile(user.getProfile()),
-                    keyboardService.getInlineMainMenu(),user.getProfile().getSex().getName() + ", " +
+                    keyboardService.getMainMenu(),user.getProfile().getSex().getName() + ", " +
                     user.getProfile().getName()));
             return method;
         }

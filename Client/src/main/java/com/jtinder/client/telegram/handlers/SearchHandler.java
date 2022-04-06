@@ -40,16 +40,20 @@ public class SearchHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<PartialBotApiMethod<?>> handle(Message message) {
         List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
 
-        long chatId = callbackQuery.getMessage().getChatId();
+        long chatId = message.getChatId();
         User user = userDataCache.getUserProfileData(chatId);
-        answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
 
         SendMessage replyToUser;
         SendPhoto profilePhoto = new SendPhoto();
 
-        if (callbackQuery.getData().equals("ПОИСК")) {
+        if (message.getText().equals(messagesService.getText("button.search"))) {
             userDataCache.setUsersCurrentBotState(chatId, BotState.SEARCH);
             List<Profile> users = serverService.getValidProfilesToUser(user);
             log.info("Пришел список подходящих анкет с размером {}", users.size());
@@ -57,7 +61,7 @@ public class SearchHandler implements InputMessageHandler {
 
             if (users.size() == 0) {
                 replyToUser = messagesService.getReplyMessage(chatId, "reply.noProfile");
-                replyToUser.setReplyMarkup(keyboardService.getInlineMainMenu());
+                replyToUser.setReplyMarkup(keyboardService.getMainMenu());
                 answerList.add(replyToUser);
                 return answerList;
             }
@@ -68,34 +72,30 @@ public class SearchHandler implements InputMessageHandler {
             profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
             profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
 
-            profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+            profilePhoto.setReplyMarkup(keyboardService.getKeyboardSearch());
             answerList.add(profilePhoto);
-            answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
         }
 
-        if (callbackQuery.getData().equals("Лайк") || callbackQuery.getData().equals("Следующий")) {
-            if (callbackQuery.getData().equals("Лайк")) {
+        if (message.getText().equals(messagesService.getText("button.like")) || message.getText().equals(messagesService.getText("button.next"))) {
+            if (message.getText().equals(messagesService.getText("button.like"))) {
                 serverService.likeProfile(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user);
 
-                if(serverService.weLowe(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)) {
-                    AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
-                    answerCallbackQuery.setCallbackQueryId(callbackQuery.getId());
-                    answerCallbackQuery.setShowAlert(true);
-                    answerCallbackQuery.setText("Вы любимы");
-                    answerList.add(answerCallbackQuery);
+                if(serverService.weLove(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)) {
+                    answerList.add(botMethodService.getSendMessage(chatId, messagesService.getText("button.reciprocity")));
                 }
             }
             if (user.getScrollableListWrapper().isLast()) {
                 user.setScrollableListWrapper(new ScrollableListWrapper(serverService.getValidProfilesToUser(user)));
                 if (user.getScrollableListWrapper().isEmpty()) {
                     replyToUser = messagesService.getReplyMessage(chatId, "reply.noProfile");
-                    replyToUser.setReplyMarkup(keyboardService.getInlineMainMenu());
+                    replyToUser.setReplyMarkup(keyboardService.getMainMenu());
+                    userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
                     answerList.add(replyToUser);
                     return answerList;
                 }
                 profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getCurrentProfile())));
                 profilePhoto.setChatId(String.valueOf(chatId));
-                profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+                profilePhoto.setReplyMarkup(keyboardService.getKeyboardSearch());
                 profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
 
                 answerList.add(profilePhoto);
@@ -104,28 +104,22 @@ public class SearchHandler implements InputMessageHandler {
 
             profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getNextProfile())));
             profilePhoto.setChatId(String.valueOf(chatId));
-            profilePhoto.setReplyMarkup(keyboardService.getInlineKeyboardSearch());
+            profilePhoto.setReplyMarkup(keyboardService.getKeyboardSearch());
             profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
 
 
             answerList.add(profilePhoto);
         }
 
-        if (callbackQuery.getData().equals("MENU")) {
+        if (message.getText().equals(messagesService.getText("button.menu"))) {
             replyToUser = new SendMessage();
-            replyToUser.setReplyMarkup(keyboardService.getInlineMainMenu());
+            replyToUser.setReplyMarkup(keyboardService.getMainMenu());
             replyToUser.setChatId(String.valueOf(chatId));
-            replyToUser.setText("МЕНЮ");
+            replyToUser.setText(messagesService.getText("button.menu"));
             answerList.add(replyToUser);
             userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
         }
         return answerList;
-    }
-
-    @Override
-    public List<PartialBotApiMethod<?>> handle(Message message) {
-        long chatId = message.getChatId();
-        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
     }
 
 

@@ -5,7 +5,6 @@ import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -29,8 +28,22 @@ public class ProfileHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
+        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
+
         long chatId = message.getChatId();
-        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
+
+
+        User user = userDataCache.getUserProfileData(chatId);
+        SendPhoto profilePhoto = new SendPhoto();
+        profilePhoto.setChatId(String.valueOf(chatId));
+        profilePhoto.setReplyMarkup(keyboardService.getMainMenu());
+        profilePhoto.setCaption(user.getProfile().getSex().getName() + ", " +
+                user.getProfile().getName());
+
+        profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getProfile())));
+
+        answerList.add(profilePhoto);
+        return answerList;
     }
 
     @Override
@@ -40,21 +53,6 @@ public class ProfileHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
-
-        long chatId = callbackQuery.getMessage().getChatId();
-        answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
-
-        User user = userDataCache.getUserProfileData(chatId);
-        SendPhoto profilePhoto = new SendPhoto();
-        profilePhoto.setChatId(String.valueOf(chatId));
-        profilePhoto.setReplyMarkup(keyboardService.getInlineMainMenu());
-        profilePhoto.setCaption(user.getProfile().getSex().getName() + ", " +
-                user.getProfile().getName());
-
-        profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getProfile())));
-
-        answerList.add(profilePhoto);
-        return answerList;
+        return Collections.emptyList();
     }
 }

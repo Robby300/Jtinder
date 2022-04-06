@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -30,86 +29,82 @@ public class LoversHandler implements InputMessageHandler {
 
     @Override
     public BotState getHandlerName() {
-        return BotState.LOWERS;
+        return BotState.LOVERS;
     }
 
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        long chatId = callbackQuery.getMessage().getChatId();
-        DeleteMessage deleteMessage = botMethodService.getDeleteMessage(chatId, callbackQuery.getMessage().getMessageId());
+        return Collections.emptyList();
+    }
+
+    @Override
+    public List<PartialBotApiMethod<?>> handle(Message message) {
+        long chatId = message.getChatId();
         User user = userDataCache.getUserProfileData(chatId);
 
-        if (callbackQuery.getData().equals("ЛЮБИМЦЫ")) {
-            userDataCache.setUsersCurrentBotState(chatId, BotState.LOWERS);
+        if (message.getText().equals(messagesService.getText("button.lovers"))) {
+            userDataCache.setUsersCurrentBotState(chatId, BotState.LOVERS);
             List<Profile> users = serverService.getLowersProfilesToUser(user);
             log.info("Пришел список подходящих анкет с размером {}", users.size());
             log.info("Список: {}", users);
 
             if (users.size() == 0) {
                 userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
-                return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
+                return Collections.singletonList(botMethodService.getSendMessage(chatId,
                         messagesService.getText("reply.noProfile"),
-                        keyboardService.getInlineMainMenu()));
+                        keyboardService.getMainMenu()));
             }
 
             user.setScrollableListWrapper(new ScrollableListWrapper(users));
 
-            return List.of(deleteMessage, botMethodService.getSendPhoto(chatId,
+            return Collections.singletonList(botMethodService.getSendPhoto(
+                    chatId,
                     imageService.getFile(user.getScrollableListWrapper().getCurrentProfile()),
-                    keyboardService.getInlineKeyboardLowers(),
+                    keyboardService.getKeyboardLowers(),
                     serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)));
-
-
         }
 
-        if (callbackQuery.getData().equals("Следующий")) {
+        if (message.getText().equals(messagesService.getText("button.next"))) {
             if (user.getScrollableListWrapper().isLast()) {
                 user.getScrollableListWrapper().resetCurrentIndex();
 
-                return List.of(deleteMessage, botMethodService.getSendPhoto(chatId,
+                return Collections.singletonList(botMethodService.getSendPhoto(
+                        chatId,
                         imageService.getFile(user.getScrollableListWrapper().getCurrentProfile()),
-                        keyboardService.getInlineKeyboardLowers(),
+                        keyboardService.getKeyboardLowers(),
                         serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)));
-
             }
 
-            return List.of(deleteMessage, botMethodService.getSendPhoto(chatId,
+            return Collections.singletonList(botMethodService.getSendPhoto(
+                    chatId,
                     imageService.getFile(user.getScrollableListWrapper().getNextProfile()),
-                    keyboardService.getInlineKeyboardLowers(),
+                    keyboardService.getKeyboardLowers(),
                     serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)));
-
         }
 
-        if (callbackQuery.getData().equals("Предыдущий")) {
+        if (message.getText().equals(messagesService.getText("button.prev"))) {
             if (user.getScrollableListWrapper().isFirst()) {
                 user.getScrollableListWrapper().resetCurrentIndexFromLast();
 
-                return List.of(deleteMessage, botMethodService.getSendPhoto(chatId,
+                return Collections.singletonList(botMethodService.getSendPhoto(chatId,
                         imageService.getFile(user.getScrollableListWrapper().getCurrentProfile()),
-                        keyboardService.getInlineKeyboardLowers(),
+                        keyboardService.getKeyboardLowers(),
                         serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)));
-
             }
 
-            return List.of(deleteMessage, botMethodService.getSendPhoto(chatId,
+            return Collections.singletonList(botMethodService.getSendPhoto(chatId,
                     imageService.getFile(user.getScrollableListWrapper().getPreviousProfile()),
-                    keyboardService.getInlineKeyboardLowers(),
+                    keyboardService.getKeyboardLowers(),
                     serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)));
         }
 
-        if (callbackQuery.getData().equals("MENUL")) {
+        if (message.getText().equals(messagesService.getText("button.menu"))) {
             userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
-            return List.of(deleteMessage, botMethodService.getSendMessage(
+            return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
                     messagesService.getText("reply.menu"),
-                    keyboardService.getInlineMainMenu()));
+                    keyboardService.getMainMenu()));
         }
-        return Collections.singletonList(deleteMessage);
-    }
-
-    @Override
-    public List<PartialBotApiMethod<?>> handle(Message message) {
-        long chatId = message.getChatId();
-        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
+        return Collections.emptyList();
     }
 
 
