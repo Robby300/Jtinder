@@ -34,28 +34,22 @@ public class LoginHandler implements InputMessageHandler {
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
         long chatId = message.getChatId();
-        DeleteMessage deleteMessage = botMethodService.getDeleteMessage(chatId, message.getMessageId());
 
         User user = userDataCache.getUserProfileData(chatId);
         user.setToken(serverService.loginUser(new AuthenticUser(chatId, message.getText())));
 
         if (user.getToken().isEmpty()) {
-            return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
+            return List.of(botMethodService.getSendMessage(chatId,
                     messagesService.getText("reply.wrongPassword"),
                     keyboardService.getAuthenticateKeyboard()));
         }
 
         user.setProfile(serverService.getLoginUserProfile(user));
         userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
-        List<PartialBotApiMethod<?>> method = userDataCache.getMessagesToDelete(chatId).stream()
-                .map(integer -> botMethodService.getDeleteMessage(chatId, integer))
-                .collect(Collectors.toList());
-        method.add(deleteMessage);
-        method.add(botMethodService.getSendMessage(
+        return Collections.singletonList(botMethodService.getSendMessage(
                 chatId,
                 messagesService.getText("reply.menu"),
                 keyboardService.getMainMenu()));
-        return method;
     }
 
     @Override
@@ -65,7 +59,6 @@ public class LoginHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        long chatId = callbackQuery.getMessage().getChatId();
-        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, callbackQuery.getMessage().getMessageId()));
+        return Collections.emptyList();
     }
 }

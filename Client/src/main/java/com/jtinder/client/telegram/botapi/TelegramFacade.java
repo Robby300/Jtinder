@@ -24,8 +24,6 @@ public class TelegramFacade {
     private static final Logger log = LoggerFactory.getLogger(TelegramFacade.class);
     private final BotStateContext botStateContext;
     private final UserDataCache userDataCache;
-    private final BotMethodService botMethodService;
-
 
     public List<PartialBotApiMethod<?>> handleUpdate(Update update) {
         List<PartialBotApiMethod<?>> replyMessage = new ArrayList<>();
@@ -34,7 +32,6 @@ public class TelegramFacade {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             log.info("New callbackQuery from User: {}, userId: {}, with data: {}", update.getCallbackQuery().getFrom().getUserName(),
                     callbackQuery.getFrom().getId(), update.getCallbackQuery().getData());
-
             replyMessage = handleInputCallBackQuery(callbackQuery);
         }
 
@@ -44,7 +41,6 @@ public class TelegramFacade {
                     message.getFrom().getUserName(), message.getChatId(), message.getText());
             replyMessage = handleInputMessage(message);
         }
-
         return replyMessage;
     }
 
@@ -56,20 +52,12 @@ public class TelegramFacade {
         if (inputMsg.equals("/start")) {
             botState = BotState.AUTHENTICATE;
             userDataCache.setUsersCurrentBotState(chatId, botState);
-            List<PartialBotApiMethod<?>> method = userDataCache.getMessagesToDelete(chatId).stream()
-                    .map(integer -> botMethodService.getDeleteMessage(chatId, integer))
-                    .collect(Collectors.toList());
-            method.add(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
-            method.addAll(botStateContext.processInputMessage(botState, message));
-            return method;
+            return botStateContext.processInputMessage(botState, message);
         }
-        
         return botStateContext.processInputMessage(botState, message);
     }
 
     private List<PartialBotApiMethod<?>> handleInputCallBackQuery(CallbackQuery callbackQuery) {
         return botStateContext.processInputCallBack(userDataCache.getUsersCurrentBotState(callbackQuery.getFrom().getId()), callbackQuery);
     }
-
-
 }

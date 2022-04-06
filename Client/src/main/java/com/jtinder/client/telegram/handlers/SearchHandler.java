@@ -63,7 +63,7 @@ public class SearchHandler implements InputMessageHandler {
                     keyboardService.getMainMenu()));
         }
 
-        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
+        return Collections.emptyList();
     }
 
     private List<PartialBotApiMethod<?>> getLike(Message message, Long chatId, User user) {

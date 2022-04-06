@@ -29,11 +29,11 @@ public class BotStateContext {
     }
 
     public List<PartialBotApiMethod<?>> processInputMessage(BotState currentState, Message message) {
-        if(currentState == null) {
+        if (currentState == null) {
             return Collections.singletonList(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
         }
         InputMessageHandler currentMessageHandler = findMessageHandler(currentState, message);
-        if(currentMessageHandler == null) {
+        if (currentMessageHandler == null) {
             return Collections.singletonList(new DeleteMessage(message.getChatId().toString(), message.getMessageId()));
         }
         log.info("User state {}, handler {}", currentState, currentMessageHandler);
@@ -41,10 +41,10 @@ public class BotStateContext {
     }
 
     public List<PartialBotApiMethod<?>> processInputCallBack(BotState currentState, CallbackQuery callbackQuery) {
-        if(currentState == null) {
+        if (currentState == null) {
             return Collections.singletonList(new DeleteMessage(callbackQuery.getMessage().getChatId().toString(), callbackQuery.getMessage().getMessageId()));
         }
-        InputMessageHandler currentMessageHandler = findMessageHandlerForCallBack(currentState, callbackQuery);
+        InputMessageHandler currentMessageHandler = findMessageHandler(currentState, callbackQuery.getMessage());
         return currentMessageHandler.handle(callbackQuery);
     }
 
@@ -62,12 +62,27 @@ public class BotStateContext {
         }
     }
 
+    private boolean isEditingProfileState(BotState currentState) {
+        switch (currentState) {
+            case EDIT_NAME:
+            case EDIT_SEX:
+            case EDIT_DESCRIPTION:
+            case EDIT_FIND:
+                return true;
+            default:
+                return false;
+        }
+    }
+
 
     private InputMessageHandler findMessageHandler(BotState currentState, Message message) {
         if (isFillingProfileState(currentState)) {
             return messageHandlers.get(BotState.FILLING_PROFILE);
         }
-        if(currentState.equals(BotState.MAIN_MENU)) {
+        if (isEditingProfileState(currentState)) {
+            return messageHandlers.get(BotState.EDIT);
+        }
+        if (currentState.equals(BotState.MAIN_MENU)) {
             String text = message.getText();
             if (messagesService.getText("button.search").equals(text)) {
                 currentState = BotState.SEARCH;
@@ -80,22 +95,22 @@ public class BotStateContext {
         return messageHandlers.get(currentState);
     }
 
-    private InputMessageHandler findMessageHandlerForCallBack(BotState currentState, CallbackQuery callbackQuery) {
-        switch (callbackQuery.getData()) {
-            case "ПОИСК":
-                currentState = BotState.SEARCH;
-                break;
-            case "АНКЕТА":
-                currentState = BotState.PROFILE;
-                break;
-            case "ЛЮБИМЦЫ":
-                currentState = BotState.LOVERS;
-                break;
-        }
-
-        if (isFillingProfileState(currentState)) {
-            return messageHandlers.get(BotState.FILLING_PROFILE);
-        }
-        return messageHandlers.get(currentState);
-    }
+//    private InputMessageHandler findMessageHandlerForCallBack(BotState currentState, CallbackQuery callbackQuery) {
+////        switch (callbackQuery.getData()) {
+////            case "ПОИСК":
+////                currentState = BotState.SEARCH;
+////                break;
+////            case "АНКЕТА":
+////                currentState = BotState.PROFILE;
+////                break;
+////            case "ЛЮБИМЦЫ":
+////                currentState = BotState.LOVERS;
+////                break;
+////        }
+////
+////        if (isFillingProfileState(currentState)) {
+////            return messageHandlers.get(BotState.FILLING_PROFILE);
+////        }
+//        return messageHandlers.get(currentState);
+//    }
 }

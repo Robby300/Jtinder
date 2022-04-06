@@ -3,13 +3,14 @@ package com.jtinder.client.telegram.handlers;
 import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
-import com.jtinder.client.telegram.service.*;
+import com.jtinder.client.telegram.service.BotMethodService;
+import com.jtinder.client.telegram.service.ImageService;
+import com.jtinder.client.telegram.service.KeyboardService;
+import com.jtinder.client.telegram.service.TextMessagesService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Collections;
@@ -23,7 +24,6 @@ public class ProfileHandler implements InputMessageHandler {
     private final KeyboardService keyboardService;
     private final ImageService imageService;
     private final BotMethodService botMethodService;
-
 
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
@@ -50,9 +50,7 @@ public class ProfileHandler implements InputMessageHandler {
                     messagesService.getText("reply.menu"),
                     keyboardService.getMainMenu()));
         }
-
-        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
-
+        return Collections.emptyList();
     }
 
     @Override

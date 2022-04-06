@@ -9,7 +9,6 @@ import com.jtinder.client.telegram.service.TextMessagesService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
@@ -29,10 +28,9 @@ public class AuthenticateHandler implements InputMessageHandler {
     public List<PartialBotApiMethod<?>> handle(Message message) {
         String usersAnswer = message.getText();
         long chatId = message.getChatId();
-        DeleteMessage deleteMessage = botMethodService.getDeleteMessage(chatId, message.getMessageId());
 
         if (usersAnswer.equals("/start")) {
-            return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
+            return Collections.singletonList(botMethodService.getSendMessage(chatId,
                     messagesService.getText("reply.welcome"),
                     keyboardService.getAuthenticateKeyboard()));
         }
@@ -40,28 +38,28 @@ public class AuthenticateHandler implements InputMessageHandler {
         if (message.getText().equals(messagesService.getText("button.registration"))) {
             boolean isRegister = serverService.isRegistered(chatId);
             if (isRegister) {
-                return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
+                return Collections.singletonList(botMethodService.getSendMessage(chatId,
                         messagesService.getText("reply.registeredYet"),
                         keyboardService.getAuthenticateKeyboard()));
             }
             userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_SEX);
-            return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
+            return Collections.singletonList(botMethodService.getSendMessage(chatId,
                     messagesService.getText("reply.askPassword")));
         }
 
         if (message.getText().equals(messagesService.getText("button.login"))) {
             boolean isRegister = serverService.isRegistered(chatId);
             if (!isRegister) {
-                return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
+                return Collections.singletonList(botMethodService.getSendMessage(chatId,
                         messagesService.getText("reply.notRegistered"),
                         keyboardService.getAuthenticateKeyboard()));
             } else {
                 userDataCache.setUsersCurrentBotState(chatId, BotState.LOGIN);
-                return List.of(deleteMessage, botMethodService.getSendMessage(chatId,
+                return Collections.singletonList(botMethodService.getSendMessage(chatId,
                         messagesService.getText("reply.askPassword")));
             }
         }
-        return Collections.singletonList(deleteMessage);
+        return Collections.emptyList();
     }
 
     @Override
@@ -71,7 +69,6 @@ public class AuthenticateHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        long chatId = callbackQuery.getMessage().getChatId();
-        return Collections.singletonList(botMethodService.getDeleteMessage(chatId, callbackQuery.getMessage().getMessageId()));
+        return Collections.emptyList();
     }
 }

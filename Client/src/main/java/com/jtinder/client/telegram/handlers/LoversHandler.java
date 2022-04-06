@@ -106,6 +106,4 @@ public class LoversHandler implements InputMessageHandler {
         }
         return Collections.emptyList();
     }
-
-
 }

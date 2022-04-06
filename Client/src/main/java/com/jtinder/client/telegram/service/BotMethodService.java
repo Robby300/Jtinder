@@ -3,7 +3,8 @@ package com.jtinder.client.telegram.service;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -35,7 +36,10 @@ public class BotMethodService {
         return sendPhoto;
     }
 
-    public DeleteMessage getDeleteMessage(Long chatId, Integer messageId) {
-        return new DeleteMessage(String.valueOf(chatId), messageId);
+    public EditMessageText editMessageText(Long chatId, CallbackQuery callbackQuery) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setText(callbackQuery.getMessage().getText());
+        editMessageText.setChatId(chatId.toString());
+        return editMessageText;
     }
 }

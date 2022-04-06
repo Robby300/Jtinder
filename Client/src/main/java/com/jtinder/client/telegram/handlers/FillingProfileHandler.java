@@ -17,8 +17,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 /**
  * Формирует анкету пользователя.
  */
@@ -49,7 +47,6 @@ public class FillingProfileHandler implements InputMessageHandler {
     private List<PartialBotApiMethod<?>> processUsersInput(Message inputMsg) {
         String usersAnswer = inputMsg.getText();
         long chatId = inputMsg.getChatId();
-        DeleteMessage deleteMessage = botMethodService.getDeleteMessage(chatId, inputMsg.getMessageId());
 
         User user = userDataCache.getUserProfileData(chatId);
         BotState botState = userDataCache.getUsersCurrentBotState(chatId);
@@ -57,17 +54,16 @@ public class FillingProfileHandler implements InputMessageHandler {
         if (botState.equals(BotState.ASK_SEX)) {
             userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_NAME);
             user.getProfile().setPassword(usersAnswer);
-            return List.of(deleteMessage, botMethodService.getSendMessage(
+            return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
                     messagesService.getText("reply.askSex"),
                     keyboardService.getInlineKeyboardSex()));
         }
 
-
         if (botState.equals(BotState.ASK_DESCRIPTION)) {
             user.getProfile().setName(usersAnswer);
             userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_FIND);
-            return List.of(deleteMessage, botMethodService.getSendMessage(
+            return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
                     messagesService.getText("reply.askDescription")));
         }
@@ -75,28 +71,26 @@ public class FillingProfileHandler implements InputMessageHandler {
         if (botState.equals(BotState.ASK_FIND)) {
             user.getProfile().setDescription(usersAnswer);
             userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE_FILLED);
-            return List.of(deleteMessage, botMethodService.getSendMessage(
+            return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
                     messagesService.getText("reply.askFindSex"),
                     keyboardService.getInlineKeyboardFindSex()));
         }
 
-        return Collections.singletonList(deleteMessage);
+        return Collections.emptyList();
     }
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
         String usersAnswer = callbackQuery.getData();
         long chatId = callbackQuery.getMessage().getChatId();
-        DeleteMessage deleteMessage = botMethodService.getDeleteMessage(chatId, callbackQuery.getMessage().getMessageId());
-
         User user = userDataCache.getUserProfileData(chatId);
         BotState botState = userDataCache.getUsersCurrentBotState(chatId);
 
         if (botState.equals(BotState.ASK_NAME)) {
             user.getProfile().setSex(Sex.valueOf(usersAnswer));
             userDataCache.setUsersCurrentBotState(chatId, BotState.ASK_DESCRIPTION);
-            return List.of(deleteMessage, botMethodService.getSendMessage(
+            return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
                     messagesService.getText("reply.askName")));
         }
@@ -114,17 +108,12 @@ public class FillingProfileHandler implements InputMessageHandler {
             user.setToken(serverService.loginUser(new AuthenticUser(user.getProfile().getUserId(), user.getProfile().getPassword())));
             userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
 
-            List<PartialBotApiMethod<?>> method = userDataCache.getMessagesToDelete(chatId).stream()
-                    .map(integer -> botMethodService.getDeleteMessage(chatId, integer))
-                    .collect(Collectors.toList());
-            method.add(deleteMessage);
-            method.add(botMethodService.getSendPhoto(chatId,
+
+            return Collections.singletonList(botMethodService.getSendPhoto(chatId,
                     imageService.getFile(user.getProfile()),
                     keyboardService.getMainMenu(),user.getProfile().getSex().getName() + ", " +
                     user.getProfile().getName()));
-            return method;
         }
-
-        return Collections.singletonList(deleteMessage);
+        return Collections.emptyList();
     }
 }
