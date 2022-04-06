@@ -5,16 +5,13 @@ import com.jtinder.client.telegram.botapi.BotState;
 import com.jtinder.client.telegram.cache.UserDataCache;
 import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,6 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ProfileHandler implements InputMessageHandler {
     private final UserDataCache userDataCache;
+    private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ImageService imageService;
     private final BotMethodService botMethodService;
@@ -30,7 +28,30 @@ public class ProfileHandler implements InputMessageHandler {
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
         long chatId = message.getChatId();
+        User user = userDataCache.getUserProfileData(chatId);
+
+        if (message.getText().equals(messagesService.getText("button.search"))) {
+            return getProfile(message, chatId, user);
+        }
+
+        if (message.getText().equals(messagesService.getText("button.edit"))) {
+            userDataCache.setUsersCurrentBotState(chatId, BotState.EDIT);
+            return Collections.singletonList(botMethodService.getSendMessage(
+                    chatId,
+                    messagesService.getText("reply.menu"),
+                    keyboardService.getProfileMenu()));
+        }
+
+        if (message.getText().equals(messagesService.getText("button.menu"))) {
+            userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
+            return Collections.singletonList(botMethodService.getSendMessage(
+                    chatId,
+                    messagesService.getText("reply.menu"),
+                    keyboardService.getMainMenu()));
+        }
+
         return Collections.singletonList(botMethodService.getDeleteMessage(chatId, message.getMessageId()));
+
     }
 
     @Override
@@ -40,21 +61,15 @@ public class ProfileHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        List<PartialBotApiMethod<?>> answerList = new ArrayList<>();
+        return Collections.emptyList();
+    }
 
-        long chatId = callbackQuery.getMessage().getChatId();
-        answerList.add(new DeleteMessage(String.valueOf(chatId), callbackQuery.getMessage().getMessageId()));
+    private List<PartialBotApiMethod<?>> getProfile(Message message, Long chatId, User user) {
 
-        User user = userDataCache.getUserProfileData(chatId);
-        SendPhoto profilePhoto = new SendPhoto();
-        profilePhoto.setChatId(String.valueOf(chatId));
-        profilePhoto.setReplyMarkup(keyboardService.getInlineMainMenu());
-        profilePhoto.setCaption(user.getProfile().getSex().getName() + ", " +
-                user.getProfile().getName());
-
-        profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getProfile())));
-
-        answerList.add(profilePhoto);
-        return answerList;
+        return Collections.singletonList(botMethodService.getSendPhoto(
+                chatId,
+                imageService.getFile(user.getProfile()),
+                keyboardService.getMainMenu(), user.getProfile().getSex().getName() + ", " +
+                        user.getProfile().getName()));
     }
 }

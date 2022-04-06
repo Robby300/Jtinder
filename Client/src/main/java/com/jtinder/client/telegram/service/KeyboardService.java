@@ -1,5 +1,6 @@
 package com.jtinder.client.telegram.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -11,8 +12,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class KeyboardService {
+
+    private  final TextMessagesService messagesService;
+
     public InlineKeyboardMarkup getInlineKeyboardSex() {
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
@@ -29,28 +34,11 @@ public class KeyboardService {
         return inlineKeyboardMarkup;
     }
 
-    public ReplyKeyboardMarkup getMainMenuKeyboard() {
-        ReplyKeyboardMarkup mainMenu = new ReplyKeyboardMarkup();
-        mainMenu.setSelective(true);
-        mainMenu.setResizeKeyboard(true);
-        mainMenu.setOneTimeKeyboard(false);
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton("Поиск"));
-        row.add(new KeyboardButton("Анкета"));
-        row.add(new KeyboardButton("Любимцы"));
-        keyboard.add(row);
-        mainMenu.setKeyboard(keyboard);
-
-        return mainMenu;
-    }
-
 
 
     public InlineKeyboardMarkup getInlineKeyboardFindSex() {
         InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardSex();
-        inlineKeyboardMarkup.getKeyboard().get(0).add(makeButton("Всех", "ALL"));
+        inlineKeyboardMarkup.getKeyboard().get(0).add(makeButton("Всех", messagesService.getText("button.allSex")));
         return inlineKeyboardMarkup;
     }
 
@@ -68,38 +56,37 @@ public class KeyboardService {
         return keyboardButtonsRow;
     }
 
-    public InlineKeyboardMarkup getInlineKeyboardSearch() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+    public ReplyKeyboardMarkup getKeyboardSearch() {
+        ReplyKeyboardMarkup searchKeyboard = new ReplyKeyboardMarkup();
+        searchKeyboard.setSelective(true);
+        searchKeyboard.setResizeKeyboard(true);
+        searchKeyboard.setOneTimeKeyboard(true);
 
-        InlineKeyboardButton next = makeButton("\u27a1\ufe0f", "Следующий");
-        InlineKeyboardButton menu = makeButton("MENU", "MENU");
-        InlineKeyboardButton like = makeButton("\u2764\ufe0f", "Лайк");
-
-        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(next, menu, like);
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow);
-
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        return inlineKeyboardMarkup;
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton(messagesService.getText("button.next")));
+        row.add(new KeyboardButton(messagesService.getText("button.menu")));
+        row.add(new KeyboardButton(messagesService.getText("button.like")));
+        keyboard.add(row);
+        searchKeyboard.setKeyboard(keyboard);
+        return searchKeyboard;
     }
 
-    public InlineKeyboardMarkup getInlineKeyboardLowers() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+    public ReplyKeyboardMarkup getKeyboardLowers() {
+        ReplyKeyboardMarkup LoversKeyboard = new ReplyKeyboardMarkup();
+        LoversKeyboard.setSelective(true);
+        LoversKeyboard.setResizeKeyboard(true);
+        LoversKeyboard.setOneTimeKeyboard(true);
 
-        InlineKeyboardButton next = makeButton("\u2b05\ufe0f", "Предыдущий");
-        InlineKeyboardButton menu = makeButton("MENU", "MENUL");
-        InlineKeyboardButton like = makeButton("\u27a1\ufe0f", "Следующий");
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton(messagesService.getText("button.prev")));
+        row.add(new KeyboardButton(messagesService.getText("button.menu")));
+        row.add(new KeyboardButton(messagesService.getText("button.next")));
+        keyboard.add(row);
+        LoversKeyboard.setKeyboard(keyboard);
 
-        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(next, menu, like);
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow);
-
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        return inlineKeyboardMarkup;
+        return LoversKeyboard;
     }
 
 
@@ -118,24 +105,53 @@ public class KeyboardService {
         return authenticateKeyboard;
     }
 
-    public InlineKeyboardMarkup getInlineMainMenu() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+    public ReplyKeyboardMarkup getMainMenu() {
+        ReplyKeyboardMarkup mainMenuKeyboard = new ReplyKeyboardMarkup();
+        mainMenuKeyboard.setSelective(true);
+        mainMenuKeyboard.setResizeKeyboard(true);
+        mainMenuKeyboard.setOneTimeKeyboard(true);
 
-        InlineKeyboardButton next = makeButton("ПОИСК", "ПОИСК");
-        InlineKeyboardButton menu = makeButton("АНКЕТА", "АНКЕТА");
-        InlineKeyboardButton like = makeButton("ЛЮБИМЦЫ", "ЛЮБИМЦЫ");
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        row.add(new KeyboardButton(messagesService.getText("button.search")));
+        row.add(new KeyboardButton(messagesService.getText("button.profile")));
+        row.add(new KeyboardButton(messagesService.getText("button.lovers")));
+        keyboard.add(row);
+        mainMenuKeyboard.setKeyboard(keyboard);
 
-        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(next, menu, like);
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow);
-
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        return inlineKeyboardMarkup;
+        return mainMenuKeyboard;
     }
 
+    public ReplyKeyboardMarkup getProfileMenu() {
+        ReplyKeyboardMarkup mainMenuKeyboard = new ReplyKeyboardMarkup();
+        mainMenuKeyboard.setSelective(true);
+        mainMenuKeyboard.setResizeKeyboard(true);
+        mainMenuKeyboard.setOneTimeKeyboard(true);
 
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row1 = new KeyboardRow();
+        KeyboardRow row2 = new KeyboardRow();
+        KeyboardRow row3 = new KeyboardRow();
+        KeyboardRow row4 = new KeyboardRow();
+        KeyboardRow row5 = new KeyboardRow();
+        KeyboardRow row6 = new KeyboardRow();
+
+        row1.add(new KeyboardButton(messagesService.getText("button.editSex")));
+        row2.add(new KeyboardButton(messagesService.getText("button.editName")));
+        row3.add(new KeyboardButton(messagesService.getText("button.editDescription")));
+        row4.add(new KeyboardButton(messagesService.getText("button.editFindSex")));
+        row5.add(new KeyboardButton(messagesService.getText("button.lol")));
+        row6.add(new KeyboardButton(messagesService.getText("button.menu")));
+        keyboard.add(row1);
+        keyboard.add(row2);
+        keyboard.add(row3);
+        keyboard.add(row4);
+        keyboard.add(row5);
+        keyboard.add(row6);
+        mainMenuKeyboard.setKeyboard(keyboard);
+
+        return mainMenuKeyboard;
+    }
 
 
 }

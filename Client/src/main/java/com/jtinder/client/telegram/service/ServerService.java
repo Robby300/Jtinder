@@ -116,7 +116,7 @@ public class ServerService {
         return translator.translate(caption.getBody());
     }
 
-    public boolean weLowe(Long userId, User user) {
+    public boolean weLove(Long userId, User user) {
         ResponseEntity<Boolean> love = restTemplate.exchange(String.format(URL_LOVE, userId), HttpMethod.GET, authorizationService.getAuthorizationHeader(user), boolean.class);
         log.info("Получение popUp сообщения для пользователя id = {}", userId);
         return love.getBody();
