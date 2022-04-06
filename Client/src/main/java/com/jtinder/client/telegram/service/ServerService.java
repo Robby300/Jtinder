@@ -25,6 +25,7 @@ public class ServerService {
 
     static final String URL_USERS = "http://localhost:8080/users/search";
     static final String URL_LIKE = "http://localhost:8080/users/like/%d";
+    static final String URL_UNLIKE = "http://localhost:8080/users/unlike/%d";
     static final String URL_REGISTRATION = "http://localhost:8080/registration";
     static final String URL_LOGIN = "http://localhost:8080/login";
     static final String URL_HOME = "http://localhost:8080/home";
@@ -33,8 +34,8 @@ public class ServerService {
     static final String URL_CAPTION = "http://localhost:8080/users/imgdescr/%d";
     static final String URL_LOVE = "http://localhost:8080/users/islove/%d";
 
-    static final String URL_CHANGE_NAME = "http://localhost:8080/users/changename/%s";
-    static final String URL_CHANGE_DESCRIPTION = "http://localhost:8080/users/changedescr/%s";
+    static final String URL_CHANGE_NAME = "http://localhost:8080/users/changename";
+    static final String URL_CHANGE_DESCRIPTION = "http://localhost:8080/users/changedescr";
     static final String URL_CHANGE_SEX = "http://localhost:8080/users/changesex";
     static final String URL_CHANGE_FIND_SEX = "http://localhost:8080/users/changefindsex";
 
@@ -44,25 +45,30 @@ public class ServerService {
         return List.of(usersResponse.getBody());
     }
 
-    // Лёха, перепроверь эти 4 метода, хотя бы по диагонали)
+    // Лёха, перепроверь эти 5 методов, хотя бы по диагонали)
     public void changeName(String name, User user) {
-        restTemplate.put(String.format(URL_CHANGE_NAME, name), authorizationService.getAuthorizationHeader(user), name, String.class);
+        restTemplate.put(URL_CHANGE_NAME, authorizationService.getAuthorizationHeader(user), name, String.class);
         log.info("Текущий пользователь id = {} меняет имя на = {}", user.getProfile().getUserId(), name);
     }
 
     public void changeDescription(String description, User user) {
-        restTemplate.put(String.format(URL_CHANGE_DESCRIPTION, description), authorizationService.getAuthorizationHeader(user), description, String.class);
+        restTemplate.put(URL_CHANGE_DESCRIPTION, authorizationService.getAuthorizationHeader(user), description, String.class);
         log.info("Текущий пользователь id = {} меняет описание на = {}", user.getProfile().getUserId(), description);
     }
 
     public void changeSex(Sex sex, User user) {
-        restTemplate.put(URL_CHANGE_SEX, sex, authorizationService.getAuthorizationHeader(user), sex, Sex.class);
+        restTemplate.put(URL_CHANGE_SEX, authorizationService.getAuthorizationHeader(user), sex, Sex.class);
         log.info("Текущий пользователь id = {} меняет пол на = {}", user.getProfile().getUserId(), sex.getName());
     }
 
     public void changeFindSex(Set<Sex> findSex, User user) {
-        restTemplate.put(URL_CHANGE_FIND_SEX, findSex, authorizationService.getAuthorizationHeader(user), findSex, Sex.class);
+        restTemplate.put(URL_CHANGE_FIND_SEX, authorizationService.getAuthorizationHeader(user), findSex, Sex.class);
         log.info("Текущий пользователь id = {} меняет поиск на = {}", user.getProfile().getUserId(), findSex.toString());
+    }
+
+    public void unLikeProfile(Long profileId, User user) {
+        restTemplate.put(String.format(URL_UNLIKE, profileId), authorizationService.getAuthorizationHeader(user), profileId, Long.class);
+        log.info("Текущий пользователь id = {} ставит лайк пользоваетлю id ={}", user.getProfile().getUserId(), profileId);
     }
     //-------------------------------------------------------
 

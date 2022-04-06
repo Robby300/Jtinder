@@ -21,7 +21,7 @@ Content-Type: application/json
 ### После лгина вставить токен после слова "Bearer" и получить привет с именем текущего пользователя
 POST http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTAyMTQwMiwiaWF0IjoxNjQ5MDAzNDAyfQ.oNvSsAoXRO9LR8Ipq5t1nxiWWyAthDjhoYTDKINlx965upWWLiy9kFPN13dNqt-yP0cf8_R1Ver4S_CrF7qzUw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1NjExNywiaWF0IjoxNjQ5MjM4MTE3fQ.LZD4_HuSpE7T7X8Kxen6-d5794_037KJY3WbPrWDpxAOp-RKzBM49sgj49H3iCh2LAGF9OPB572jBjZXjvchZw
 
 ### Текущий подьзователь ставит лайк Арсинье
 PUT http://localhost:8080/users/like/10
@@ -77,3 +77,36 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1MjIzM
 POST http://localhost:8080/users/image/1
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTAyODY0MCwiaWF0IjoxNjQ5MDEwNjQwfQ.GAQtSNWt388j7h_JeMr2ef5xxkqzYj6YGDVHAX00ZWgmRRGt8uHpTpVSIraQDpIj5ppPq-F8eiVT3czYuS0N5Q
+
+###
+PUT http://localhost:8080/users/changename
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1NjM3NywiaWF0IjoxNjQ5MjM4Mzc3fQ.uU8V3i-FDpHp3Qw9P00QeQUeVYyfoRrhU3b8QJ0wxi198MzrVWvAjB1wB36Jyb1MZt5Yj9s5Qeko0iEk9mkYaQ
+
+Лёха
+
+###
+PUT http://localhost:8080/users/changedescr
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1NjM3NywiaWF0IjoxNjQ5MjM4Mzc3fQ.uU8V3i-FDpHp3Qw9P00QeQUeVYyfoRrhU3b8QJ0wxi198MzrVWvAjB1wB36Jyb1MZt5Yj9s5Qeko0iEk9mkYaQ
+
+Супер-пупер джава девелопер!
+
+###
+PUT http://localhost:8080/users/changesex
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1NjM3NywiaWF0IjoxNjQ5MjM4Mzc3fQ.uU8V3i-FDpHp3Qw9P00QeQUeVYyfoRrhU3b8QJ0wxi198MzrVWvAjB1wB36Jyb1MZt5Yj9s5Qeko0iEk9mkYaQ
+
+"FEMALE"
+
+###
+PUT http://localhost:8080/users/changefindsex
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1NjM3NywiaWF0IjoxNjQ5MjM4Mzc3fQ.uU8V3i-FDpHp3Qw9P00QeQUeVYyfoRrhU3b8QJ0wxi198MzrVWvAjB1wB36Jyb1MZt5Yj9s5Qeko0iEk9mkYaQ
+
+["FEMALE","MALE"]
+
+
+
+
+
