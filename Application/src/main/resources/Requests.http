@@ -21,7 +21,7 @@ Content-Type: application/json
 ### После лгина вставить токен после слова "Bearer" и получить привет с именем текущего пользователя
 POST http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1NjExNywiaWF0IjoxNjQ5MjM4MTE3fQ.LZD4_HuSpE7T7X8Kxen6-d5794_037KJY3WbPrWDpxAOp-RKzBM49sgj49H3iCh2LAGF9OPB572jBjZXjvchZw
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI2Mjg4MSwiaWF0IjoxNjQ5MjQ0ODgxfQ.T8pA7kJsu_meiDRH60CTp4X6Pi_WJTCPGn1w4KEBEZVYgNBqULrvu41FcBXQvwtcnLEn3be_CZ_JMCmMM2m5vA
 
 ### Текущий подьзователь ставит лайк Арсинье
 PUT http://localhost:8080/users/like/10
@@ -97,7 +97,7 @@ PUT http://localhost:8080/users/changesex
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1NjM3NywiaWF0IjoxNjQ5MjM4Mzc3fQ.uU8V3i-FDpHp3Qw9P00QeQUeVYyfoRrhU3b8QJ0wxi198MzrVWvAjB1wB36Jyb1MZt5Yj9s5Qeko0iEk9mkYaQ
 
-"FEMALE"
+"MALE"
 
 ###
 PUT http://localhost:8080/users/changefindsex
