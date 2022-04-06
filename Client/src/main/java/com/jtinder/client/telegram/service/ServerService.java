@@ -1,9 +1,6 @@
 package com.jtinder.client.telegram.service;
 
-import com.jtinder.client.domain.AuthenticUser;
-import com.jtinder.client.domain.Profile;
-import com.jtinder.client.domain.Token;
-import com.jtinder.client.domain.User;
+import com.jtinder.client.domain.*;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +12,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -35,11 +33,38 @@ public class ServerService {
     static final String URL_CAPTION = "http://localhost:8080/users/imgdescr/%d";
     static final String URL_LOVE = "http://localhost:8080/users/islove/%d";
 
+    static final String URL_CHANGE_NAME = "http://localhost:8080/users/changename/%s";
+    static final String URL_CHANGE_DESCRIPTION = "http://localhost:8080/users/changedescr/%s";
+    static final String URL_CHANGE_SEX = "http://localhost:8080/users/changesex";
+    static final String URL_CHANGE_FIND_SEX = "http://localhost:8080/users/changefindsex";
+
     public List<Profile> getValidProfilesToUser(User user) {
         ResponseEntity<Profile[]> usersResponse = restTemplate.exchange(URL_USERS, HttpMethod.GET, authorizationService.getAuthorizationHeader(user), Profile[].class);
         log.info("Получение {} анкет в поиске для текущего пользователя", usersResponse.getBody().length);
         return List.of(usersResponse.getBody());
     }
+
+    // Лёха, перепроверь эти 4 метода, хотя бы по диагонали)
+    public void changeName(String name, User user) {
+        restTemplate.put(String.format(URL_CHANGE_NAME, name), authorizationService.getAuthorizationHeader(user), name, String.class);
+        log.info("Текущий пользователь id = {} меняет имя на = {}", user.getProfile().getUserId(), name);
+    }
+
+    public void changeDescription(String description, User user) {
+        restTemplate.put(String.format(URL_CHANGE_DESCRIPTION, description), authorizationService.getAuthorizationHeader(user), description, String.class);
+        log.info("Текущий пользователь id = {} меняет описание на = {}", user.getProfile().getUserId(), description);
+    }
+
+    public void changeSex(Sex sex, User user) {
+        restTemplate.put(URL_CHANGE_SEX, sex, authorizationService.getAuthorizationHeader(user), sex, Sex.class);
+        log.info("Текущий пользователь id = {} меняет пол на = {}", user.getProfile().getUserId(), sex.getName());
+    }
+
+    public void changeFindSex(Set<Sex> findSex, User user) {
+        restTemplate.put(URL_CHANGE_FIND_SEX, findSex, authorizationService.getAuthorizationHeader(user), findSex, Sex.class);
+        log.info("Текущий пользователь id = {} меняет поиск на = {}", user.getProfile().getUserId(), findSex.toString());
+    }
+    //-------------------------------------------------------
 
     public boolean isRegistered(Long userId) {
         log.info("Регистрации пользователя с id = {}", userId);

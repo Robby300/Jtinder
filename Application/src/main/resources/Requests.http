@@ -69,9 +69,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0ODk4Nzc4MCwiaWF0IjoxNjQ4OTY5NzgwfQ.t8xzqYjGPen4ZMgbX11A90krsH8LAMXb2NkwHyowCtSDq_jABhKnjmnSFIBrdypEuz-buc53jURF_FfDJVn2qg
 
 ###
-GET http://localhost:8080/users/imgdescr/10
+GET http://localhost:8080/users/imgdescr/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTAxOTA3NCwiaWF0IjoxNjQ5MDAxMDc0fQ.XgDskJgJpe3a4CJPyMV3AxdrMNuBno8sTE45vb9Rovf8bHsHhBILXUb_Zm_0vMn6qD09wH7K3_zKmPP6kEpQqQ
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI1MjIzMiwiaWF0IjoxNjQ5MjM0MjMyfQ.pH2zfqDMj6tWAkOlfJ8U0CF_t7iD3rDiawz44qJ84OLtl9KiOdyM1OLC3UtMU6rxty4Vu-Ti7kmKegwU5fMsKw
 
 ###
 POST http://localhost:8080/users/image/1

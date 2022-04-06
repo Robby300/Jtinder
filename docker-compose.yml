@@ -29,7 +29,7 @@ services:
     networks:
       - cloud
     ports:
-      - 5433:5433
+      - 5433:5432
     environment:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
