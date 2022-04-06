@@ -36,7 +36,7 @@ public class BotMethodService {
         return sendPhoto;
     }
 
-    public EditMessageText editMessageText(Long chatId, CallbackQuery callbackQuery) {
+    public EditMessageText getEditMessageText(Long chatId, CallbackQuery callbackQuery) {
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setText(callbackQuery.getMessage().getText());
         editMessageText.setChatId(chatId.toString());

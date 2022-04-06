@@ -19,7 +19,6 @@ public class HomeController {
         this.userService = userService;
     }
 
-    @JsonView(Views.Anketa.class)
     @PostMapping("/home")
     public User home() {
         logger.info("Запрос /home и получения текущего пользователя.");

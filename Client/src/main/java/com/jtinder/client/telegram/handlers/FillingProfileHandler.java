@@ -9,14 +9,13 @@ import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+
 /**
  * Формирует анкету пользователя.
  */
@@ -111,7 +110,7 @@ public class FillingProfileHandler implements InputMessageHandler {
 
             return Collections.singletonList(botMethodService.getSendPhoto(chatId,
                     imageService.getFile(user.getProfile()),
-                    keyboardService.getMainMenu(),user.getProfile().getSex().getName() + ", " +
+                    keyboardService.getMainKeyboard(),user.getProfile().getSex().getName() + ", " +
                     user.getProfile().getName()));
         }
         return Collections.emptyList();

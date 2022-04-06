@@ -51,7 +51,7 @@ public class LoversHandler implements InputMessageHandler {
                 userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
                 return Collections.singletonList(botMethodService.getSendMessage(chatId,
                         messagesService.getText("reply.noProfile"),
-                        keyboardService.getMainMenu()));
+                        keyboardService.getMainKeyboard()));
             }
 
             user.setScrollableListWrapper(new ScrollableListWrapper(users));
@@ -102,7 +102,7 @@ public class LoversHandler implements InputMessageHandler {
             return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
                     messagesService.getText("reply.menu"),
-                    keyboardService.getMainMenu()));
+                    keyboardService.getMainKeyboard()));
         }
         return Collections.emptyList();
     }

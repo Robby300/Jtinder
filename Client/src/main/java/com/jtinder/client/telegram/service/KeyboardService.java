@@ -16,48 +16,79 @@ import java.util.List;
 @Service
 public class KeyboardService {
 
-    private  final TextMessagesService messagesService;
+    private final TextMessagesService messagesService;
 
-    public InlineKeyboardMarkup getInlineKeyboardSex() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-
-        InlineKeyboardButton male = makeButton("Сударь", "MALE");
-        InlineKeyboardButton female = makeButton("Сударыня", "FEMALE");
-
-        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(male, female);
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow);
-
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        return inlineKeyboardMarkup;
+    public ReplyKeyboardMarkup getOneColumnKeyboard(Boolean oneTime, String... buttons) {
+        ReplyKeyboardMarkup oneColumnKeyboard = new ReplyKeyboardMarkup();
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        oneColumnKeyboard.setSelective(true);
+        oneColumnKeyboard.setResizeKeyboard(true);
+        oneColumnKeyboard.setOneTimeKeyboard(oneTime);
+        for (String button : buttons) {
+            KeyboardRow row = new KeyboardRow();
+            row.add(button);
+            keyboardRows.add(row);
+        }
+        oneColumnKeyboard.setKeyboard(keyboardRows);
+        return oneColumnKeyboard;
     }
 
-    public InlineKeyboardMarkup getInlineKeyboardEditSex() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+    public ReplyKeyboardMarkup getOneRowKeyboard(Boolean oneTime, String... buttons) {
+        ReplyKeyboardMarkup oneRowKeyboard = new ReplyKeyboardMarkup();
+        oneRowKeyboard.setSelective(true);
+        oneRowKeyboard.setResizeKeyboard(true);
+        oneRowKeyboard.setOneTimeKeyboard(oneTime);
+        KeyboardRow keyboardRow = new KeyboardRow();
+        for (String button : buttons) {
+            keyboardRow.add(button);
+        }
+        List<KeyboardRow> keyboardRows = new ArrayList<>();
+        keyboardRows.add(keyboardRow);
+        oneRowKeyboard.setKeyboard(keyboardRows);
+        return oneRowKeyboard;
+    }
 
-        InlineKeyboardButton male = makeButton("Сударь", "MALEEDIT");
-        InlineKeyboardButton female = makeButton("Сударыня", "FEMALEEDIT");
-        InlineKeyboardButton all = makeButton("Всех", "ALLEDIT");
+    public ReplyKeyboardMarkup getMainKeyboard() {
+        return getOneRowKeyboard(true,
+                messagesService.getText("button.search"),
+                messagesService.getText("button.profile"),
+                messagesService.getText("button.lovers"));
+    }
 
-        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(male, female, all);
+    public ReplyKeyboardMarkup getSearchKeyboard() {
+        return getOneRowKeyboard(true,
+                messagesService.getText("button.next"),
+                messagesService.getText("button.menu"),
+                messagesService.getText("button.like"));
+    }
 
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonsRow);
+    public ReplyKeyboardMarkup getKeyboardLowers() {
+        return getOneRowKeyboard(true,
+                messagesService.getText("button.prev"),
+                messagesService.getText("button.menu"),
+                messagesService.getText("button.next"));
+    }
 
-        inlineKeyboardMarkup.setKeyboard(rowList);
+    public ReplyKeyboardMarkup getProfileMenu() {
+        return getOneRowKeyboard(true,
+                messagesService.getText("button.edit"),
+                messagesService.getText("button.menu"));
+    }
 
-        return inlineKeyboardMarkup;
+    public ReplyKeyboardMarkup getProfileEditMenu() {
+        return getOneColumnKeyboard(true,
+                messagesService.getText("button.editSex"),
+                messagesService.getText("button.editName"),
+                messagesService.getText("button.editDescription"),
+                messagesService.getText("button.editFindSex"),
+                messagesService.getText("button.menu"));
     }
 
 
-
-    public InlineKeyboardMarkup getInlineKeyboardFindSex() {
-        InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardSex();
-        inlineKeyboardMarkup.getKeyboard().get(0).add(makeButton(messagesService.getText("button.allSex"),
-                messagesService.getText("button.alledit")));
-        return inlineKeyboardMarkup;
+    public ReplyKeyboardMarkup getAuthenticateKeyboard() {
+        return getOneRowKeyboard(true,
+                messagesService.getText("button.registration"),
+                messagesService.getText("button.login"));
     }
 
 
@@ -74,115 +105,27 @@ public class KeyboardService {
         return keyboardButtonsRow;
     }
 
-    public ReplyKeyboardMarkup getKeyboardSearch() {
-        ReplyKeyboardMarkup searchKeyboard = new ReplyKeyboardMarkup();
-        searchKeyboard.setSelective(true);
-        searchKeyboard.setResizeKeyboard(true);
-        searchKeyboard.setOneTimeKeyboard(true);
+    public InlineKeyboardMarkup getInlineKeyboardSex() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
 
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton(messagesService.getText("button.next")));
-        row.add(new KeyboardButton(messagesService.getText("button.menu")));
-        row.add(new KeyboardButton(messagesService.getText("button.like")));
-        keyboard.add(row);
-        searchKeyboard.setKeyboard(keyboard);
-        return searchKeyboard;
+        InlineKeyboardButton male = makeButton(messagesService.getText("button.male"), messagesService.getText("data.male"));
+        InlineKeyboardButton female = makeButton(messagesService.getText("button.female"), messagesService.getText("data.female"));
+
+        List<InlineKeyboardButton> keyboardButtonsRow = makeInlineKeyboardButtonsRow(male, female);
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+        rowList.add(keyboardButtonsRow);
+        inlineKeyboardMarkup.setKeyboard(rowList);
+        return inlineKeyboardMarkup;
     }
 
-    public ReplyKeyboardMarkup getKeyboardLowers() {
-        ReplyKeyboardMarkup LoversKeyboard = new ReplyKeyboardMarkup();
-        LoversKeyboard.setSelective(true);
-        LoversKeyboard.setResizeKeyboard(true);
-        LoversKeyboard.setOneTimeKeyboard(true);
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton(messagesService.getText("button.prev")));
-        row.add(new KeyboardButton(messagesService.getText("button.menu")));
-        row.add(new KeyboardButton(messagesService.getText("button.next")));
-        keyboard.add(row);
-        LoversKeyboard.setKeyboard(keyboard);
-
-        return LoversKeyboard;
+    public InlineKeyboardMarkup getInlineKeyboardFindSex() {
+        InlineKeyboardMarkup inlineKeyboardMarkup = getInlineKeyboardSex();
+        inlineKeyboardMarkup.getKeyboard().get(0).add(makeButton(messagesService.getText("button.allSex"),
+                messagesService.getText("button.allSex")));
+        return inlineKeyboardMarkup;
     }
 
-
-    public ReplyKeyboardMarkup getAuthenticateKeyboard() {
-        ReplyKeyboardMarkup authenticateKeyboard = new ReplyKeyboardMarkup();
-        authenticateKeyboard.setResizeKeyboard(true);
-        authenticateKeyboard.setOneTimeKeyboard(true);
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton("Регистрація"));
-        row.add(new KeyboardButton("Внити"));
-        keyboard.add(row);
-        authenticateKeyboard.setKeyboard(keyboard);
-
-        return authenticateKeyboard;
-    }
-
-    public ReplyKeyboardMarkup getMainMenu() {
-        ReplyKeyboardMarkup mainMenuKeyboard = new ReplyKeyboardMarkup();
-        mainMenuKeyboard.setSelective(true);
-        mainMenuKeyboard.setResizeKeyboard(true);
-        mainMenuKeyboard.setOneTimeKeyboard(true);
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton(messagesService.getText("button.search")));
-        row.add(new KeyboardButton(messagesService.getText("button.profile")));
-        row.add(new KeyboardButton(messagesService.getText("button.lovers")));
-        keyboard.add(row);
-        mainMenuKeyboard.setKeyboard(keyboard);
-
-        return mainMenuKeyboard;
-    }
-
-    public ReplyKeyboardMarkup getProfileEditMenu() {
-        ReplyKeyboardMarkup mainMenuKeyboard = new ReplyKeyboardMarkup();
-        mainMenuKeyboard.setSelective(true);
-        mainMenuKeyboard.setResizeKeyboard(true);
-        mainMenuKeyboard.setOneTimeKeyboard(true);
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row1 = new KeyboardRow();
-        KeyboardRow row2 = new KeyboardRow();
-        KeyboardRow row3 = new KeyboardRow();
-        KeyboardRow row4 = new KeyboardRow();
-        KeyboardRow row5 = new KeyboardRow();
-
-
-        row1.add(new KeyboardButton(messagesService.getText("button.editSex")));
-        row2.add(new KeyboardButton(messagesService.getText("button.editName")));
-        row3.add(new KeyboardButton(messagesService.getText("button.editDescription")));
-        row4.add(new KeyboardButton(messagesService.getText("button.editFindSex")));
-        row5.add(new KeyboardButton(messagesService.getText("button.menu")));
-        keyboard.add(row1);
-        keyboard.add(row2);
-        keyboard.add(row3);
-        keyboard.add(row4);
-        keyboard.add(row5);
-        mainMenuKeyboard.setKeyboard(keyboard);
-
-        return mainMenuKeyboard;
-    }
-
-    public ReplyKeyboardMarkup getProfileMenu() {
-        ReplyKeyboardMarkup searchKeyboard = new ReplyKeyboardMarkup();
-        searchKeyboard.setSelective(true);
-        searchKeyboard.setResizeKeyboard(true);
-        searchKeyboard.setOneTimeKeyboard(true);
-
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add(new KeyboardButton(messagesService.getText("button.edit")));
-        row.add(new KeyboardButton(messagesService.getText("button.menu")));
-        keyboard.add(row);
-        searchKeyboard.setKeyboard(keyboard);
-        return searchKeyboard;
-    }
 
 
 }

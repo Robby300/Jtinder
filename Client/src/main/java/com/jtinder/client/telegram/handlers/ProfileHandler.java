@@ -48,7 +48,7 @@ public class ProfileHandler implements InputMessageHandler {
             return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
                     messagesService.getText("reply.menu"),
-                    keyboardService.getMainMenu()));
+                    keyboardService.getMainKeyboard()));
         }
         return Collections.emptyList();
     }

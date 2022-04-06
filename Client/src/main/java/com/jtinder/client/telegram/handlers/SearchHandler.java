@@ -60,7 +60,7 @@ public class SearchHandler implements InputMessageHandler {
             return Collections.singletonList(botMethodService.getSendMessage(
                     chatId,
                     messagesService.getText("reply.menu"),
-                    keyboardService.getMainMenu()));
+                    keyboardService.getMainKeyboard()));
         }
 
         return Collections.emptyList();
@@ -80,7 +80,7 @@ public class SearchHandler implements InputMessageHandler {
             if (user.getScrollableListWrapper().isEmpty()) {
                 SendMessage replyToUser;
                 replyToUser = messagesService.getReplyMessage(chatId, "reply.noProfile");
-                replyToUser.setReplyMarkup(keyboardService.getMainMenu());
+                replyToUser.setReplyMarkup(keyboardService.getMainKeyboard());
                 userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
                 answerList.add(replyToUser);
                 return answerList;
@@ -88,7 +88,7 @@ public class SearchHandler implements InputMessageHandler {
             profilePhoto = botMethodService.getSendPhoto(
                     chatId,
                     imageService.getFile(user.getScrollableListWrapper().getCurrentProfile()),
-                    keyboardService.getKeyboardSearch(),
+                    keyboardService.getSearchKeyboard(),
                     serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
 
             answerList.add(profilePhoto);
@@ -96,7 +96,7 @@ public class SearchHandler implements InputMessageHandler {
         }
         profilePhoto.setPhoto(new InputFile(imageService.getFile(user.getScrollableListWrapper().getNextProfile())));
         profilePhoto.setChatId(String.valueOf(chatId));
-        profilePhoto.setReplyMarkup(keyboardService.getKeyboardSearch());
+        profilePhoto.setReplyMarkup(keyboardService.getSearchKeyboard());
         profilePhoto.setCaption(serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user));
         answerList.add(profilePhoto);
         return answerList;
@@ -112,14 +112,14 @@ public class SearchHandler implements InputMessageHandler {
             userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
             return Collections.singletonList(botMethodService.getSendMessage(chatId,
                     messagesService.getText("reply.noProfile"),
-                    keyboardService.getMainMenu()));
+                    keyboardService.getMainKeyboard()));
         }
 
         user.setScrollableListWrapper(new ScrollableListWrapper(users));
         return Collections.singletonList(botMethodService.getSendPhoto(
                 chatId,
                 imageService.getFile(user.getScrollableListWrapper().getCurrentProfile()),
-                keyboardService.getKeyboardSearch(),
+                keyboardService.getSearchKeyboard(),
                 serverService.getCaption(user.getScrollableListWrapper().getCurrentProfile().getUserId(), user)));
     }
 

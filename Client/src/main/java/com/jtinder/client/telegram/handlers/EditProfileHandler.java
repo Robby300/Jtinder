@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 @RequiredArgsConstructor
 @Component
@@ -67,6 +68,14 @@ public class EditProfileHandler implements InputMessageHandler {
                     messagesService.getText("reply.askFindSex"),
                     keyboardService.getInlineKeyboardFindSex()));
         }
+
+        if (message.getText().equals(messagesService.getText("button.menu"))) {
+            userDataCache.setUsersCurrentBotState(chatId, BotState.MAIN_MENU);
+            return Collections.singletonList(botMethodService.getSendMessage(
+                    chatId,
+                    messagesService.getText("reply.menu"),
+                    keyboardService.getMainKeyboard()));
+        }
         return Collections.emptyList();
     }
 
@@ -90,23 +99,20 @@ public class EditProfileHandler implements InputMessageHandler {
 
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
-        String usersAnswer = callbackQuery.getData();
         long chatId = callbackQuery.getMessage().getChatId();
+        BotState botState = userDataCache.getUsersCurrentBotState(chatId);
+        String usersAnswer = callbackQuery.getData();
         User user = userDataCache.getUserProfileData(chatId);
 
-        if (usersAnswer.equals(Sex.MALE.toString()) || usersAnswer.equals(Sex.FEMALE.toString())) {
+        if (botState.equals(BotState.EDIT_SEX)) {
             return this.getEditSex(chatId, user, usersAnswer);
         }
 
-        if (callbackQuery.getData().equals(messagesService.getText("button.maleedit")) ||
-                callbackQuery.getData().equals(messagesService.getText("button.femaleedit")) ||
-                callbackQuery.getData().equals(messagesService.getText("button.alledit"))) {
+        if (botState.equals(BotState.EDIT_FIND)) {
             return getEditFindSex(chatId, user, usersAnswer);
         }
         return Collections.emptyList();
     }
-
-
 
 
     private List<PartialBotApiMethod<?>> getEditSex(long chatId, User user, String usersAnswer) {
@@ -134,21 +140,14 @@ public class EditProfileHandler implements InputMessageHandler {
     }
 
 
-
     private List<PartialBotApiMethod<?>> getEditFindSex(Long chatId, User user, String usersAnswer) {
-        switch (usersAnswer) {
-            case "MALE_EDIT":
-                user.getProfile().getFindSex().add(Sex.MALE);
-                break;
-            case "FEMALE_EDIT":
-                user.getProfile().getFindSex().add(Sex.FEMALE);
-                break;
-            case "ALL_EDIT":
-                user.getProfile().getFindSex().add(Sex.MALE);
-                user.getProfile().getFindSex().add(Sex.FEMALE);
-                break;
+        if (usersAnswer.equals(messagesService.getText("button.allSex"))) {
+            user.getProfile().setFindSex(Set.of(Sex.values()));
+        } else {
+            user.getProfile().setFindSex(Set.of(Sex.valueOf(usersAnswer)));
         }
         serverService.updateCurrentUser(user.getProfile(), user);
+        userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE);
         return List.of(botMethodService.getSendPhoto(chatId,
                 imageService.getFile(user.getProfile()),
                 keyboardService.getProfileMenu(), user.getProfile().getSex().getName() + ", " +

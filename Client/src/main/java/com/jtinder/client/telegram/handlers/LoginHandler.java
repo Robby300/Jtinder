@@ -12,13 +12,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.PartialBotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @AllArgsConstructor
@@ -49,7 +47,7 @@ public class LoginHandler implements InputMessageHandler {
         return Collections.singletonList(botMethodService.getSendMessage(
                 chatId,
                 messagesService.getText("reply.menu"),
-                keyboardService.getMainMenu()));
+                keyboardService.getMainKeyboard()));
     }
 
     @Override
