@@ -122,5 +122,36 @@ public class KeyboardService {
         return mainMenuKeyboard;
     }
 
+    public ReplyKeyboardMarkup getProfileMenu() {
+        ReplyKeyboardMarkup mainMenuKeyboard = new ReplyKeyboardMarkup();
+        mainMenuKeyboard.setSelective(true);
+        mainMenuKeyboard.setResizeKeyboard(true);
+        mainMenuKeyboard.setOneTimeKeyboard(true);
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row1 = new KeyboardRow();
+        KeyboardRow row2 = new KeyboardRow();
+        KeyboardRow row3 = new KeyboardRow();
+        KeyboardRow row4 = new KeyboardRow();
+        KeyboardRow row5 = new KeyboardRow();
+        KeyboardRow row6 = new KeyboardRow();
+
+        row1.add(new KeyboardButton(messagesService.getText("button.editSex")));
+        row2.add(new KeyboardButton(messagesService.getText("button.editName")));
+        row3.add(new KeyboardButton(messagesService.getText("button.editDescription")));
+        row4.add(new KeyboardButton(messagesService.getText("button.editFindSex")));
+        row5.add(new KeyboardButton(messagesService.getText("button.lol")));
+        row6.add(new KeyboardButton(messagesService.getText("button.menu")));
+        keyboard.add(row1);
+        keyboard.add(row2);
+        keyboard.add(row3);
+        keyboard.add(row4);
+        keyboard.add(row5);
+        keyboard.add(row6);
+        mainMenuKeyboard.setKeyboard(keyboard);
+
+        return mainMenuKeyboard;
+    }
+
 
 }
