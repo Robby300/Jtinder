@@ -72,7 +72,7 @@ public class EditProfileHandler implements InputMessageHandler {
 
     private List<PartialBotApiMethod<?>> getEditDescription(long chatId, User user, String text) {
         user.getProfile().setDescription(text);
-        //serverService.changeName(user.getProfile().getSex(), user);
+        serverService.updateCurrentUser(user.getProfile(), user);
         userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE);
         return List.of(botMethodService.getSendPhoto(chatId,
                 imageService.getFile(user.getProfile()),
@@ -111,7 +111,7 @@ public class EditProfileHandler implements InputMessageHandler {
 
     private List<PartialBotApiMethod<?>> getEditSex(long chatId, User user, String usersAnswer) {
         user.getProfile().setSex(Sex.valueOf(usersAnswer));
-        serverService.changeSex(user.getProfile().getSex(), user);
+        serverService.updateCurrentUser(user.getProfile(), user);
         userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE);
         return List.of(botMethodService.getSendPhoto(chatId,
                 imageService.getFile(user.getProfile()),
@@ -123,7 +123,7 @@ public class EditProfileHandler implements InputMessageHandler {
 
     private List<PartialBotApiMethod<?>> getEditName(long chatId, User user, String usersAnswer) {
         user.getProfile().setName(usersAnswer);
-        //serverService.changeName(user.getProfile().getSex(), user);
+        serverService.updateCurrentUser(user.getProfile(), user);
         userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE);
         return List.of(botMethodService.getSendPhoto(chatId,
                 imageService.getFile(user.getProfile()),
@@ -148,8 +148,7 @@ public class EditProfileHandler implements InputMessageHandler {
                 user.getProfile().getFindSex().add(Sex.FEMALE);
                 break;
         }
-        //serverService.changeSex(user.getProfile().getSex(), user);
-        userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE);
+        serverService.updateCurrentUser(user.getProfile(), user);
         return List.of(botMethodService.getSendPhoto(chatId,
                 imageService.getFile(user.getProfile()),
                 keyboardService.getProfileMenu(), user.getProfile().getSex().getName() + ", " +

@@ -47,9 +47,11 @@ public class ServerService {
 
     // Лёха, перепроверь эти 2 метода, хотя бы по диагонали)
 
-    public void updateCurrentUser(Profile profile) {
+    public void updateCurrentUser(Profile profile, User user) {
+        HttpEntity<Void> authEntity = authorizationService.getAuthorizationHeader(user);
+        HttpEntity<Profile> entity = new HttpEntity<>(profile, authEntity.getHeaders());
         log.info("Обновление текущего пользователя с id = {}", profile.getUserId());
-        restTemplate.postForObject(URL_CHANGE_CURRENT, profile, Profile.class);
+        restTemplate.postForObject(URL_CHANGE_CURRENT, entity,Void.class);
     }
 
     public void unLikeProfile(Long profileId, User user) {
