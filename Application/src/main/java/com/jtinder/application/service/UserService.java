@@ -29,6 +29,8 @@ public interface UserService extends UserDetailsService {
     List<User> searchUsers();
 
     void deleteUser(User user);
+
+    String getImageDescription(User user);
     //List<User> findAllFemale();
     //List<User> findAllMale();
     //String getCurrentUserName();

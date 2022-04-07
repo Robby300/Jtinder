@@ -1,5 +1,6 @@
 package com.jtinder.application.service;
 
+import com.jtinder.application.domain.Sex;
 import com.jtinder.application.domain.User;
 import com.jtinder.application.repository.UserRepository;
 import org.slf4j.Logger;
@@ -68,6 +69,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(User user) {
         userRepository.delete(user);
+    }
+
+    @Override
+    public String getImageDescription(User user) {
+        String resultString = user.getSex().getName() + ", " + user.getName();
+        User currentUser = getCurrentUser();
+        if (isReciprocity(user)) {
+            return resultString + ", Взаимность";
+        } else if (currentUser.getWeLike().contains(user)) {
+            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE) ? "a" : "") + " вами.";
+        } else if (currentUser.getUsLike().contains(user)) {
+            return resultString + ", Вы любимы";
+        }
+        return resultString + ".";
     }
 
     @Override

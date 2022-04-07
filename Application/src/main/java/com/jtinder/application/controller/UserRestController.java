@@ -128,56 +128,12 @@ public class UserRestController {
 
     @GetMapping("/imgdescr/{id}")
     public String getImageDescription(@PathVariable(value = "id") User user) {
-        String resultString = user.getSex().getName() + ", " + user.getName();
-        User currentUser = userService.getCurrentUser();
-        if (userService.isReciprocity(user)) {
-            return resultString + ", Взаимность";
-        } else if (currentUser.getWeLike().contains(user)) {
-            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE) ? "a" : "") + " вами.";
-        } else if (currentUser.getUsLike().contains(user)) {
-            return resultString + ", Вы любимы";
-        }
-        return resultString + ".";
+        return userService.getImageDescription(user);
     }
 
     @GetMapping("/islove/{id}")
     public boolean islove(@PathVariable(value = "id") User user) {
         User currentUser = userService.getCurrentUser();
         return currentUser.getWeLike().contains(user) && currentUser.getUsLike().contains(user);
-    }
-
-
-    @PutMapping("/changename")
-    @JsonView(Views.Anketa.class)
-    public void changeName(@RequestBody String name) {
-        User currentUser = userService.getCurrentUser();
-        currentUser.setName(name);
-        userService.save(currentUser);
-        logger.info("PUT запрос - для текущего пользователя id = {} - обновление данных: name = {}.", currentUser.getUserId(), name);
-    }
-
-    @PutMapping("/changedescr")
-    public void changeDescription(@RequestBody String description) {
-        User currentUser = userService.getCurrentUser();
-        currentUser.setDescription(description);
-        userService.save(currentUser);
-        logger.info("PUT запрос - для текущего пользователя id = {} - обновление данных: description = {}", currentUser.getUserId(), description);
-    }
-
-    @PutMapping("/changesex")
-    public void changeSex(@RequestBody Sex sex) {
-        User currentUser = userService.getCurrentUser();
-        currentUser.setSex(sex);
-        userService.save(currentUser);
-        logger.info("PUT запрос - для текущего пользователя id = {} - обновление данных: sex = {}", currentUser.getUserId(), sex.getName());
-    }
-
-    @PutMapping("/changefindsex")
-    @JsonView(Views.Anketa.class)
-    public void changeFindSex(@RequestBody Set<Sex> findSex) {
-        User currentUser = userService.getCurrentUser();
-        currentUser.setFindSex(findSex);
-        userService.save(currentUser);
-        logger.info("PUT запрос - для текущего пользователя id = {} - обновление данных: findSex = {}", currentUser.getUserId(), findSex.toString());
     }
 }
