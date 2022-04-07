@@ -31,8 +31,4 @@ public interface UserService extends UserDetailsService {
     void deleteUser(User user);
 
     String getImageDescription(User user);
-    //List<User> findAllFemale();
-    //List<User> findAllMale();
-    //String getCurrentUserName();
-    //List<User> findAll();
 }

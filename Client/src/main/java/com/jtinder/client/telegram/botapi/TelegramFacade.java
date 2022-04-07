@@ -1,10 +1,7 @@
 package com.jtinder.client.telegram.botapi;
 
 import com.jtinder.client.telegram.cache.UserDataCache;
-import com.jtinder.client.telegram.service.BotMethodService;
-import com.jtinder.client.telegram.service.ServerService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -14,9 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Component

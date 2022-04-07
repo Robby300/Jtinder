@@ -45,8 +45,6 @@ public class ServerService {
         return List.of(usersResponse.getBody());
     }
 
-    // Лёха, перепроверь эти 2 метода, хотя бы по диагонали)
-
     public void updateCurrentUser(Profile profile, User user) {
         HttpEntity<Void> authEntity = authorizationService.getAuthorizationHeader(user);
         HttpEntity<Profile> entity = new HttpEntity<>(profile, authEntity.getHeaders());
@@ -58,8 +56,6 @@ public class ServerService {
         restTemplate.put(String.format(URL_UNLIKE, profileId), authorizationService.getAuthorizationHeader(user), profileId, Long.class);
         log.info("Текущий пользователь id = {} ставит лайк пользоваетлю id ={}", user.getProfile().getUserId(), profileId);
     }
-
-    //-------------------------------------------------------
 
     public boolean isRegistered(Long userId) {
         log.info("Регистрации пользователя с id = {}", userId);

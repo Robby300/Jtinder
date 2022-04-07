@@ -1,7 +1,6 @@
 package com.jtinder.application.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.jtinder.application.domain.Sex;
 import com.jtinder.application.domain.User;
 import com.jtinder.application.domain.Views;
 import com.jtinder.application.service.UserService;

@@ -94,23 +94,4 @@ public class BotStateContext {
         }
         return messageHandlers.get(currentState);
     }
-
-//    private InputMessageHandler findMessageHandlerForCallBack(BotState currentState, CallbackQuery callbackQuery) {
-////        switch (callbackQuery.getData()) {
-////            case "ПОИСК":
-////                currentState = BotState.SEARCH;
-////                break;
-////            case "АНКЕТА":
-////                currentState = BotState.PROFILE;
-////                break;
-////            case "ЛЮБИМЦЫ":
-////                currentState = BotState.LOVERS;
-////                break;
-////        }
-////
-////        if (isFillingProfileState(currentState)) {
-////            return messageHandlers.get(BotState.FILLING_PROFILE);
-////        }
-//        return messageHandlers.get(currentState);
-//    }
 }
