@@ -69,7 +69,7 @@ public class UserRestController {
     @GetMapping("/likers")
     @JsonView(Views.Anketa.class)
     public Set<User> findAllLikers() {
-        Set<User> likers = new HashSet<>(userService.findAllWeLike());
+        Set<User> likers = userService.findAllWeLike();
         likers.addAll(userService.findAllUsLike());
         logger.info("Обработка GET запроса /likers - список лайкеров из {} элементов", likers.size());
         return likers;

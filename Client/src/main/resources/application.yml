@@ -11,10 +11,10 @@ localeTag: ru-RU
 
 upload:
   #Rob_Linux
-  #path: /home/robert/IdeaProjects/Jtinder/Client/src/main/resources/prerev-background.jpg
+  path: /home/robert/IdeaProjects/Jtinder/Client/src/main/resources/prerev-background.jpg
 
   #Docker_Linux
   #path: /home/jtinder/src/main/resources/prerev-background.jpg
 
   #Alex_Windows
-  path: E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg
+  #path: E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg

@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         Long id = Long.parseLong(userId);
-        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Нет такого!"));
+        return userRepository.findById(id).orElseThrow(() -> new UsernameNotFoundException("Отсутствует пользователь с id = " + userId));
     }
 
     @Override
@@ -116,9 +116,9 @@ public class UserServiceImpl implements UserService {
     public Set<User> findAllReciprocity() {
         logger.info("список взаимных лайков");
         User currentUser = getCurrentUser();
-        Set<User> reciprocity = new HashSet<>(currentUser.getWeLike());
+        Set<User> weLike = currentUser.getWeLike();
         Set<User> usLike = currentUser.getUsLike();
-        reciprocity.retainAll(usLike);
-        return reciprocity;
+        weLike.retainAll(usLike);
+        return weLike;
     }
 }
