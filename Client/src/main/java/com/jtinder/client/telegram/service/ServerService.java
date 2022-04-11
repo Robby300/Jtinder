@@ -16,8 +16,11 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+/**
+ * Служит для связи с сервером - получения необходимой информации (анкеты пользователей,
+ * списки поиска, лайки и тд.
+ */
 @Service
-
 public class ServerService {
     private static final Logger log = LoggerFactory.getLogger(ServerService.class);
 
@@ -57,7 +60,7 @@ public class ServerService {
         HttpEntity<Void> authEntity = authorizationService.getAuthorizationHeader(user);
         HttpEntity<Profile> entity = new HttpEntity<>(profile, authEntity.getHeaders());
         log.info("Обновление текущего пользователя с id = {}", profile.getUserId());
-        restTemplate.postForObject(URL_CHANGE_CURRENT, entity,Void.class);
+        restTemplate.postForObject(URL_CHANGE_CURRENT, entity, Void.class);
     }
 
     public void unLikeProfile(Long profileId, User user) {
