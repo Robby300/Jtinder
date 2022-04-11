@@ -40,39 +40,39 @@ public class ImageServiceImpl implements ImageService {
             int topOffset = (int) (image.getHeight() * 0.1) + (header.getSize() / 2);
             int maxLineWidth = image.getWidth() - 2 * leftOffset;
             log.info("leftOffset: {}, topOffset: {}, maxLineWidth: {}", leftOffset, topOffset, maxLineWidth);
-            Graphics g = image.getGraphics();
-            g.setColor(Color.BLACK);
-            g.setFont(header);
-            List<String> linesToWrite = getLinesToWrite(translator.translate(profile.getDescription()), g, maxLineWidth, header, body);
-            writeLinesToImage(body, leftOffset, topOffset, g, linesToWrite);
+            Graphics graphics = image.getGraphics();
+            graphics.setColor(Color.BLACK);
+            graphics.setFont(header);
+            List<String> linesToWrite = getLinesToWrite(translator.translate(profile.getDescription()), graphics, maxLineWidth, header, body);
+            writeLinesToImage(body, leftOffset, topOffset, graphics, linesToWrite);
             result = new File(backgroundImage.getParentFile(), "result_image.jpg");
             ImageIO.write(image, "jpg", result);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Ошибка чтения/записи файла " + e);
         }
         return result;
     }
 
-    private void writeLinesToImage(Font body, int leftOffset, int topOffset, Graphics g, List<String> linesToWrite) {
-        FontMetrics fm = g.getFontMetrics();
+    private void writeLinesToImage(Font body, int leftOffset, int topOffset, Graphics graphics, List<String> linesToWrite) {
+        FontMetrics fontMetrics = graphics.getFontMetrics();
         if (linesToWrite.size() == 1) {
             String[] words = linesToWrite.get(0).split("\\s");
-            g.drawString(words[0], leftOffset, topOffset);
+            graphics.drawString(words[0], leftOffset, topOffset);
             String descLine = Arrays.stream(words).skip(1).collect(Collectors.joining(" "));
-            g.setFont(body);
-            fm = g.getFontMetrics();
-            topOffset += fm.getHeight();
-            g.drawString(descLine, leftOffset, topOffset);
+            graphics.setFont(body);
+            fontMetrics = graphics.getFontMetrics();
+            topOffset += fontMetrics.getHeight();
+            graphics.drawString(descLine, leftOffset, topOffset);
         } else {
             for (int i = 0; i < linesToWrite.size(); i++) {
                 if (i == 0) {
-                    g.drawString(linesToWrite.get(i), leftOffset, topOffset);
-                    g.setFont(body);
-                    fm = g.getFontMetrics();
+                    graphics.drawString(linesToWrite.get(i), leftOffset, topOffset);
+                    graphics.setFont(body);
+                    fontMetrics = graphics.getFontMetrics();
                 } else {
-                    g.drawString(linesToWrite.get(i), leftOffset, topOffset);
+                    graphics.drawString(linesToWrite.get(i), leftOffset, topOffset);
                 }
-                topOffset += fm.getHeight();
+                topOffset += fontMetrics.getHeight();
             }
         }
     }

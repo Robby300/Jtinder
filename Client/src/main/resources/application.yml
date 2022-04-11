@@ -18,3 +18,6 @@ upload:
 
   #Alex_Windows
   #path: E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg
+
+key:
+  localPath: "http://localhost:8080/"

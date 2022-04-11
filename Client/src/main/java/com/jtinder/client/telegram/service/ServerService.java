@@ -4,9 +4,9 @@ import com.jtinder.client.domain.AuthenticUser;
 import com.jtinder.client.domain.Profile;
 import com.jtinder.client.domain.Token;
 import com.jtinder.client.domain.User;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
+
 public class ServerService {
     private static final Logger log = LoggerFactory.getLogger(ServerService.class);
 
@@ -25,18 +25,26 @@ public class ServerService {
     private final AuthorizationService authorizationService;
     private final PrerevolutionaryTranslator translator;
 
-    static final String URL_USERS = "http://localhost:8080/users/search";
-    static final String URL_LIKE = "http://localhost:8080/users/like/%d";
-    static final String URL_UNLIKE = "http://localhost:8080/users/unlike/%d";
-    static final String URL_REGISTRATION = "http://localhost:8080/registration";
-    static final String URL_LOGIN = "http://localhost:8080/login";
-    static final String URL_HOME = "http://localhost:8080/home";
-    static final String URL_IS_REGISTERED = "http://localhost:8080/users/exists/%d";
-    static final String URL_LOWERS = "http://localhost:8080/users/likers";
-    static final String URL_CAPTION = "http://localhost:8080/users/imgdescr/%d";
-    static final String URL_LOVE = "http://localhost:8080/users/islove/%d";
+    @Value("${key.localPath}")
+    static private String localPath;
 
-    static final String URL_CHANGE_CURRENT = "http://localhost:8080/users/update_current";
+    static final String URL_USERS = localPath + "users/search";
+    static final String URL_LIKE = localPath + "users/like/%d";
+    static final String URL_UNLIKE = localPath + "users/unlike/%d";
+    static final String URL_REGISTRATION = localPath + "registration";
+    static final String URL_LOGIN = localPath + "login";
+    static final String URL_HOME = localPath + "home";
+    static final String URL_IS_REGISTERED = localPath + "users/exists/%d";
+    static final String URL_LOWERS = localPath + "users/likers";
+    static final String URL_CAPTION = localPath + "users/imgdescr/%d";
+    static final String URL_LOVE = localPath + "users/islove/%d";
+    static final String URL_CHANGE_CURRENT = localPath + "users/update_current";
+
+    public ServerService(RestTemplate restTemplate, AuthorizationService authorizationService, PrerevolutionaryTranslator translator) {
+        this.restTemplate = restTemplate;
+        this.authorizationService = authorizationService;
+        this.translator = translator;
+    }
 
 
     public List<Profile> getValidProfilesToUser(User user) {
@@ -74,6 +82,7 @@ public class ServerService {
             log.info("Авторизация пользователя = {}", authenticUser.getUsername());
             return token.getToken();
         } catch (HttpClientErrorException e) {
+            log.error("Ошибка авторизации " + e);
             return "";
         }
     }
