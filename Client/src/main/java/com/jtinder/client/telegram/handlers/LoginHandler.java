@@ -3,7 +3,7 @@ package com.jtinder.client.telegram.handlers;
 import com.jtinder.client.domain.AuthenticUser;
 import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.cache.DataCache;
 import com.jtinder.client.telegram.service.BotMethodService;
 import com.jtinder.client.telegram.service.KeyboardService;
 import com.jtinder.client.telegram.service.ServerService;
@@ -18,17 +18,28 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Отвечает за вход уже зарегистрированного пользователя в систему
+ */
 @Component
 @AllArgsConstructor
 @Slf4j
 public class LoginHandler implements InputMessageHandler {
-    private final UserDataCache userDataCache;
+    private final DataCache userDataCache;
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
     private final BotMethodService botMethodService;
 
 
+    /**
+     * Формирует ответ в зависимости от полученного запроса.
+     * Получает chatId пользователя и делает для него запрос на сервер,
+     * для получения токена.
+     *
+     * @param message сообщение полученное из Update оступившего из от бота.
+     * @return возвращает готовый ответ, в случае неверного запроса возвращает пустой List
+     */
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
         long chatId = message.getChatId();
@@ -50,6 +61,10 @@ public class LoginHandler implements InputMessageHandler {
                 keyboardService.getMainKeyboard()));
     }
 
+    /**
+     * @return - возвращает состояние бота во время процедуры входа, для выбора соответствующего
+     * обработчика в BotStateContext
+     */
     @Override
     public BotState getHandlerName() {
         return BotState.LOGIN;

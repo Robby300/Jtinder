@@ -4,7 +4,7 @@ import com.jtinder.client.domain.AuthenticUser;
 import com.jtinder.client.domain.Sex;
 import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.cache.DataCache;
 import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,13 +23,17 @@ import java.util.List;
 @AllArgsConstructor
 @Component
 public class FillingProfileHandler implements InputMessageHandler {
-    private final UserDataCache userDataCache;
+    private final DataCache userDataCache;
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
     private final ImageService imageService;
     private final BotMethodService botMethodService;
 
+    /**
+     * Определяет, что пользователь находится в состоянии заполнения анкеты
+     * и отправляет его на первый шаг, либо на последующий если он уже заполнил предыдущий
+     */
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
         if (userDataCache.getUsersCurrentBotState(message.getFrom().getId()).equals(BotState.FILLING_PROFILE)) {
@@ -38,11 +42,20 @@ public class FillingProfileHandler implements InputMessageHandler {
         return processUsersInput(message);
     }
 
+    /**
+     * @return - возвращает состояние бота во время заполнения анкеты, для выбора соответствующего
+     * обработчика в BotStateContext
+     */
     @Override
     public BotState getHandlerName() {
         return BotState.FILLING_PROFILE;
     }
 
+    /**
+     * обрабатывает сообщения типа Message
+     * Определяет на каком шаге заполнения находится пользователь, запрашивает
+     * соответствующую информацию и устанавливает состояние на следующий шаг
+     */
     private List<PartialBotApiMethod<?>> processUsersInput(Message inputMsg) {
         String usersAnswer = inputMsg.getText();
         long chatId = inputMsg.getChatId();
@@ -79,6 +92,12 @@ public class FillingProfileHandler implements InputMessageHandler {
         return Collections.emptyList();
     }
 
+    /**
+     * обрабатывает сообщения типа Message
+     * Определяет на каком шаге заполнения находится пользователь, запрашивает
+     * соответствующую информацию и устанавливает состояние на следующий шаг.
+     * В случае успешной регистрации происходит вход в систему и присвоение токена.
+     */
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
         String usersAnswer = callbackQuery.getData();
@@ -110,8 +129,8 @@ public class FillingProfileHandler implements InputMessageHandler {
 
             return Collections.singletonList(botMethodService.getSendPhoto(chatId,
                     imageService.getFile(user.getProfile()),
-                    keyboardService.getMainKeyboard(),user.getProfile().getSex().getName() + ", " +
-                    user.getProfile().getName()));
+                    keyboardService.getMainKeyboard(), user.getProfile().getSex().getName() + ", " +
+                            user.getProfile().getName()));
         }
         return Collections.emptyList();
     }

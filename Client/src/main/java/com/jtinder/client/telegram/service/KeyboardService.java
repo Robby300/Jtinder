@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Класс для получения всех клавиатур используемых в приложении
+ */
 @RequiredArgsConstructor
 @Service
 public class KeyboardService {
 
     private final TextMessagesService messagesService;
 
-    public ReplyKeyboardMarkup getOneColumnKeyboard(Boolean oneTime, String... buttons) {
+    private ReplyKeyboardMarkup getOneColumnKeyboard(Boolean oneTime, String... buttons) {
         ReplyKeyboardMarkup oneColumnKeyboard = new ReplyKeyboardMarkup();
         List<KeyboardRow> keyboardRows = new ArrayList<>();
         oneColumnKeyboard.setSelective(true);
@@ -32,7 +35,7 @@ public class KeyboardService {
         return oneColumnKeyboard;
     }
 
-    public ReplyKeyboardMarkup getOneRowKeyboard(Boolean oneTime, String... buttons) {
+    private ReplyKeyboardMarkup getOneRowKeyboard(Boolean oneTime, String... buttons) {
         ReplyKeyboardMarkup oneRowKeyboard = new ReplyKeyboardMarkup();
         oneRowKeyboard.setSelective(true);
         oneRowKeyboard.setResizeKeyboard(true);

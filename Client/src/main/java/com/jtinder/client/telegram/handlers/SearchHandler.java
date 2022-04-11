@@ -4,7 +4,7 @@ import com.jtinder.client.domain.Profile;
 import com.jtinder.client.domain.ScrollableListWrapper;
 import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.cache.DataCache;
 import com.jtinder.client.telegram.service.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,28 +20,41 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Обработчик сообщений поиска анкет
+ */
 @Component
 @AllArgsConstructor
 @Slf4j
 public class SearchHandler implements InputMessageHandler {
-    private final UserDataCache userDataCache;
+    private final DataCache userDataCache;
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
     private final ImageService imageService;
     private final BotMethodService botMethodService;
 
-
+    /**
+     * @return - возвращает состояние бота во время поиска, для выбора соответствующего
+     * обработчика в BotStateContext
+     */
     @Override
     public BotState getHandlerName() {
         return BotState.SEARCH;
     }
 
+    /**
+     * Обрабатывает сообщения CallbackQuery в случае их поступления
+     */
     @Override
     public List<PartialBotApiMethod<?>> handle(CallbackQuery callbackQuery) {
         return Collections.emptyList();
     }
 
+    /**
+     * @param message сообщение полученное из Update оступившего из от бота.
+     * @return возвращает готовый ответ, в случае неверного запроса возвращает пустой List
+     */
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
         long chatId = message.getChatId();

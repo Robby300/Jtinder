@@ -3,7 +3,7 @@ package com.jtinder.client.telegram.handlers;
 import com.jtinder.client.domain.Sex;
 import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.cache.DataCache;
 import com.jtinder.client.telegram.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,10 +15,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Отвечает за редактирование анкеты пользователя
+ */
 @RequiredArgsConstructor
 @Component
 public class EditProfileHandler implements InputMessageHandler {
-    private final UserDataCache userDataCache;
+    private final DataCache userDataCache;
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;

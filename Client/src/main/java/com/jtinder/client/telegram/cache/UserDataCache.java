@@ -7,6 +7,10 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Отвечает за хранение состояния каждого пользователя по chatId
+ * во воремя его работы с ботом, а так же для кэша самих пользователей
+ */
 @Component
 public class UserDataCache implements DataCache {
     private final Map<Long, BotState> usersBotStates = new HashMap<>();

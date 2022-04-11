@@ -1,6 +1,6 @@
 package com.jtinder.client.telegram.botapi;
 
-import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.cache.DataCache;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +13,17 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Принимает поступающие от бота Update, проверяет содержат ли они Message или CallbackQuery
+ * и отправляет в соответствующий метод обработки. Так же устанавливает состояние
+ * при первом запуске (получении команды /start)
+ */
 @RequiredArgsConstructor
 @Component
 public class TelegramFacade {
     private static final Logger log = LoggerFactory.getLogger(TelegramFacade.class);
     private final BotStateContext botStateContext;
-    private final UserDataCache userDataCache;
+    private final DataCache userDataCache;
 
     public List<PartialBotApiMethod<?>> handleUpdate(Update update) {
         List<PartialBotApiMethod<?>> replyMessage = new ArrayList<>();

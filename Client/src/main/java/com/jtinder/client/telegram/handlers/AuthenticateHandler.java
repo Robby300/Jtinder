@@ -1,7 +1,7 @@
 package com.jtinder.client.telegram.handlers;
 
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.cache.DataCache;
 import com.jtinder.client.telegram.service.BotMethodService;
 import com.jtinder.client.telegram.service.KeyboardService;
 import com.jtinder.client.telegram.service.ServerService;
@@ -15,15 +15,27 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Отвечает за регистрацию пользователя, либо вход в систему,
+ * в случае если пользователь уже зарегистрирова
+ */
 @AllArgsConstructor
 @Component
 public class AuthenticateHandler implements InputMessageHandler {
-    private final UserDataCache userDataCache;
+    private final DataCache userDataCache;
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
     private final BotMethodService botMethodService;
 
+    /**
+     * После получения команды /start отображает клавиатуру с кнопками регистрации
+     * или входа. Проверяет зарегистрирован ли пользователь.
+     * Позволяет зарегистрироваться или войти в систему.
+     *
+     * @param message сообщение полученное из Update оступившего из от бота.
+     * @return возвращает готовый ответ, в случае неверного запроса возвращает пустой List
+     */
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
         String usersAnswer = message.getText();

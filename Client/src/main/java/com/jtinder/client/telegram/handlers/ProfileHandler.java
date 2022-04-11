@@ -2,7 +2,7 @@ package com.jtinder.client.telegram.handlers;
 
 import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.cache.DataCache;
 import com.jtinder.client.telegram.service.BotMethodService;
 import com.jtinder.client.telegram.service.ImageService;
 import com.jtinder.client.telegram.service.KeyboardService;
@@ -16,15 +16,25 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Обработчик сообщений работы с анкетой
+ */
 @Component
 @AllArgsConstructor
 public class ProfileHandler implements InputMessageHandler {
-    private final UserDataCache userDataCache;
+    private final DataCache userDataCache;
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ImageService imageService;
     private final BotMethodService botMethodService;
 
+    /**
+     * Формирует ответ в зависимости от полученного запроса.
+     * Отображает анкету,  либо меню редактирования анкеты, либо открывает главное меню
+     *
+     * @param message сообщение полученное из Update оступившего из от бота.
+     * @return возвращает готовый ответ, в случае неверного запроса возвращает пустой List
+     */
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
         long chatId = message.getChatId();
@@ -32,7 +42,7 @@ public class ProfileHandler implements InputMessageHandler {
         userDataCache.setUsersCurrentBotState(chatId, BotState.PROFILE);
 
         if (message.getText().equals(messagesService.getText("button.profile"))) {
-            return getProfile(message, chatId, user);
+            return getProfile(chatId, user);
         }
 
         if (message.getText().equals(messagesService.getText("button.edit"))) {
@@ -53,6 +63,10 @@ public class ProfileHandler implements InputMessageHandler {
         return Collections.emptyList();
     }
 
+    /**
+     * @return - возвращает состояние бота во время просмотра своей анкеты, для выбора соответствующего
+     * обработчика в BotStateContext
+     */
     @Override
     public BotState getHandlerName() {
         return BotState.PROFILE;
@@ -63,7 +77,7 @@ public class ProfileHandler implements InputMessageHandler {
         return Collections.emptyList();
     }
 
-    private List<PartialBotApiMethod<?>> getProfile(Message message, Long chatId, User user) {
+    private List<PartialBotApiMethod<?>> getProfile(Long chatId, User user) {
 
         return Collections.singletonList(botMethodService.getSendPhoto(
                 chatId,

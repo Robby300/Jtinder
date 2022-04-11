@@ -50,7 +50,7 @@ public class PrerevolutionaryTranslator {
             "сера", "посетить", "посещать", "сетовать", "сеть", "сетка", "стена", "застенок", "застенчивый", "стенгазета",
             "тело", "мягкотелость", "растелешиться", "тельняшка", "тень", "оттенок", "тенёк", "тесто", "тесный", "стеснять",
             "стесняться", "теснить", "тесниться", "затеять", "затея", "утеха", "потеха", "тешить", "утешение", "хер",
-            "похерить", "цевка", "цевье","цевница", "цедить", "целый", "исцелять", "целовать", "поцелуй", "цель",
+            "похерить", "цевка", "цевье", "цевница", "цедить", "целый", "исцелять", "целовать", "поцелуй", "цель",
             "целиться", "цена", "цепь", "цеплять", "цеп");
 
 
@@ -65,7 +65,7 @@ public class PrerevolutionaryTranslator {
     }
 
     private String replaceE(String word) {
-        for (String sub: SUBSTRINGS) {
+        for (String sub : SUBSTRINGS) {
             if (word.contains(sub)) {
                 String subStringWithoutLastChar = sub.substring(0, sub.length() - 1);
                 return word.replace(subStringWithoutLastChar, subStringWithoutLastChar.replaceAll("е", "ѣ"));

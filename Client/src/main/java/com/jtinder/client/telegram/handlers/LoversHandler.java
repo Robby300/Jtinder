@@ -4,7 +4,7 @@ import com.jtinder.client.domain.Profile;
 import com.jtinder.client.domain.ScrollableListWrapper;
 import com.jtinder.client.domain.User;
 import com.jtinder.client.telegram.botapi.BotState;
-import com.jtinder.client.telegram.cache.UserDataCache;
+import com.jtinder.client.telegram.cache.DataCache;
 import com.jtinder.client.telegram.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +16,14 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Обработчик сообщений поиска анкет на которые были поставлены лайки
+ */
 @RequiredArgsConstructor
 @Component
 @Slf4j
 public class LoversHandler implements InputMessageHandler {
-    private final UserDataCache userDataCache;
+    private final DataCache userDataCache;
     private final TextMessagesService messagesService;
     private final KeyboardService keyboardService;
     private final ServerService serverService;
@@ -36,6 +39,14 @@ public class LoversHandler implements InputMessageHandler {
         return Collections.emptyList();
     }
 
+
+    /**
+     * Формирует ответ в зависимости от полученного запроса.
+     * Отображает список лайкнутых анкет, открывает предыдущую анкету, либо следующую.
+     *
+     * @param message сообщение полученное из Update оступившего из от бота.
+     * @return возвращает готовый ответ, в случае неверного запроса возвращает пустой List
+     */
     @Override
     public List<PartialBotApiMethod<?>> handle(Message message) {
         long chatId = message.getChatId();

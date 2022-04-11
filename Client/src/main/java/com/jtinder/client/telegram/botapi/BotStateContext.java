@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Defines message handlers for each state.
+ * Выбирает соответствующий обработчик для каждого состояния бота
  */
 @Slf4j
 @Component

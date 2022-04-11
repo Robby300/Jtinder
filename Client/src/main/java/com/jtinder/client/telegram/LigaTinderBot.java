@@ -1,7 +1,6 @@
 package com.jtinder.client.telegram;
 
 import com.jtinder.client.telegram.botapi.TelegramFacade;
-import com.jtinder.client.telegram.cache.UserDataCache;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -30,16 +29,25 @@ public class LigaTinderBot extends TelegramLongPollingBot {
     private String botToken;
 
     private final TelegramFacade telegramFacade;
-    private final UserDataCache userDataCache;
 
-
+    /**
+     * Метод куда приходят обновления update от телеграмм бота и отправляются на дальнейшую обработку
+     * в результате обработки возвращается ответ, который содержит, который в зависимости от содержимого
+     * приводится к определенному типу и отправляется клиенту
+     *
+     * @param update - обновление от телеграмм бота, содержащее сообщение
+     */
     @Override
     public void onUpdateReceived(Update update) {
         for (PartialBotApiMethod<?> method : telegramFacade.handleUpdate(update)) {
             try {
-                if (method instanceof SendPhoto) execute((SendPhoto) method);
-                else if (method instanceof SendMessage) execute((SendMessage) method);
-                else if (method instanceof AnswerCallbackQuery) execute((AnswerCallbackQuery) method);
+                if (method instanceof SendPhoto) {
+                    execute((SendPhoto) method);
+                } else if (method instanceof SendMessage) {
+                    execute((SendMessage) method);
+                } else if (method instanceof AnswerCallbackQuery) {
+                    execute((AnswerCallbackQuery) method);
+                }
             } catch (TelegramApiException e) {
                 log.info(e.getMessage());
             }
