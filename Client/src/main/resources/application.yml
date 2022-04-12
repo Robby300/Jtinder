@@ -20,4 +20,4 @@ upload:
   #path: E:\Java\Jtinder\Client\src\main\resources\prerev-background.jpg
 
 key:
-  localPath: "http://localhost:8080/"
+  localPath: http://localhost:8080/
