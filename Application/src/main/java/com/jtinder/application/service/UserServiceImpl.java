@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
         if (isReciprocity(user)) {
             return resultString + ", Взаимность";
         } else if (currentUser.getWeLike().contains(user)) {
-            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE) ? "a" : "") + " вами.";
+            return resultString + ", Любим" + (user.getSex().equals(Sex.FEMALE) ? "а" : "") + " вами.";
         } else if (currentUser.getUsLike().contains(user)) {
             return resultString + ", Вы любимы";
         }

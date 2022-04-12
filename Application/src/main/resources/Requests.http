@@ -21,7 +21,7 @@ Content-Type: application/json
 ### После лгина вставить токен после слова "Bearer" и получить привет с именем текущего пользователя
 POST http://localhost:8080/home
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTI2Mjg4MSwiaWF0IjoxNjQ5MjQ0ODgxfQ.T8pA7kJsu_meiDRH60CTp4X6Pi_WJTCPGn1w4KEBEZVYgNBqULrvu41FcBXQvwtcnLEn3be_CZ_JMCmMM2m5vA
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMSIsImV4cCI6MTY0OTc2MTI3OCwiaWF0IjoxNjQ5NzQzMjc4fQ.fnklNADHDpTj2g0TmGJQxYvGEuwJ2EFkgqgin9Z2DxZVSYP6pZfxYgE91pq1r5QElhZlfCKWc1At86MW_ZPMfA
 
 ### Текущий подьзователь ставит лайк Арсинье
 PUT http://localhost:8080/users/like/10
